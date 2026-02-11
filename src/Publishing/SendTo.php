@@ -1,0 +1,452 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Synglify\WordPress\Publishing;
+
+use Synglify\Core\Config\SynglifyConfig;
+use Synglify\Core\Content\Media;
+use Synglify\Core\Content\MediaCollection;
+use Synglify\Core\Content\Post;
+use Synglify\Core\Platforms\PlatformRegistry;
+use Synglify\Core\Platforms\Telegram\TelegramPlatform;
+use Synglify\Core\Publishing\Publisher;
+use Synglify\Core\Publishing\PublishResult;
+use Synglify\WordPress\Database\DeliveryLog;
+
+/**
+ * High-level WordPress API for publishing content to social media platforms.
+ *
+ * Usage:
+ *     synglify()->telegram('Hello world!');
+ *     synglify()->twitter('Hello world!');
+ *     synglify()->toAll($post);
+ */
+class SendTo
+{
+    private const TELEGRAM_TEXT_LENGTH = 4096;
+    private const TELEGRAM_CAPTION_LENGTH = 1024;
+
+    public function __construct(
+        private readonly Publisher $publisher,
+        private readonly SynglifyConfig $config,
+        private readonly PlatformRegistry $registry,
+    ) {
+    }
+
+    // ── Telegram ─────────────────────────────────────────────────────────
+
+    /**
+     * Publish a message to Telegram.
+     *
+     * @param string     $message        The text message to send.
+     * @param array|null $attachment      Optional attachment: ['type' => 'photo|video|audio|document|voice|location|venue|contact|media_group', ...].
+     * @param array|null $inlineKeyboard Optional inline keyboard buttons.
+     * @param array      $options        Additional platform-specific options.
+     */
+    public function telegram(
+        string $message,
+        ?array $attachment = null,
+        ?array $inlineKeyboard = null,
+        array $options = [],
+    ): PublishResult {
+        $credentials = $this->config->credentials('telegram');
+        $chatId = $options['chat_id'] ?? $credentials?->get('channel_username');
+        $parseMode = $credentials?->get('parse_mode', 'HTML') ?? 'HTML';
+        $signature = $credentials?->get('channel_signature', '') ?? '';
+
+        // Handle extended Telegram types that use direct Bot API methods.
+        if ($attachment !== null) {
+            $type = $attachment['type'] ?? '';
+
+            if (in_array($type, ['location', 'venue', 'contact', 'voice'], true)) {
+                return $this->handleTelegramExtended($type, $message, $attachment, $inlineKeyboard, $options);
+            }
+        }
+
+        // Append signature to message text.
+        if ($signature !== '') {
+            $message = $this->assignSignature($message, $attachment !== null ? 'caption' : 'text', $signature);
+        }
+
+        $media = $this->buildMediaFromAttachment($attachment);
+        $post = new Post(
+            title: '',
+            body: $message,
+            media: $media,
+        );
+
+        $publishOptions = [
+            'chat_id'    => $chatId,
+            'parse_mode' => $parseMode,
+        ];
+
+        if ($inlineKeyboard !== null) {
+            $publishOptions['inline_keyboard'] = $inlineKeyboard;
+        }
+
+        if ($attachment !== null) {
+            foreach (['duration', 'width', 'height'] as $key) {
+                if (isset($attachment[$key])) {
+                    $publishOptions[$key] = $attachment[$key];
+                }
+            }
+        }
+
+        $result = $this->publisher->publish($post, 'telegram', array_merge($publishOptions, $options));
+        $this->logResult($result);
+
+        return $result;
+    }
+
+    // ── Twitter / X ──────────────────────────────────────────────────────
+
+    /**
+     * Publish a message to Twitter (X).
+     *
+     * @param string     $message The tweet text.
+     * @param array|null $media   Optional media: ['path' => ..., 'mime_type' => ...] or array of such items.
+     * @param array      $options Additional platform-specific options.
+     */
+    public function twitter(string $message, ?array $media = null, array $options = []): PublishResult
+    {
+        $mediaCollection = $this->buildMediaCollection($media);
+
+        $post = new Post(
+            title: '',
+            body: $message,
+            media: $mediaCollection,
+        );
+
+        $result = $this->publisher->publish($post, 'twitter', $options);
+        $this->logResult($result);
+
+        return $result;
+    }
+
+    /**
+     * Alias for twitter().
+     */
+    public function x(string $message, ?array $media = null, array $options = []): PublishResult
+    {
+        return $this->twitter($message, $media, $options);
+    }
+
+    // ── Facebook ─────────────────────────────────────────────────────────
+
+    /**
+     * Publish a message to Facebook.
+     *
+     * @param string $message The message text.
+     * @param string $type    Post type: 'link', 'photo', 'video'.
+     * @param array  $data    Type-specific data.
+     * @param array  $options Additional platform-specific options.
+     */
+    public function facebook(string $message, string $type = 'link', array $data = [], array $options = []): PublishResult
+    {
+        $media = null;
+
+        if ($type === 'photo' && isset($data['photo'])) {
+            $media = new MediaCollection([
+                new Media($data['photo'], 'image/jpeg'),
+            ]);
+        } elseif ($type === 'video' && isset($data['video'])) {
+            $media = new MediaCollection([
+                new Media($data['video'], 'video/mp4'),
+            ]);
+        }
+
+        $url = $data['link'] ?? null;
+
+        $post = new Post(
+            title: $data['title'] ?? '',
+            body: $message,
+            url: $url,
+            media: $media,
+            metadata: $data,
+        );
+
+        $publishOptions = array_merge(['type' => $type], $options);
+
+        $result = $this->publisher->publish($post, 'facebook', $publishOptions);
+        $this->logResult($result);
+
+        return $result;
+    }
+
+    // ── Generic ──────────────────────────────────────────────────────────
+
+    /**
+     * Publish a Post directly to a specific platform.
+     */
+    public function publish(Post $post, string $platform, array $options = [], ?int $wpPostId = null): PublishResult
+    {
+        try {
+            $result = $this->publisher->publish($post, $platform, $options);
+        } catch (\Throwable $e) {
+            $result = new PublishResult(
+                success: false,
+                platformName: $platform,
+                error: $e->getMessage(),
+            );
+        }
+
+        $this->logResult($result, $wpPostId);
+
+        return $result;
+    }
+
+    /**
+     * Publish a Post to all configured platforms.
+     *
+     * @return array<string, PublishResult>
+     */
+    public function toAll(Post $post, array $options = [], ?int $wpPostId = null): array
+    {
+        $results = [];
+
+        foreach ($this->registry->names() as $platformName) {
+            try {
+                $results[$platformName] = $this->publisher->publish($post, $platformName, $options);
+            } catch (\Throwable $e) {
+                $results[$platformName] = new PublishResult(
+                    success: false,
+                    platformName: $platformName,
+                    error: $e->getMessage(),
+                );
+            }
+
+            $this->logResult($results[$platformName], $wpPostId);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Build a Post object from a WP_Post.
+     */
+    public function buildPostFromWpPost(\WP_Post $wpPost): Post
+    {
+        $media = null;
+
+        // Use featured image if available.
+        $thumbnailId = (int) get_post_thumbnail_id($wpPost->ID);
+        if ($thumbnailId > 0) {
+            $imagePath = get_attached_file($thumbnailId);
+            $mimeType = get_post_mime_type($thumbnailId);
+
+            if ($imagePath && $mimeType) {
+                $media = new MediaCollection([
+                    new Media(
+                        path: $imagePath,
+                        mimeType: $mimeType,
+                        altText: get_post_meta($thumbnailId, '_wp_attachment_image_alt', true) ?: null,
+                    ),
+                ]);
+            }
+        }
+
+        $tags = wp_get_post_tags($wpPost->ID, ['fields' => 'names']);
+
+        $post = new Post(
+            title: $wpPost->post_title,
+            body: $wpPost->post_excerpt ?: wp_trim_words($wpPost->post_content, 55),
+            url: get_permalink($wpPost->ID) ?: null,
+            excerpt: $wpPost->post_excerpt ?: null,
+            media: $media,
+            tags: is_array($tags) ? $tags : [],
+            metadata: [
+                'wp_post_id'   => $wpPost->ID,
+                'wp_post_type' => $wpPost->post_type,
+            ],
+        );
+
+        /** @var Post $post */
+        $post = apply_filters('synglify_post_data', $post, $wpPost);
+
+        return $post;
+    }
+
+    // ── Private helpers ──────────────────────────────────────────────────
+
+    private function logResult(PublishResult $result, ?int $postId = null): void
+    {
+        try {
+            DeliveryLog::createFromResult($result, $postId);
+        } catch (\Throwable) {
+            // Silently fail — logging should never break publishing.
+        }
+    }
+
+    private function assignSignature(string $text, string $type, string $signature): string
+    {
+        if ($signature === '') {
+            return $text;
+        }
+
+        $maxLength = $type === 'caption'
+            ? self::TELEGRAM_CAPTION_LENGTH
+            : self::TELEGRAM_TEXT_LENGTH;
+
+        $suffix = "\n\n" . $signature;
+
+        if (mb_strlen($text . $suffix) > $maxLength) {
+            $text = mb_substr($text, 0, $maxLength - mb_strlen($suffix));
+        }
+
+        return $text . $suffix;
+    }
+
+    private function handleTelegramExtended(
+        string $type,
+        string $message,
+        array $attachment,
+        ?array $inlineKeyboard,
+        array $options,
+    ): PublishResult {
+        $credentials = $this->config->credentials('telegram');
+        $chatId = $options['chat_id'] ?? $credentials?->get('channel_username');
+
+        /** @var TelegramPlatform $telegram */
+        $telegram = $this->registry->get('telegram');
+
+        $extOptions = [];
+        if ($inlineKeyboard !== null) {
+            $extOptions['inline_keyboard'] = $inlineKeyboard;
+        }
+        if (! empty($options['disable_notification'])) {
+            $extOptions['disable_notification'] = true;
+        }
+
+        try {
+            $response = match ($type) {
+                'location' => $telegram->sendLocation(
+                    $chatId,
+                    (float) $attachment['latitude'],
+                    (float) $attachment['longitude'],
+                    array_merge($extOptions, array_filter([
+                        'live_period' => $attachment['live_period'] ?? null,
+                    ])),
+                ),
+                'venue' => $telegram->sendVenue(
+                    $chatId,
+                    (float) $attachment['latitude'],
+                    (float) $attachment['longitude'],
+                    $attachment['title'],
+                    $attachment['address'],
+                    $extOptions,
+                ),
+                'contact' => $telegram->sendContact(
+                    $chatId,
+                    $attachment['phone_number'],
+                    $attachment['first_name'],
+                    array_merge($extOptions, array_filter([
+                        'last_name' => $attachment['last_name'] ?? null,
+                    ])),
+                ),
+                'voice' => $telegram->sendVoice(
+                    $chatId,
+                    $attachment['file'],
+                    array_merge($extOptions, array_filter([
+                        'caption'  => $message !== '' ? $message : null,
+                        'duration' => $attachment['duration'] ?? null,
+                    ])),
+                ),
+                default => throw new \InvalidArgumentException("Unknown Telegram type: {$type}"),
+            };
+
+            $messageId = $response['result']['message_id'] ?? null;
+
+            $result = new PublishResult(
+                success: true,
+                platformName: 'telegram',
+                externalId: $messageId !== null ? (string) $messageId : null,
+            );
+        } catch (\Throwable $e) {
+            $result = new PublishResult(
+                success: false,
+                platformName: 'telegram',
+                error: $e->getMessage(),
+            );
+        }
+
+        $this->logResult($result);
+
+        return $result;
+    }
+
+    private function buildMediaFromAttachment(?array $attachment): ?MediaCollection
+    {
+        if ($attachment === null) {
+            return null;
+        }
+
+        $type = $attachment['type'] ?? '';
+
+        if ($type === 'media_group' && isset($attachment['files'])) {
+            return $this->buildMediaGroup($attachment['files']);
+        }
+
+        $file = $attachment['file'] ?? null;
+        if ($file === null) {
+            return null;
+        }
+
+        $mimeType = match ($type) {
+            'photo'    => 'image/jpeg',
+            'video'    => 'video/mp4',
+            'audio'    => 'audio/mpeg',
+            'document' => 'application/octet-stream',
+            default    => 'application/octet-stream',
+        };
+
+        return new MediaCollection([
+            new Media(
+                path: $file,
+                mimeType: $mimeType,
+                duration: $attachment['duration'] ?? null,
+                width: $attachment['width'] ?? null,
+                height: $attachment['height'] ?? null,
+            ),
+        ]);
+    }
+
+    private function buildMediaGroup(array $files): MediaCollection
+    {
+        $items = [];
+
+        foreach ($files as $file) {
+            $type = $file['type'] ?? 'photo';
+            $mimeType = $type === 'video' ? 'video/mp4' : 'image/jpeg';
+
+            $items[] = new Media(
+                path: $file['media'],
+                mimeType: $mimeType,
+            );
+        }
+
+        return new MediaCollection($items);
+    }
+
+    private function buildMediaCollection(?array $media): ?MediaCollection
+    {
+        if ($media === null) {
+            return null;
+        }
+
+        if (isset($media['path'])) {
+            return new MediaCollection([
+                new Media($media['path'], $media['mime_type'] ?? 'image/jpeg'),
+            ]);
+        }
+
+        $items = [];
+        foreach ($media as $item) {
+            if (isset($item['path'])) {
+                $items[] = new Media($item['path'], $item['mime_type'] ?? 'image/jpeg');
+            }
+        }
+
+        return ! empty($items) ? new MediaCollection($items) : null;
+    }
+}
