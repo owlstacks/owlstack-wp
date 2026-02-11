@@ -1,0 +1,260 @@
+/**
+ * Synglify WordPress Admin Styles
+ *
+ * @package Synglify\WordPress
+ */
+
+/* ── Settings Page ────────────────────────────────────────────────────── */
+
+.synglify-settings-wrap {
+    max-width: 900px;
+}
+
+.synglify-settings-wrap .form-table th {
+    width: 200px;
+    padding: 15px 10px 15px 0;
+}
+
+.synglify-settings-wrap .form-table td {
+    padding: 10px 10px;
+}
+
+.synglify-settings-wrap .form-table input[type="text"],
+.synglify-settings-wrap .form-table input[type="password"],
+.synglify-settings-wrap .form-table input[type="url"],
+.synglify-settings-wrap .form-table input[type="number"],
+.synglify-settings-wrap .form-table select {
+    width: 100%;
+    max-width: 400px;
+}
+
+.synglify-settings-wrap h2 {
+    margin-top: 2em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.synglify-settings-wrap h2:first-of-type {
+    margin-top: 0;
+}
+
+/* Test connection buttons */
+.synglify-test-connection {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.synglify-test-connection .spinner {
+    float: none;
+    margin: 0;
+}
+
+.synglify-test-result {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    margin-left: 8px;
+}
+
+.synglify-test-result.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.synglify-test-result.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* ── Meta Box ─────────────────────────────────────────────────────────── */
+
+.synglify-meta-box {
+    padding: 6px 0;
+}
+
+.synglify-platform-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.synglify-platform-list li {
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.synglify-platform-list li:last-child {
+    border-bottom: none;
+}
+
+.synglify-platform-list label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.synglify-platform-list input[type="checkbox"] {
+    margin: 0;
+}
+
+.synglify-auto-publish {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #c3c4c7;
+}
+
+.synglify-auto-publish label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+}
+
+.synglify-publish-now-wrap {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #c3c4c7;
+    text-align: right;
+}
+
+.synglify-publish-now-wrap .spinner {
+    float: none;
+    margin: 0 4px 0 0;
+    vertical-align: middle;
+}
+
+.synglify-publish-result {
+    margin-top: 8px;
+    padding: 8px 12px;
+    border-radius: 3px;
+    font-size: 13px;
+}
+
+.synglify-publish-result.success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.synglify-publish-result.error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.synglify-publish-result.partial {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* ── Delivery Logs Page ───────────────────────────────────────────────── */
+
+.synglify-logs-wrap .tablenav {
+    margin: 6px 0;
+}
+
+.synglify-logs-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 3px;
+}
+
+.synglify-logs-filter select,
+.synglify-logs-filter input[type="number"] {
+    max-width: 180px;
+}
+
+/* Status badges */
+.synglify-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-transform: capitalize;
+}
+
+.synglify-badge--success,
+.synglify-badge--delivered {
+    background: #d4edda;
+    color: #155724;
+}
+
+.synglify-badge--failed,
+.synglify-badge--error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.synglify-badge--pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.synglify-badge--queued {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+/* Platform badges */
+.synglify-badge--telegram {
+    background: #e3f2fd;
+    color: #0277bd;
+}
+
+.synglify-badge--twitter {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.synglify-badge--facebook {
+    background: #e8eaf6;
+    color: #283593;
+}
+
+/* Log details */
+.synglify-log-error {
+    color: #721c24;
+    font-style: italic;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.synglify-log-external-link {
+    word-break: break-all;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+
+@media screen and (max-width: 782px) {
+    .synglify-settings-wrap .form-table input[type="text"],
+    .synglify-settings-wrap .form-table input[type="password"],
+    .synglify-settings-wrap .form-table input[type="url"],
+    .synglify-settings-wrap .form-table input[type="number"],
+    .synglify-settings-wrap .form-table select {
+        max-width: 100%;
+    }
+
+    .synglify-logs-filter {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .synglify-logs-filter select,
+    .synglify-logs-filter input[type="number"] {
+        max-width: 100%;
+    }
+}
