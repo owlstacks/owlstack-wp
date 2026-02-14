@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Rest;
+namespace Owlstack\WordPress\Rest;
 
-use Synglify\WordPress\Admin\MetaBox;
-use Synglify\WordPress\Database\DeliveryLog;
-use Synglify\WordPress\Plugin;
+use Owlstack\WordPress\Admin\MetaBox;
+use Owlstack\WordPress\Database\DeliveryLog;
+use Owlstack\WordPress\Plugin;
 
 /**
- * REST API controller for Synglify endpoints.
+ * REST API controller for Owlstack endpoints.
  *
- * Registers routes under the `synglify/v1` namespace:
- *   POST   /synglify/v1/test-connection
- *   POST   /synglify/v1/publish
- *   GET    /synglify/v1/delivery-logs
- *   DELETE /synglify/v1/delivery-logs/(?P<id>\d+)
+ * Registers routes under the `owlstack/v1` namespace:
+ *   POST   /owlstack/v1/test-connection
+ *   POST   /owlstack/v1/publish
+ *   GET    /owlstack/v1/delivery-logs
+ *   DELETE /owlstack/v1/delivery-logs/(?P<id>\d+)
  */
-class SynglifyRestController
+class OwlstackRestController
 {
-    private const NAMESPACE = 'synglify/v1';
+    private const NAMESPACE = 'owlstack/v1';
 
     /**
      * Register REST routes.
@@ -104,7 +104,7 @@ class SynglifyRestController
                     'success' => false,
                     'message' => sprintf(
                         /* translators: %s: platform name */
-                        __('Platform "%s" is not configured.', 'synglify-wp'),
+                        __('Platform "%s" is not configured.', 'owlstack-wp'),
                         $platform,
                     ),
                 ], 400);
@@ -117,7 +117,7 @@ class SynglifyRestController
                 'telegram' => self::testTelegram($platformInstance),
                 'twitter'  => self::testTwitter($platformInstance),
                 'facebook' => self::testFacebook($platformInstance),
-                default    => ['success' => false, 'message' => __('Test not implemented for this platform.', 'synglify-wp')],
+                default    => ['success' => false, 'message' => __('Test not implemented for this platform.', 'owlstack-wp')],
             };
 
             $statusCode = $result['success'] ? 200 : 422;
@@ -142,7 +142,7 @@ class SynglifyRestController
         if (! $wpPost instanceof \WP_Post) {
             return new \WP_REST_Response([
                 'success' => false,
-                'message' => __('Post not found.', 'synglify-wp'),
+                'message' => __('Post not found.', 'owlstack-wp'),
             ], 404);
         }
 
@@ -154,7 +154,7 @@ class SynglifyRestController
         if (empty($platforms)) {
             return new \WP_REST_Response([
                 'success' => false,
-                'message' => __('No platforms selected.', 'synglify-wp'),
+                'message' => __('No platforms selected.', 'owlstack-wp'),
             ], 400);
         }
 
@@ -162,7 +162,7 @@ class SynglifyRestController
         $post = $sendTo->buildPostFromWpPost($wpPost);
 
         /** @var array $options */
-        $options = apply_filters('synglify_publish_options', [], $wpPost);
+        $options = apply_filters('owlstack_publish_options', [], $wpPost);
 
         $results = [];
         foreach ($platforms as $platform) {
@@ -219,7 +219,7 @@ class SynglifyRestController
         if ($log === null) {
             return new \WP_REST_Response([
                 'success' => false,
-                'message' => __('Log entry not found.', 'synglify-wp'),
+                'message' => __('Log entry not found.', 'owlstack-wp'),
             ], 404);
         }
 
@@ -227,7 +227,7 @@ class SynglifyRestController
 
         return new \WP_REST_Response([
             'success' => true,
-            'message' => __('Log entry deleted.', 'synglify-wp'),
+            'message' => __('Log entry deleted.', 'owlstack-wp'),
         ]);
     }
 
@@ -235,17 +235,17 @@ class SynglifyRestController
 
     public static function canManage(): bool
     {
-        return current_user_can('manage_synglify');
+        return current_user_can('manage_owlstack');
     }
 
     public static function canPublish(): bool
     {
-        return current_user_can('synglify_publish');
+        return current_user_can('owlstack_publish');
     }
 
     public static function canViewLogs(): bool
     {
-        return current_user_can('synglify_view_logs');
+        return current_user_can('owlstack_view_logs');
     }
 
     // ── Platform test helpers ────────────────────────────────────────────
@@ -261,13 +261,13 @@ class SynglifyRestController
                     'success' => true,
                     'message' => sprintf(
                         /* translators: %s: bot username */
-                        __('Connected as @%s', 'synglify-wp'),
+                        __('Connected as @%s', 'owlstack-wp'),
                         $response['result']['username'] ?? 'unknown',
                     ),
                 ];
             }
 
-            return ['success' => true, 'message' => __('Platform is configured.', 'synglify-wp')];
+            return ['success' => true, 'message' => __('Platform is configured.', 'owlstack-wp')];
         } catch (\Throwable $e) {
             return ['success' => false, 'message' => $e->getMessage()];
         }
@@ -283,13 +283,13 @@ class SynglifyRestController
                     'success' => true,
                     'message' => sprintf(
                         /* translators: %s: twitter handle */
-                        __('Connected as @%s', 'synglify-wp'),
+                        __('Connected as @%s', 'owlstack-wp'),
                         $response['screen_name'] ?? $response['username'] ?? 'unknown',
                     ),
                 ];
             }
 
-            return ['success' => true, 'message' => __('Platform is configured.', 'synglify-wp')];
+            return ['success' => true, 'message' => __('Platform is configured.', 'owlstack-wp')];
         } catch (\Throwable $e) {
             return ['success' => false, 'message' => $e->getMessage()];
         }
@@ -305,13 +305,13 @@ class SynglifyRestController
                     'success' => true,
                     'message' => sprintf(
                         /* translators: %s: page name */
-                        __('Connected to %s', 'synglify-wp'),
+                        __('Connected to %s', 'owlstack-wp'),
                         $response['name'] ?? 'unknown',
                     ),
                 ];
             }
 
-            return ['success' => true, 'message' => __('Platform is configured.', 'synglify-wp')];
+            return ['success' => true, 'message' => __('Platform is configured.', 'owlstack-wp')];
         } catch (\Throwable $e) {
             return ['success' => false, 'message' => $e->getMessage()];
         }

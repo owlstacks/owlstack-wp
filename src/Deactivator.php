@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress;
+namespace Owlstack\WordPress;
 
 /**
  * Handles plugin deactivation tasks.
@@ -25,7 +25,7 @@ class Deactivator
      */
     private static function clearScheduledEvents(): void
     {
-        wp_clear_scheduled_hook('synglify_scheduled_publish');
+        wp_clear_scheduled_hook('owlstack_scheduled_publish');
     }
 
     /**
@@ -39,8 +39,8 @@ class Deactivator
             return;
         }
 
-        $role->remove_cap('manage_synglify');
-        $role->remove_cap('synglify_publish');
-        $role->remove_cap('synglify_view_logs');
+        $role->remove_cap('manage_owlstack');
+        $role->remove_cap('owlstack_publish');
+        $role->remove_cap('owlstack_view_logs');
     }
 }

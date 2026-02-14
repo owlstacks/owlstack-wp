@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Database;
+namespace Owlstack\WordPress\Database;
 
-use Synglify\Core\Delivery\DeliveryStatus;
-use Synglify\Core\Publishing\PublishResult;
+use Owlstack\Core\Delivery\DeliveryStatus;
+use Owlstack\Core\Publishing\PublishResult;
 
 /**
  * Repository for CRUD operations on the delivery log table.

@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Events;
+namespace Owlstack\WordPress\Events;
 
-use Synglify\Core\Events\Contracts\EventDispatcherInterface;
+use Owlstack\Core\Events\Contracts\EventDispatcherInterface;
 
 /**
- * Bridges Synglify Core's EventDispatcherInterface to WordPress actions.
+ * Bridges Owlstack Core's EventDispatcherInterface to WordPress actions.
  *
  * Dispatches events as WordPress actions so developers can hook in
  * using standard add_action() calls:
  *
- *     add_action('synglify_post_published', function (PostPublished $event) { ... });
- *     add_action('synglify_post_failed', function (PostFailed $event) { ... });
+ *     add_action('owlstack_post_published', function (PostPublished $event) { ... });
+ *     add_action('owlstack_post_failed', function (PostFailed $event) { ... });
  */
 class WpEventDispatcher implements EventDispatcherInterface
 {
     public function dispatch(object $event): void
     {
         $className = (new \ReflectionClass($event))->getShortName();
-        $hookName = 'synglify_' . $this->toSnakeCase($className);
+        $hookName = 'owlstack_' . $this->toSnakeCase($className);
 
         /** @phpstan-ignore-next-line */
         do_action($hookName, $event);

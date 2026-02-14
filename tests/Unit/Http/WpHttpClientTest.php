@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Tests\Unit\Http;
+namespace Owlstack\WordPress\Tests\Unit\Http;
 
-use Synglify\Core\Http\HttpResponse;
-use Synglify\WordPress\Http\WpHttpClient;
-use Synglify\WordPress\Tests\TestCase;
+use Owlstack\Core\Http\HttpResponse;
+use Owlstack\WordPress\Http\WpHttpClient;
+use Owlstack\WordPress\Tests\TestCase;
 
 class WpHttpClientTest extends TestCase
 {
@@ -21,7 +21,7 @@ class WpHttpClientTest extends TestCase
     public function test_it_implements_http_client_interface(): void
     {
         $this->assertInstanceOf(
-            \Synglify\Core\Http\HttpClientInterface::class,
+            \Owlstack\Core\Http\HttpClientInterface::class,
             $this->client,
         );
     }
@@ -71,7 +71,7 @@ class WpHttpClientTest extends TestCase
 
         // The proxy client should still implement the interface.
         $this->assertInstanceOf(
-            \Synglify\Core\Http\HttpClientInterface::class,
+            \Owlstack\Core\Http\HttpClientInterface::class,
             $client,
         );
     }

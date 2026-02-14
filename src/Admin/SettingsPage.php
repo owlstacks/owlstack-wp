@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Admin;
+namespace Owlstack\WordPress\Admin;
 
 /**
- * Registers the Synglify admin settings page and settings fields.
+ * Registers the Owlstack admin settings page and settings fields.
  */
 class SettingsPage
 {
@@ -20,21 +20,21 @@ class SettingsPage
     public function register(): void
     {
         add_menu_page(
-            page_title: __('Synglify', 'synglify-wp'),
-            menu_title: __('Synglify', 'synglify-wp'),
+            page_title: __('Owlstack', 'owlstack-wp'),
+            menu_title: __('Owlstack', 'owlstack-wp'),
             capability: 'manage_options',
-            menu_slug: 'synglify',
+            menu_slug: 'owlstack',
             callback: [$this, 'render'],
             icon_url: 'dashicons-share',
             position: 80,
         );
 
         add_submenu_page(
-            parent_slug: 'synglify',
-            page_title: __('Settings', 'synglify-wp'),
-            menu_title: __('Settings', 'synglify-wp'),
+            parent_slug: 'owlstack',
+            page_title: __('Settings', 'owlstack-wp'),
+            menu_title: __('Settings', 'owlstack-wp'),
             capability: 'manage_options',
-            menu_slug: 'synglify',
+            menu_slug: 'owlstack',
             callback: [$this, 'render'],
         );
     }
@@ -45,8 +45,8 @@ class SettingsPage
     public function registerSettings(): void
     {
         register_setting(
-            'synglify_settings_group',
-            'synglify_settings',
+            'owlstack_settings_group',
+            'owlstack_settings',
             [
                 'type'              => 'array',
                 'sanitize_callback' => [$this->optionsManager, 'sanitize'],
@@ -55,58 +55,58 @@ class SettingsPage
 
         // ── Telegram section ─────────────────────────────────────────────
         add_settings_section(
-            'synglify_telegram',
-            __('Telegram', 'synglify-wp'),
-            fn () => printf('<p>%s</p>', esc_html__('Configure your Telegram Bot API credentials.', 'synglify-wp')),
-            'synglify',
+            'owlstack_telegram',
+            __('Telegram', 'owlstack-wp'),
+            fn () => printf('<p>%s</p>', esc_html__('Configure your Telegram Bot API credentials.', 'owlstack-wp')),
+            'owlstack',
         );
 
-        $this->addField('telegram', 'api_token', __('Bot API Token', 'synglify-wp'), true);
-        $this->addField('telegram', 'bot_username', __('Bot Username', 'synglify-wp'));
-        $this->addField('telegram', 'channel_username', __('Channel Username', 'synglify-wp'));
-        $this->addField('telegram', 'channel_signature', __('Channel Signature', 'synglify-wp'));
-        $this->addSelectField('telegram', 'parse_mode', __('Parse Mode', 'synglify-wp'), ['HTML', 'Markdown', 'MarkdownV2']);
+        $this->addField('telegram', 'api_token', __('Bot API Token', 'owlstack-wp'), true);
+        $this->addField('telegram', 'bot_username', __('Bot Username', 'owlstack-wp'));
+        $this->addField('telegram', 'channel_username', __('Channel Username', 'owlstack-wp'));
+        $this->addField('telegram', 'channel_signature', __('Channel Signature', 'owlstack-wp'));
+        $this->addSelectField('telegram', 'parse_mode', __('Parse Mode', 'owlstack-wp'), ['HTML', 'Markdown', 'MarkdownV2']);
 
         // ── Twitter / X section ──────────────────────────────────────────
         add_settings_section(
-            'synglify_twitter',
-            __('Twitter / X', 'synglify-wp'),
-            fn () => printf('<p>%s</p>', esc_html__('Configure your Twitter (X) API credentials.', 'synglify-wp')),
-            'synglify',
+            'owlstack_twitter',
+            __('Twitter / X', 'owlstack-wp'),
+            fn () => printf('<p>%s</p>', esc_html__('Configure your Twitter (X) API credentials.', 'owlstack-wp')),
+            'owlstack',
         );
 
-        $this->addField('twitter', 'consumer_key', __('Consumer Key (API Key)', 'synglify-wp'), true);
-        $this->addField('twitter', 'consumer_secret', __('Consumer Secret', 'synglify-wp'), true);
-        $this->addField('twitter', 'access_token', __('Access Token', 'synglify-wp'), true);
-        $this->addField('twitter', 'access_token_secret', __('Access Token Secret', 'synglify-wp'), true);
+        $this->addField('twitter', 'consumer_key', __('Consumer Key (API Key)', 'owlstack-wp'), true);
+        $this->addField('twitter', 'consumer_secret', __('Consumer Secret', 'owlstack-wp'), true);
+        $this->addField('twitter', 'access_token', __('Access Token', 'owlstack-wp'), true);
+        $this->addField('twitter', 'access_token_secret', __('Access Token Secret', 'owlstack-wp'), true);
 
         // ── Facebook section ─────────────────────────────────────────────
         add_settings_section(
-            'synglify_facebook',
-            __('Facebook', 'synglify-wp'),
-            fn () => printf('<p>%s</p>', esc_html__('Configure your Facebook Page API credentials.', 'synglify-wp')),
-            'synglify',
+            'owlstack_facebook',
+            __('Facebook', 'owlstack-wp'),
+            fn () => printf('<p>%s</p>', esc_html__('Configure your Facebook Page API credentials.', 'owlstack-wp')),
+            'owlstack',
         );
 
-        $this->addField('facebook', 'app_id', __('App ID', 'synglify-wp'), true);
-        $this->addField('facebook', 'app_secret', __('App Secret', 'synglify-wp'), true);
-        $this->addField('facebook', 'page_access_token', __('Page Access Token', 'synglify-wp'), true);
-        $this->addField('facebook', 'page_id', __('Page ID', 'synglify-wp'), true);
-        $this->addField('facebook', 'default_graph_version', __('Graph API Version', 'synglify-wp'));
+        $this->addField('facebook', 'app_id', __('App ID', 'owlstack-wp'), true);
+        $this->addField('facebook', 'app_secret', __('App Secret', 'owlstack-wp'), true);
+        $this->addField('facebook', 'page_access_token', __('Page Access Token', 'owlstack-wp'), true);
+        $this->addField('facebook', 'page_id', __('Page ID', 'owlstack-wp'), true);
+        $this->addField('facebook', 'default_graph_version', __('Graph API Version', 'owlstack-wp'));
 
         // ── Proxy section ────────────────────────────────────────────────
         add_settings_section(
-            'synglify_proxy',
-            __('Proxy', 'synglify-wp'),
-            fn () => printf('<p>%s</p>', esc_html__('Configure a proxy for servers that cannot access social networks directly.', 'synglify-wp')),
-            'synglify',
+            'owlstack_proxy',
+            __('Proxy', 'owlstack-wp'),
+            fn () => printf('<p>%s</p>', esc_html__('Configure a proxy for servers that cannot access social networks directly.', 'owlstack-wp')),
+            'owlstack',
         );
 
-        $this->addProxyField('type', __('Proxy Type', 'synglify-wp'));
-        $this->addProxyField('hostname', __('Hostname', 'synglify-wp'));
-        $this->addProxyField('port', __('Port', 'synglify-wp'));
-        $this->addProxyField('username', __('Username', 'synglify-wp'));
-        $this->addProxyField('password', __('Password', 'synglify-wp'), true);
+        $this->addProxyField('type', __('Proxy Type', 'owlstack-wp'));
+        $this->addProxyField('hostname', __('Hostname', 'owlstack-wp'));
+        $this->addProxyField('port', __('Port', 'owlstack-wp'));
+        $this->addProxyField('username', __('Username', 'owlstack-wp'));
+        $this->addProxyField('password', __('Password', 'owlstack-wp'), true);
     }
 
     /**
@@ -125,8 +125,8 @@ class SettingsPage
 
     private function addField(string $platform, string $key, string $label, bool $isSecret = false): void
     {
-        $fieldId = "synglify_{$platform}_{$key}";
-        $section = "synglify_{$platform}";
+        $fieldId = "owlstack_{$platform}_{$key}";
+        $section = "owlstack_{$platform}";
 
         add_settings_field(
             $fieldId,
@@ -135,7 +135,7 @@ class SettingsPage
                 $value = $this->optionsManager->get("platforms.{$platform}.{$key}", '');
                 $type = $isSecret ? 'password' : 'text';
                 printf(
-                    '<input type="%s" id="%s" name="synglify_settings[platforms][%s][%s]" value="%s" class="regular-text" autocomplete="off" />',
+                    '<input type="%s" id="%s" name="owlstack_settings[platforms][%s][%s]" value="%s" class="regular-text" autocomplete="off" />',
                     esc_attr($type),
                     esc_attr($fieldId),
                     esc_attr($platform),
@@ -143,22 +143,22 @@ class SettingsPage
                     esc_attr((string) $value),
                 );
             },
-            'synglify',
+            'owlstack',
             $section,
         );
     }
 
     private function addSelectField(string $platform, string $key, string $label, array $options): void
     {
-        $fieldId = "synglify_{$platform}_{$key}";
-        $section = "synglify_{$platform}";
+        $fieldId = "owlstack_{$platform}_{$key}";
+        $section = "owlstack_{$platform}";
 
         add_settings_field(
             $fieldId,
             $label,
             function () use ($platform, $key, $fieldId, $options): void {
                 $value = $this->optionsManager->get("platforms.{$platform}.{$key}", '');
-                printf('<select id="%s" name="synglify_settings[platforms][%s][%s]">', esc_attr($fieldId), esc_attr($platform), esc_attr($key));
+                printf('<select id="%s" name="owlstack_settings[platforms][%s][%s]">', esc_attr($fieldId), esc_attr($platform), esc_attr($key));
                 foreach ($options as $option) {
                     printf(
                         '<option value="%s" %s>%s</option>',
@@ -169,14 +169,14 @@ class SettingsPage
                 }
                 echo '</select>';
             },
-            'synglify',
+            'owlstack',
             $section,
         );
     }
 
     private function addProxyField(string $key, string $label, bool $isSecret = false): void
     {
-        $fieldId = "synglify_proxy_{$key}";
+        $fieldId = "owlstack_proxy_{$key}";
 
         add_settings_field(
             $fieldId,
@@ -185,15 +185,15 @@ class SettingsPage
                 $value = $this->optionsManager->get("proxy.{$key}", '');
                 $type = $isSecret ? 'password' : 'text';
                 printf(
-                    '<input type="%s" id="%s" name="synglify_settings[proxy][%s]" value="%s" class="regular-text" autocomplete="off" />',
+                    '<input type="%s" id="%s" name="owlstack_settings[proxy][%s]" value="%s" class="regular-text" autocomplete="off" />',
                     esc_attr($type),
                     esc_attr($fieldId),
                     esc_attr($key),
                     esc_attr((string) $value),
                 );
             },
-            'synglify',
-            'synglify_proxy',
+            'owlstack',
+            'owlstack_proxy',
         );
     }
 }

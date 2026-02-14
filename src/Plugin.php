@@ -2,31 +2,31 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress;
+namespace Owlstack\WordPress;
 
-use Synglify\Core\Config\SynglifyConfig;
-use Synglify\Core\Events\Contracts\EventDispatcherInterface;
-use Synglify\Core\Formatting\CharacterTruncator;
-use Synglify\Core\Formatting\HashtagExtractor;
-use Synglify\Core\Http\Contracts\HttpClientInterface;
-use Synglify\Core\Platforms\Facebook\FacebookFormatter;
-use Synglify\Core\Platforms\Facebook\FacebookPlatform;
-use Synglify\Core\Platforms\PlatformRegistry;
-use Synglify\Core\Platforms\Telegram\TelegramFormatter;
-use Synglify\Core\Platforms\Telegram\TelegramPlatform;
-use Synglify\Core\Platforms\Twitter\TwitterFormatter;
-use Synglify\Core\Platforms\Twitter\TwitterPlatform;
-use Synglify\Core\Publishing\Publisher;
-use Synglify\WordPress\Admin\DeliveryLogsPage;
-use Synglify\WordPress\Admin\MetaBox;
-use Synglify\WordPress\Admin\OptionsManager;
-use Synglify\WordPress\Admin\SettingsPage;
-use Synglify\WordPress\Auth\WpTokenStore;
-use Synglify\WordPress\Events\WpEventDispatcher;
-use Synglify\WordPress\Http\WpHttpClient;
-use Synglify\WordPress\Publishing\PostPublisher;
-use Synglify\WordPress\Publishing\SendTo;
-use Synglify\WordPress\Rest\SynglifyRestController;
+use Owlstack\Core\Config\OwlstackConfig;
+use Owlstack\Core\Events\Contracts\EventDispatcherInterface;
+use Owlstack\Core\Formatting\CharacterTruncator;
+use Owlstack\Core\Formatting\HashtagExtractor;
+use Owlstack\Core\Http\Contracts\HttpClientInterface;
+use Owlstack\Core\Platforms\Facebook\FacebookFormatter;
+use Owlstack\Core\Platforms\Facebook\FacebookPlatform;
+use Owlstack\Core\Platforms\PlatformRegistry;
+use Owlstack\Core\Platforms\Telegram\TelegramFormatter;
+use Owlstack\Core\Platforms\Telegram\TelegramPlatform;
+use Owlstack\Core\Platforms\Twitter\TwitterFormatter;
+use Owlstack\Core\Platforms\Twitter\TwitterPlatform;
+use Owlstack\Core\Publishing\Publisher;
+use Owlstack\WordPress\Admin\DeliveryLogsPage;
+use Owlstack\WordPress\Admin\MetaBox;
+use Owlstack\WordPress\Admin\OptionsManager;
+use Owlstack\WordPress\Admin\SettingsPage;
+use Owlstack\WordPress\Auth\WpTokenStore;
+use Owlstack\WordPress\Events\WpEventDispatcher;
+use Owlstack\WordPress\Http\WpHttpClient;
+use Owlstack\WordPress\Publishing\PostPublisher;
+use Owlstack\WordPress\Publishing\SendTo;
+use Owlstack\WordPress\Rest\OwlstackRestController;
 
 /**
  * Main plugin class — wires all services and registers WordPress hooks.
@@ -35,7 +35,7 @@ class Plugin
 {
     private static ?self $instance = null;
 
-    private ?SynglifyConfig $config = null;
+    private ?OwlstackConfig $config = null;
     private ?HttpClientInterface $httpClient = null;
     private ?EventDispatcherInterface $eventDispatcher = null;
     private ?PlatformRegistry $registry = null;
@@ -91,7 +91,7 @@ class Plugin
 
     // ── Service accessors ────────────────────────────────────────────────
 
-    public function config(): SynglifyConfig
+    public function config(): OwlstackConfig
     {
         if ($this->config === null) {
             $this->buildServices();
@@ -241,44 +241,44 @@ class Plugin
      */
     public function registerRestRoutes(): void
     {
-        $controller = new SynglifyRestController($this);
+        $controller = new OwlstackRestController($this);
         $controller->registerRoutes();
     }
 
     /**
-     * Enqueue admin CSS and JS on Synglify admin pages.
+     * Enqueue admin CSS and JS on Owlstack admin pages.
      */
     public function enqueueAdminAssets(string $hook): void
     {
-        $synglifyPages = [
-            'toplevel_page_synglify',
-            'synglify_page_synglify-logs',
+        $owlstackPages = [
+            'toplevel_page_owlstack',
+            'owlstack_page_owlstack-logs',
         ];
 
         // Also load on post edit screens for the meta box.
         $postPages = ['post.php', 'post-new.php'];
 
-        if (! in_array($hook, array_merge($synglifyPages, $postPages), true)) {
+        if (! in_array($hook, array_merge($owlstackPages, $postPages), true)) {
             return;
         }
 
         wp_enqueue_style(
-            'synglify-admin',
-            SYNGLIFY_URL . 'assets/css/admin.css',
+            'owlstack-admin',
+            OWLSTACK_URL . 'assets/css/admin.css',
             [],
-            SYNGLIFY_VERSION,
+            OWLSTACK_VERSION,
         );
 
         wp_enqueue_script(
-            'synglify-admin',
-            SYNGLIFY_URL . 'assets/js/admin.js',
+            'owlstack-admin',
+            OWLSTACK_URL . 'assets/js/admin.js',
             [],
-            SYNGLIFY_VERSION,
+            OWLSTACK_VERSION,
             true,
         );
 
-        wp_localize_script('synglify-admin', 'synglifyAdmin', [
-            'restUrl' => rest_url('synglify/v1/'),
+        wp_localize_script('owlstack-admin', 'owlstackAdmin', [
+            'restUrl' => rest_url('owlstack/v1/'),
             'nonce'   => wp_create_nonce('wp_rest'),
         ]);
     }

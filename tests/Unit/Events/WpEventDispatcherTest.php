@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Tests\Unit\Events;
+namespace Owlstack\WordPress\Tests\Unit\Events;
 
-use Synglify\WordPress\Events\WpEventDispatcher;
-use Synglify\WordPress\Tests\TestCase;
+use Owlstack\WordPress\Events\WpEventDispatcher;
+use Owlstack\WordPress\Tests\TestCase;
 
 class WpEventDispatcherTest extends TestCase
 {
@@ -20,7 +20,7 @@ class WpEventDispatcherTest extends TestCase
     public function test_it_implements_event_dispatcher_interface(): void
     {
         $this->assertInstanceOf(
-            \Synglify\Core\Events\EventDispatcherInterface::class,
+            \Owlstack\Core\Events\EventDispatcherInterface::class,
             $this->dispatcher,
         );
     }

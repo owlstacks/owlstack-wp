@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Admin;
+namespace Owlstack\WordPress\Admin;
 
-use Synglify\WordPress\Database\DeliveryLog;
+use Owlstack\WordPress\Database\DeliveryLog;
 
 /**
  * Admin page for viewing delivery logs.
@@ -17,11 +17,11 @@ class DeliveryLogsPage
     public function register(): void
     {
         add_submenu_page(
-            parent_slug: 'synglify',
-            page_title: __('Delivery Logs', 'synglify-wp'),
-            menu_title: __('Delivery Logs', 'synglify-wp'),
+            parent_slug: 'owlstack',
+            page_title: __('Delivery Logs', 'owlstack-wp'),
+            menu_title: __('Delivery Logs', 'owlstack-wp'),
             capability: 'manage_options',
-            menu_slug: 'synglify-logs',
+            menu_slug: 'owlstack-logs',
             callback: [$this, 'render'],
         );
     }
@@ -36,7 +36,7 @@ class DeliveryLogsPage
         }
 
         // Handle bulk delete.
-        if (isset($_POST['synglify_bulk_action']) && $_POST['synglify_bulk_action'] === 'delete') {
+        if (isset($_POST['owlstack_bulk_action']) && $_POST['owlstack_bulk_action'] === 'delete') {
             $this->handleBulkDelete();
         }
 
@@ -66,8 +66,8 @@ class DeliveryLogsPage
     private function handleBulkDelete(): void
     {
         if (
-            ! isset($_POST['synglify_logs_nonce'])
-            || ! wp_verify_nonce($_POST['synglify_logs_nonce'], 'synglify_logs_bulk')
+            ! isset($_POST['owlstack_logs_nonce'])
+            || ! wp_verify_nonce($_POST['owlstack_logs_nonce'], 'owlstack_logs_bulk')
         ) {
             return;
         }
@@ -81,11 +81,11 @@ class DeliveryLogsPage
         }
 
         add_settings_error(
-            'synglify_logs',
+            'owlstack_logs',
             'bulk_deleted',
             sprintf(
                 /* translators: %d: number of deleted entries */
-                __('%d log entries deleted.', 'synglify-wp'),
+                __('%d log entries deleted.', 'owlstack-wp'),
                 count($ids),
             ),
             'success',
@@ -99,7 +99,7 @@ class DeliveryLogsPage
         if (
             $logId <= 0
             || ! isset($_GET['_wpnonce'])
-            || ! wp_verify_nonce($_GET['_wpnonce'], 'synglify_delete_log_' . $logId)
+            || ! wp_verify_nonce($_GET['_wpnonce'], 'owlstack_delete_log_' . $logId)
         ) {
             return;
         }
@@ -107,9 +107,9 @@ class DeliveryLogsPage
         DeliveryLog::delete($logId);
 
         add_settings_error(
-            'synglify_logs',
+            'owlstack_logs',
             'deleted',
-            __('Log entry deleted.', 'synglify-wp'),
+            __('Log entry deleted.', 'owlstack-wp'),
             'success',
         );
     }

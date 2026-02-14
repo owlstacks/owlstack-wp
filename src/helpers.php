@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-use Synglify\WordPress\Plugin;
-use Synglify\WordPress\Publishing\SendTo;
+use Owlstack\WordPress\Plugin;
+use Owlstack\WordPress\Publishing\SendTo;
 
-if (! function_exists('synglify')) {
+if (! function_exists('owlstack')) {
     /**
-     * Get the Synglify SendTo instance for publishing content.
+     * Get the Owlstack SendTo instance for publishing content.
      *
      * Usage:
-     *     synglify()->telegram('Hello!');
-     *     synglify()->twitter('Hello!');
-     *     synglify()->toAll($post);
+     *     owlstack()->telegram('Hello!');
+     *     owlstack()->twitter('Hello!');
+     *     owlstack()->toAll($post);
      */
-    function synglify(): SendTo
+    function owlstack(): SendTo
     {
         return Plugin::instance()->sendTo();
     }

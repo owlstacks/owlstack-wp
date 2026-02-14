@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Admin;
+namespace Owlstack\WordPress\Admin;
 
-use Synglify\WordPress\Plugin;
+use Owlstack\WordPress\Plugin;
 use WP_Post;
 
 /**
- * Registers the Synglify publish meta box on post edit screens.
+ * Registers the Owlstack publish meta box on post edit screens.
  */
 class MetaBox
 {
-    private const NONCE_ACTION = 'synglify_meta_box';
-    private const NONCE_FIELD = 'synglify_meta_box_nonce';
-    private const META_PLATFORMS = '_synglify_platforms';
-    private const META_AUTO_PUBLISH = '_synglify_auto_publish';
+    private const NONCE_ACTION = 'owlstack_meta_box';
+    private const NONCE_FIELD = 'owlstack_meta_box_nonce';
+    private const META_PLATFORMS = '_owlstack_platforms';
+    private const META_AUTO_PUBLISH = '_owlstack_auto_publish';
 
     /**
      * Register the meta box on supported post types.
@@ -23,12 +23,12 @@ class MetaBox
     public function register(): void
     {
         /** @var string[] $postTypes */
-        $postTypes = apply_filters('synglify_supported_post_types', ['post']);
+        $postTypes = apply_filters('owlstack_supported_post_types', ['post']);
 
         foreach ($postTypes as $postType) {
             add_meta_box(
-                id: 'synglify-publish',
-                title: __('Synglify — Publish to Social Media', 'synglify-wp'),
+                id: 'owlstack-publish',
+                title: __('Owlstack — Publish to Social Media', 'owlstack-wp'),
                 callback: [$this, 'render'],
                 screen: $postType,
                 context: 'side',
@@ -77,14 +77,14 @@ class MetaBox
         }
 
         // Save selected platforms.
-        $platforms = isset($_POST['synglify_platforms']) && is_array($_POST['synglify_platforms'])
-            ? array_map('sanitize_key', $_POST['synglify_platforms'])
+        $platforms = isset($_POST['owlstack_platforms']) && is_array($_POST['owlstack_platforms'])
+            ? array_map('sanitize_key', $_POST['owlstack_platforms'])
             : [];
 
         update_post_meta($postId, self::META_PLATFORMS, $platforms);
 
         // Save auto-publish toggle.
-        $autoPublish = isset($_POST['synglify_auto_publish']) ? '1' : '';
+        $autoPublish = isset($_POST['owlstack_auto_publish']) ? '1' : '';
         update_post_meta($postId, self::META_AUTO_PUBLISH, $autoPublish);
     }
 

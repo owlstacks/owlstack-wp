@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Admin;
+namespace Owlstack\WordPress\Admin;
 
-use Synglify\Core\Config\SynglifyConfig;
+use Owlstack\Core\Config\OwlstackConfig;
 
 /**
- * Manages Synglify plugin settings stored in wp_options.
+ * Manages Owlstack plugin settings stored in wp_options.
  *
- * Provides a bridge between WordPress options and SynglifyConfig.
+ * Provides a bridge between WordPress options and OwlstackConfig.
  */
 class OptionsManager
 {
-    private const OPTION_KEY = 'synglify_settings';
+    private const OPTION_KEY = 'owlstack_settings';
 
     /**
-     * Build a SynglifyConfig from stored WordPress options.
+     * Build a OwlstackConfig from stored WordPress options.
      */
-    public function buildConfig(): SynglifyConfig
+    public function buildConfig(): OwlstackConfig
     {
         $settings = $this->all();
         $platforms = $settings['platforms'] ?? [];
@@ -31,7 +31,7 @@ class OptionsManager
             }
         }
 
-        return new SynglifyConfig(
+        return new OwlstackConfig(
             platforms: $configured,
             options: [
                 'proxy' => $settings['proxy'] ?? [],

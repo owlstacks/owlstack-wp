@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Auth;
+namespace Owlstack\WordPress\Auth;
 
 use DateTimeImmutable;
-use Synglify\Core\Auth\AccessToken;
-use Synglify\Core\Auth\Contracts\TokenStoreInterface;
+use Owlstack\Core\Auth\AccessToken;
+use Owlstack\Core\Auth\Contracts\TokenStoreInterface;
 
 /**
  * WordPress wp_options-based token storage with encryption.
@@ -15,7 +15,7 @@ use Synglify\Core\Auth\Contracts\TokenStoreInterface;
  */
 class WpTokenStore implements TokenStoreInterface
 {
-    private const OPTION_PREFIX = 'synglify_token_';
+    private const OPTION_PREFIX = 'owlstack_token_';
 
     public function get(string $platform, string $accountId): ?AccessToken
     {

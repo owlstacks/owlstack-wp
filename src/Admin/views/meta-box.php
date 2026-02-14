@@ -11,29 +11,29 @@ if (! defined('ABSPATH')) {
 /** @var bool $autoPublish */
 /** @var WP_Post $post */
 
-wp_nonce_field('synglify_meta_box', 'synglify_meta_box_nonce');
+wp_nonce_field('owlstack_meta_box', 'owlstack_meta_box_nonce');
 ?>
 
-<div class="synglify-meta-box">
+<div class="owlstack-meta-box">
     <?php if (empty($configuredPlatforms)) : ?>
-        <p class="synglify-no-platforms">
+        <p class="owlstack-no-platforms">
             <?php
             printf(
                 /* translators: %s: link open tag, %s: link close tag */
-                esc_html__('No platforms configured. %1$sConfigure platforms%2$s in Synglify settings.', 'synglify-wp'),
-                '<a href="' . esc_url(admin_url('admin.php?page=synglify')) . '">',
+                esc_html__('No platforms configured. %1$sConfigure platforms%2$s in Owlstack settings.', 'owlstack-wp'),
+                '<a href="' . esc_url(admin_url('admin.php?page=owlstack')) . '">',
                 '</a>',
             );
             ?>
         </p>
     <?php else : ?>
-        <p class="synglify-meta-label"><strong><?php esc_html_e('Publish to:', 'synglify-wp'); ?></strong></p>
+        <p class="owlstack-meta-label"><strong><?php esc_html_e('Publish to:', 'owlstack-wp'); ?></strong></p>
 
         <?php foreach ($configuredPlatforms as $platform) : ?>
-            <label class="synglify-platform-checkbox">
+            <label class="owlstack-platform-checkbox">
                 <input
                     type="checkbox"
-                    name="synglify_platforms[]"
+                    name="owlstack_platforms[]"
                     value="<?php echo esc_attr($platform); ?>"
                     <?php checked(in_array($platform, $selectedPlatforms, true)); ?>
                 />
@@ -43,21 +43,21 @@ wp_nonce_field('synglify_meta_box', 'synglify_meta_box_nonce');
 
         <hr />
 
-        <label class="synglify-auto-publish">
+        <label class="owlstack-auto-publish">
             <input
                 type="checkbox"
-                name="synglify_auto_publish"
+                name="owlstack_auto_publish"
                 value="1"
                 <?php checked($autoPublish); ?>
             />
-            <?php esc_html_e('Auto-publish when post is published', 'synglify-wp'); ?>
+            <?php esc_html_e('Auto-publish when post is published', 'owlstack-wp'); ?>
         </label>
 
         <hr />
 
-        <button type="button" class="button synglify-publish-now-btn" data-post-id="<?php echo esc_attr((string) $post->ID); ?>">
-            <?php esc_html_e('Publish Now', 'synglify-wp'); ?>
+        <button type="button" class="button owlstack-publish-now-btn" data-post-id="<?php echo esc_attr((string) $post->ID); ?>">
+            <?php esc_html_e('Publish Now', 'owlstack-wp'); ?>
         </button>
-        <span class="synglify-publish-status"></span>
+        <span class="owlstack-publish-status"></span>
     <?php endif; ?>
 </div>

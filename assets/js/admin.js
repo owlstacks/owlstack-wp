@@ -1,7 +1,7 @@
 /**
- * Synglify WordPress Admin Scripts
+ * Owlstack WordPress Admin Scripts
  *
- * @package Synglify\WordPress
+ * @package Owlstack\WordPress
  */
 
 (function ($) {
@@ -11,23 +11,23 @@
      * Test Connection handler for the Settings page.
      */
     function initTestConnection() {
-        $('.synglify-test-connection-btn').on('click', function (e) {
+        $('.owlstack-test-connection-btn').on('click', function (e) {
             e.preventDefault();
 
             var $btn = $(this);
             var platform = $btn.data('platform');
             var $spinner = $btn.siblings('.spinner');
-            var $result = $btn.siblings('.synglify-test-result');
+            var $result = $btn.siblings('.owlstack-test-result');
 
             $btn.prop('disabled', true);
             $spinner.addClass('is-active');
             $result.remove();
 
             $.ajax({
-                url: synglifyAdmin.restUrl + 'synglify/v1/test-connection',
+                url: owlstackAdmin.restUrl + 'owlstack/v1/test-connection',
                 method: 'POST',
                 headers: {
-                    'X-WP-Nonce': synglifyAdmin.restNonce,
+                    'X-WP-Nonce': owlstackAdmin.restNonce,
                 },
                 data: JSON.stringify({ platform: platform }),
                 contentType: 'application/json',
@@ -36,7 +36,7 @@
                 .done(function (response) {
                     var cls = response.success ? 'success' : 'error';
                     $btn.after(
-                        '<span class="synglify-test-result ' +
+                        '<span class="owlstack-test-result ' +
                             cls +
                             '">' +
                             escapeHtml(response.message) +
@@ -47,10 +47,10 @@
                     var msg =
                         xhr.responseJSON && xhr.responseJSON.message
                             ? xhr.responseJSON.message
-                            : synglifyAdmin.i18n.connectionFailed;
+                            : owlstackAdmin.i18n.connectionFailed;
 
                     $btn.after(
-                        '<span class="synglify-test-result error">' +
+                        '<span class="owlstack-test-result error">' +
                             escapeHtml(msg) +
                             '</span>'
                     );
@@ -66,24 +66,24 @@
      * Publish Now handler for the Meta Box.
      */
     function initPublishNow() {
-        $('#synglify-publish-now').on('click', function (e) {
+        $('#owlstack-publish-now').on('click', function (e) {
             e.preventDefault();
 
             var $btn = $(this);
             var $spinner = $btn.siblings('.spinner');
-            var $resultContainer = $('#synglify-publish-result');
+            var $resultContainer = $('#owlstack-publish-result');
             var postId = $btn.data('post-id');
 
             // Gather selected platforms.
             var platforms = [];
-            $('input[name="synglify_platforms[]"]:checked').each(function () {
+            $('input[name="owlstack_platforms[]"]:checked').each(function () {
                 platforms.push($(this).val());
             });
 
             if (platforms.length === 0) {
                 $resultContainer
-                    .html(synglifyAdmin.i18n.noPlatformsSelected)
-                    .attr('class', 'synglify-publish-result error')
+                    .html(owlstackAdmin.i18n.noPlatformsSelected)
+                    .attr('class', 'owlstack-publish-result error')
                     .show();
                 return;
             }
@@ -93,10 +93,10 @@
             $resultContainer.hide();
 
             $.ajax({
-                url: synglifyAdmin.restUrl + 'synglify/v1/publish',
+                url: owlstackAdmin.restUrl + 'owlstack/v1/publish',
                 method: 'POST',
                 headers: {
-                    'X-WP-Nonce': synglifyAdmin.restNonce,
+                    'X-WP-Nonce': owlstackAdmin.restNonce,
                 },
                 data: JSON.stringify({
                     post_id: postId,
@@ -115,7 +115,7 @@
                                 ? ' (<a href="' +
                                   escapeHtml(result.external_url) +
                                   '" target="_blank">' +
-                                  synglifyAdmin.i18n.viewPost +
+                                  owlstackAdmin.i18n.viewPost +
                                   '</a>)'
                                 : '';
                             messages.push(
@@ -130,7 +130,7 @@
                                 '<strong>' +
                                     escapeHtml(platform) +
                                     '</strong>: ✗ ' +
-                                    escapeHtml(result.error || synglifyAdmin.i18n.unknownError)
+                                    escapeHtml(result.error || owlstackAdmin.i18n.unknownError)
                             );
                         }
                     });
@@ -143,18 +143,18 @@
 
                     $resultContainer
                         .html(messages.join('<br>'))
-                        .attr('class', 'synglify-publish-result ' + cls)
+                        .attr('class', 'owlstack-publish-result ' + cls)
                         .show();
                 })
                 .fail(function (xhr) {
                     var msg =
                         xhr.responseJSON && xhr.responseJSON.message
                             ? xhr.responseJSON.message
-                            : synglifyAdmin.i18n.publishFailed;
+                            : owlstackAdmin.i18n.publishFailed;
 
                     $resultContainer
                         .html(escapeHtml(msg))
-                        .attr('class', 'synglify-publish-result error')
+                        .attr('class', 'owlstack-publish-result error')
                         .show();
                 })
                 .always(function () {
@@ -190,7 +190,7 @@
      * Initialize on DOM ready.
      */
     $(function () {
-        if (typeof synglifyAdmin === 'undefined') {
+        if (typeof owlstackAdmin === 'undefined') {
             return;
         }
 

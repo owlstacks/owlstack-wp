@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Tests;
+namespace Owlstack\WordPress\Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 /**
- * Base test case for the Synglify WordPress plugin.
+ * Base test case for the Owlstack WordPress plugin.
  *
  * Provides common helpers and WP function stubs for unit tests
  * that run outside a full WordPress environment.

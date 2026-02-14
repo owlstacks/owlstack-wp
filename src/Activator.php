@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress;
+namespace Owlstack\WordPress;
 
-use Synglify\WordPress\Database\DeliveryLogTable;
+use Owlstack\WordPress\Database\DeliveryLogTable;
 
 /**
  * Handles plugin activation tasks.
@@ -36,7 +36,7 @@ class Activator
      */
     private static function setDefaultOptions(): void
     {
-        if (get_option('synglify_settings') === false) {
+        if (get_option('owlstack_settings') === false) {
             $defaults = [
                 'platforms' => [
                     'telegram' => [
@@ -69,11 +69,11 @@ class Activator
                 ],
             ];
 
-            add_option('synglify_settings', $defaults);
+            add_option('owlstack_settings', $defaults);
         }
 
-        if (get_option('synglify_db_version') === false) {
-            add_option('synglify_db_version', '1.0.0');
+        if (get_option('owlstack_db_version') === false) {
+            add_option('owlstack_db_version', '1.0.0');
         }
     }
 
@@ -88,8 +88,8 @@ class Activator
             return;
         }
 
-        $role->add_cap('manage_synglify');
-        $role->add_cap('synglify_publish');
-        $role->add_cap('synglify_view_logs');
+        $role->add_cap('manage_owlstack');
+        $role->add_cap('owlstack_publish');
+        $role->add_cap('owlstack_view_logs');
     }
 }

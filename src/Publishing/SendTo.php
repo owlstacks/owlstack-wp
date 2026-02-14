@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Publishing;
+namespace Owlstack\WordPress\Publishing;
 
-use Synglify\Core\Config\SynglifyConfig;
-use Synglify\Core\Content\Media;
-use Synglify\Core\Content\MediaCollection;
-use Synglify\Core\Content\Post;
-use Synglify\Core\Platforms\PlatformRegistry;
-use Synglify\Core\Platforms\Telegram\TelegramPlatform;
-use Synglify\Core\Publishing\Publisher;
-use Synglify\Core\Publishing\PublishResult;
-use Synglify\WordPress\Database\DeliveryLog;
+use Owlstack\Core\Config\OwlstackConfig;
+use Owlstack\Core\Content\Media;
+use Owlstack\Core\Content\MediaCollection;
+use Owlstack\Core\Content\Post;
+use Owlstack\Core\Platforms\PlatformRegistry;
+use Owlstack\Core\Platforms\Telegram\TelegramPlatform;
+use Owlstack\Core\Publishing\Publisher;
+use Owlstack\Core\Publishing\PublishResult;
+use Owlstack\WordPress\Database\DeliveryLog;
 
 /**
  * High-level WordPress API for publishing content to social media platforms.
  *
  * Usage:
- *     synglify()->telegram('Hello world!');
- *     synglify()->twitter('Hello world!');
- *     synglify()->toAll($post);
+ *     owlstack()->telegram('Hello world!');
+ *     owlstack()->twitter('Hello world!');
+ *     owlstack()->toAll($post);
  */
 class SendTo
 {
@@ -29,7 +29,7 @@ class SendTo
 
     public function __construct(
         private readonly Publisher $publisher,
-        private readonly SynglifyConfig $config,
+        private readonly OwlstackConfig $config,
         private readonly PlatformRegistry $registry,
     ) {
     }
@@ -262,7 +262,7 @@ class SendTo
         );
 
         /** @var Post $post */
-        $post = apply_filters('synglify_post_data', $post, $wpPost);
+        $post = apply_filters('owlstack_post_data', $post, $wpPost);
 
         return $post;
     }

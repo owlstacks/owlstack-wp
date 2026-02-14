@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Publishing;
+namespace Owlstack\WordPress\Publishing;
 
-use Synglify\WordPress\Admin\MetaBox;
-use Synglify\WordPress\Plugin;
+use Owlstack\WordPress\Admin\MetaBox;
+use Owlstack\WordPress\Plugin;
 
 /**
  * Handles automatic publishing when a WordPress post transitions to "publish" status.
@@ -23,7 +23,7 @@ class PostPublisher
         }
 
         // Only act on supported post types.
-        $supportedTypes = apply_filters('synglify_supported_post_types', ['post']);
+        $supportedTypes = apply_filters('owlstack_supported_post_types', ['post']);
         if (! in_array($post->post_type, $supportedTypes, true)) {
             return;
         }
@@ -42,23 +42,23 @@ class PostPublisher
         $corePost = $sendTo->buildPostFromWpPost($post);
 
         /** @var array $options */
-        $options = apply_filters('synglify_publish_options', [], $post);
+        $options = apply_filters('owlstack_publish_options', [], $post);
 
-        do_action('synglify_before_publish', $corePost, $platforms, $post);
+        do_action('owlstack_before_publish', $corePost, $platforms, $post);
 
         $results = [];
         foreach ($platforms as $platform) {
             $results[$platform] = $sendTo->publish($corePost, $platform, $options, $post->ID);
         }
 
-        do_action('synglify_after_publish', $results, $post);
+        do_action('owlstack_after_publish', $results, $post);
 
         // Fire per-result actions.
         foreach ($results as $platform => $result) {
             if ($result->isSuccess()) {
-                do_action('synglify_post_published', $result, $post, $platform);
+                do_action('owlstack_post_published', $result, $post, $platform);
             } else {
-                do_action('synglify_post_failed', $result, $post, $platform);
+                do_action('owlstack_post_failed', $result, $post, $platform);
             }
         }
     }

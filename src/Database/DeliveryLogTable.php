@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Synglify\WordPress\Database;
+namespace Owlstack\WordPress\Database;
 
 /**
  * Manages the delivery log database table creation and schema.
  */
 class DeliveryLogTable
 {
-    public const TABLE_NAME = 'synglify_delivery_logs';
+    public const TABLE_NAME = 'owlstack_delivery_logs';
 
     /**
      * Create the delivery logs table using dbDelta().

@@ -1,11 +1,11 @@
 {
-    "name": "synglify/synglify-wordpress",
-    "description": "WordPress plugin for Synglify — publish content to Telegram, X (Twitter), and Facebook from your WordPress site.",
+    "name": "owlstack/owlstack-wordpress",
+    "description": "WordPress plugin for Owlstack — publish content to Telegram, X (Twitter), and Facebook from your WordPress site.",
     "type": "wordpress-plugin",
     "license": "MIT",
     "keywords": [
         "wordpress",
-        "synglify",
+        "owlstack",
         "social-media",
         "telegram",
         "twitter",
@@ -24,14 +24,14 @@
     ],
     "require": {
         "php": "^8.1",
-        "synglify/synglify-core": "@dev"
+        "owlstack/owlstack-core": "@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0|^11.0"
     },
     "autoload": {
         "psr-4": {
-            "Synglify\\WordPress\\": "src/"
+            "Owlstack\\WordPress\\": "src/"
         },
         "files": [
             "src/helpers.php"
@@ -39,13 +39,13 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Synglify\\WordPress\\Tests\\": "tests/"
+            "Owlstack\\WordPress\\Tests\\": "tests/"
         }
     },
     "repositories": [
         {
             "type": "path",
-            "url": "../synglify-core",
+            "url": "../owlstack-core",
             "options": {
                 "symlink": true
             }

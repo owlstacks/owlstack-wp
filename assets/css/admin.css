@@ -1,57 +1,57 @@
 /**
- * Synglify WordPress Admin Styles
+ * Owlstack WordPress Admin Styles
  *
- * @package Synglify\WordPress
+ * @package Owlstack\WordPress
  */
 
 /* ── Settings Page ────────────────────────────────────────────────────── */
 
-.synglify-settings-wrap {
+.owlstack-settings-wrap {
     max-width: 900px;
 }
 
-.synglify-settings-wrap .form-table th {
+.owlstack-settings-wrap .form-table th {
     width: 200px;
     padding: 15px 10px 15px 0;
 }
 
-.synglify-settings-wrap .form-table td {
+.owlstack-settings-wrap .form-table td {
     padding: 10px 10px;
 }
 
-.synglify-settings-wrap .form-table input[type="text"],
-.synglify-settings-wrap .form-table input[type="password"],
-.synglify-settings-wrap .form-table input[type="url"],
-.synglify-settings-wrap .form-table input[type="number"],
-.synglify-settings-wrap .form-table select {
+.owlstack-settings-wrap .form-table input[type="text"],
+.owlstack-settings-wrap .form-table input[type="password"],
+.owlstack-settings-wrap .form-table input[type="url"],
+.owlstack-settings-wrap .form-table input[type="number"],
+.owlstack-settings-wrap .form-table select {
     width: 100%;
     max-width: 400px;
 }
 
-.synglify-settings-wrap h2 {
+.owlstack-settings-wrap h2 {
     margin-top: 2em;
     padding-bottom: 0.5em;
     border-bottom: 1px solid #c3c4c7;
 }
 
-.synglify-settings-wrap h2:first-of-type {
+.owlstack-settings-wrap h2:first-of-type {
     margin-top: 0;
 }
 
 /* Test connection buttons */
-.synglify-test-connection {
+.owlstack-test-connection {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     margin-top: 10px;
 }
 
-.synglify-test-connection .spinner {
+.owlstack-test-connection .spinner {
     float: none;
     margin: 0;
 }
 
-.synglify-test-result {
+.owlstack-test-result {
     display: inline-block;
     padding: 4px 10px;
     border-radius: 3px;
@@ -59,13 +59,13 @@
     margin-left: 8px;
 }
 
-.synglify-test-result.success {
+.owlstack-test-result.success {
     background: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
 }
 
-.synglify-test-result.error {
+.owlstack-test-result.error {
     background: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
@@ -73,91 +73,91 @@
 
 /* ── Meta Box ─────────────────────────────────────────────────────────── */
 
-.synglify-meta-box {
+.owlstack-meta-box {
     padding: 6px 0;
 }
 
-.synglify-platform-list {
+.owlstack-platform-list {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.synglify-platform-list li {
+.owlstack-platform-list li {
     padding: 6px 0;
     border-bottom: 1px solid #f0f0f1;
 }
 
-.synglify-platform-list li:last-child {
+.owlstack-platform-list li:last-child {
     border-bottom: none;
 }
 
-.synglify-platform-list label {
+.owlstack-platform-list label {
     display: flex;
     align-items: center;
     gap: 6px;
     cursor: pointer;
 }
 
-.synglify-platform-list input[type="checkbox"] {
+.owlstack-platform-list input[type="checkbox"] {
     margin: 0;
 }
 
-.synglify-auto-publish {
+.owlstack-auto-publish {
     margin-top: 12px;
     padding-top: 12px;
     border-top: 1px solid #c3c4c7;
 }
 
-.synglify-auto-publish label {
+.owlstack-auto-publish label {
     display: flex;
     align-items: center;
     gap: 6px;
     font-weight: 600;
 }
 
-.synglify-publish-now-wrap {
+.owlstack-publish-now-wrap {
     margin-top: 12px;
     padding-top: 12px;
     border-top: 1px solid #c3c4c7;
     text-align: right;
 }
 
-.synglify-publish-now-wrap .spinner {
+.owlstack-publish-now-wrap .spinner {
     float: none;
     margin: 0 4px 0 0;
     vertical-align: middle;
 }
 
-.synglify-publish-result {
+.owlstack-publish-result {
     margin-top: 8px;
     padding: 8px 12px;
     border-radius: 3px;
     font-size: 13px;
 }
 
-.synglify-publish-result.success {
+.owlstack-publish-result.success {
     background: #d4edda;
     color: #155724;
 }
 
-.synglify-publish-result.error {
+.owlstack-publish-result.error {
     background: #f8d7da;
     color: #721c24;
 }
 
-.synglify-publish-result.partial {
+.owlstack-publish-result.partial {
     background: #fff3cd;
     color: #856404;
 }
 
 /* ── Delivery Logs Page ───────────────────────────────────────────────── */
 
-.synglify-logs-wrap .tablenav {
+.owlstack-logs-wrap .tablenav {
     margin: 6px 0;
 }
 
-.synglify-logs-filter {
+.owlstack-logs-filter {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -169,13 +169,13 @@
     border-radius: 3px;
 }
 
-.synglify-logs-filter select,
-.synglify-logs-filter input[type="number"] {
+.owlstack-logs-filter select,
+.owlstack-logs-filter input[type="number"] {
     max-width: 180px;
 }
 
 /* Status badges */
-.synglify-badge {
+.owlstack-badge {
     display: inline-block;
     padding: 2px 8px;
     border-radius: 3px;
@@ -185,46 +185,46 @@
     text-transform: capitalize;
 }
 
-.synglify-badge--success,
-.synglify-badge--delivered {
+.owlstack-badge--success,
+.owlstack-badge--delivered {
     background: #d4edda;
     color: #155724;
 }
 
-.synglify-badge--failed,
-.synglify-badge--error {
+.owlstack-badge--failed,
+.owlstack-badge--error {
     background: #f8d7da;
     color: #721c24;
 }
 
-.synglify-badge--pending {
+.owlstack-badge--pending {
     background: #fff3cd;
     color: #856404;
 }
 
-.synglify-badge--queued {
+.owlstack-badge--queued {
     background: #d1ecf1;
     color: #0c5460;
 }
 
 /* Platform badges */
-.synglify-badge--telegram {
+.owlstack-badge--telegram {
     background: #e3f2fd;
     color: #0277bd;
 }
 
-.synglify-badge--twitter {
+.owlstack-badge--twitter {
     background: #e8f5e9;
     color: #2e7d32;
 }
 
-.synglify-badge--facebook {
+.owlstack-badge--facebook {
     background: #e8eaf6;
     color: #283593;
 }
 
 /* Log details */
-.synglify-log-error {
+.owlstack-log-error {
     color: #721c24;
     font-style: italic;
     max-width: 300px;
@@ -233,28 +233,28 @@
     white-space: nowrap;
 }
 
-.synglify-log-external-link {
+.owlstack-log-external-link {
     word-break: break-all;
 }
 
 /* ── Responsive ───────────────────────────────────────────────────────── */
 
 @media screen and (max-width: 782px) {
-    .synglify-settings-wrap .form-table input[type="text"],
-    .synglify-settings-wrap .form-table input[type="password"],
-    .synglify-settings-wrap .form-table input[type="url"],
-    .synglify-settings-wrap .form-table input[type="number"],
-    .synglify-settings-wrap .form-table select {
+    .owlstack-settings-wrap .form-table input[type="text"],
+    .owlstack-settings-wrap .form-table input[type="password"],
+    .owlstack-settings-wrap .form-table input[type="url"],
+    .owlstack-settings-wrap .form-table input[type="number"],
+    .owlstack-settings-wrap .form-table select {
         max-width: 100%;
     }
 
-    .synglify-logs-filter {
+    .owlstack-logs-filter {
         flex-direction: column;
         align-items: stretch;
     }
 
-    .synglify-logs-filter select,
-    .synglify-logs-filter input[type="number"] {
+    .owlstack-logs-filter select,
+    .owlstack-logs-filter input[type="number"] {
         max-width: 100%;
     }
 }
