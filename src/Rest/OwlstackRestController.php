@@ -168,10 +168,10 @@ class OwlstackRestController
         foreach ($platforms as $platform) {
             $result = $sendTo->publish($post, $platform, $options, $postId);
             $results[$platform] = [
-                'success'      => $result->isSuccess(),
-                'external_id'  => $result->externalId(),
-                'external_url' => $result->externalUrl(),
-                'error'        => $result->error(),
+                'success'      => $result->success,
+                'external_id'  => $result->externalId,
+                'external_url' => $result->externalUrl,
+                'error'        => $result->error,
             ];
         }
 
@@ -197,7 +197,10 @@ class OwlstackRestController
         $page = (int) $request->get_param('page');
         $perPage = (int) $request->get_param('per_page');
 
-        $result = DeliveryLog::query($filters, $page, $perPage);
+        $result = DeliveryLog::query(array_merge($filters, [
+            'page'     => $page,
+            'per_page' => $perPage,
+        ]));
 
         return new \WP_REST_Response([
             'items'    => $result['items'],
@@ -253,21 +256,14 @@ class OwlstackRestController
     private static function testTelegram(object $platform): array
     {
         try {
-            // getMe is a lightweight Telegram Bot API call.
-            if (method_exists($platform, 'getMe')) {
-                $response = $platform->getMe();
-
+            if ($platform->validateCredentials()) {
                 return [
                     'success' => true,
-                    'message' => sprintf(
-                        /* translators: %s: bot username */
-                        __('Connected as @%s', 'owlstack-wp'),
-                        $response['result']['username'] ?? 'unknown',
-                    ),
+                    'message' => __('Telegram connection successful.', 'owlstack-wp'),
                 ];
             }
 
-            return ['success' => true, 'message' => __('Platform is configured.', 'owlstack-wp')];
+            return ['success' => false, 'message' => __('Failed to validate Telegram credentials.', 'owlstack-wp')];
         } catch (\Throwable $e) {
             return ['success' => false, 'message' => $e->getMessage()];
         }
@@ -276,20 +272,14 @@ class OwlstackRestController
     private static function testTwitter(object $platform): array
     {
         try {
-            if (method_exists($platform, 'verifyCredentials')) {
-                $response = $platform->verifyCredentials();
-
+            if ($platform->validateCredentials()) {
                 return [
                     'success' => true,
-                    'message' => sprintf(
-                        /* translators: %s: twitter handle */
-                        __('Connected as @%s', 'owlstack-wp'),
-                        $response['screen_name'] ?? $response['username'] ?? 'unknown',
-                    ),
+                    'message' => __('Twitter / X connection successful.', 'owlstack-wp'),
                 ];
             }
 
-            return ['success' => true, 'message' => __('Platform is configured.', 'owlstack-wp')];
+            return ['success' => false, 'message' => __('Failed to validate Twitter credentials.', 'owlstack-wp')];
         } catch (\Throwable $e) {
             return ['success' => false, 'message' => $e->getMessage()];
         }
@@ -298,20 +288,14 @@ class OwlstackRestController
     private static function testFacebook(object $platform): array
     {
         try {
-            if (method_exists($platform, 'getPage')) {
-                $response = $platform->getPage();
-
+            if ($platform->validateCredentials()) {
                 return [
                     'success' => true,
-                    'message' => sprintf(
-                        /* translators: %s: page name */
-                        __('Connected to %s', 'owlstack-wp'),
-                        $response['name'] ?? 'unknown',
-                    ),
+                    'message' => __('Facebook connection successful.', 'owlstack-wp'),
                 ];
             }
 
-            return ['success' => true, 'message' => __('Platform is configured.', 'owlstack-wp')];
+            return ['success' => false, 'message' => __('Failed to validate Facebook credentials.', 'owlstack-wp')];
         } catch (\Throwable $e) {
             return ['success' => false, 'message' => $e->getMessage()];
         }
