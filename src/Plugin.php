@@ -82,11 +82,14 @@ class Plugin
             $this->registerAdminHooks();
         }
 
+        // Load translations.
+        add_action('init', [$this, 'loadTextDomain']);
+
         // REST API.
-        add_action('rest_api_init', [$this, 'registerRestRoutes']);
+        add_action('rest_api_init', [OwlstackRestController::class, 'register']);
 
         // Post publishing hook.
-        add_action('transition_post_status', [$this->postPublisher(), 'onTransitionPostStatus'], 10, 3);
+        add_action('transition_post_status', [PostPublisher::class, 'handle'], 10, 3);
     }
 
     // ── Service accessors ────────────────────────────────────────────────
@@ -237,12 +240,15 @@ class Plugin
     }
 
     /**
-     * Register REST API routes.
+     * Load the plugin text domain for translations.
      */
-    public function registerRestRoutes(): void
+    public function loadTextDomain(): void
     {
-        $controller = new OwlstackRestController($this);
-        $controller->registerRoutes();
+        load_plugin_textdomain(
+            'owlstack-wp',
+            false,
+            dirname(OWLSTACK_BASENAME) . '/languages',
+        );
     }
 
     /**
@@ -281,11 +287,6 @@ class Plugin
             'restUrl' => rest_url('owlstack/v1/'),
             'nonce'   => wp_create_nonce('wp_rest'),
         ]);
-    }
-
-    private function postPublisher(): PostPublisher
-    {
-        return new PostPublisher($this->sendTo());
     }
 
     /**
