@@ -20,15 +20,19 @@ class WpEventDispatcherTest extends TestCase
     public function test_it_implements_event_dispatcher_interface(): void
     {
         $this->assertInstanceOf(
-            \Owlstack\Core\Events\EventDispatcherInterface::class,
+            \Owlstack\Core\Events\Contracts\EventDispatcherInterface::class,
             $this->dispatcher,
         );
     }
 
     public function test_dispatch_does_not_throw(): void
     {
+        $event = new class {
+            public string $name = 'TestEvent';
+        };
+
         // With stubs, dispatch should execute without errors.
-        $this->dispatcher->dispatch('test_event', ['key' => 'value']);
+        $this->dispatcher->dispatch($event);
 
         $this->assertTrue(true); // No exception thrown.
     }

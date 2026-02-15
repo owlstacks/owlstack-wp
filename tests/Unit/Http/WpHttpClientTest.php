@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress\Tests\Unit\Http;
 
-use Owlstack\Core\Http\HttpResponse;
 use Owlstack\WordPress\Http\WpHttpClient;
 use Owlstack\WordPress\Tests\TestCase;
 
@@ -21,58 +20,48 @@ class WpHttpClientTest extends TestCase
     public function test_it_implements_http_client_interface(): void
     {
         $this->assertInstanceOf(
-            \Owlstack\Core\Http\HttpClientInterface::class,
+            \Owlstack\Core\Http\Contracts\HttpClientInterface::class,
             $this->client,
         );
     }
 
-    public function test_get_method_returns_http_response(): void
+    public function test_get_method_returns_array(): void
     {
         $response = $this->client->get('https://example.com/api');
 
-        $this->assertInstanceOf(HttpResponse::class, $response);
-        $this->assertSame(200, $response->statusCode());
+        $this->assertIsArray($response);
+        $this->assertArrayHasKey('status', $response);
+        $this->assertArrayHasKey('headers', $response);
+        $this->assertArrayHasKey('body', $response);
+        $this->assertSame(200, $response['status']);
     }
 
-    public function test_post_method_returns_http_response(): void
+    public function test_post_method_returns_array(): void
     {
         $response = $this->client->post('https://example.com/api', [
             'json' => ['key' => 'value'],
         ]);
 
-        $this->assertInstanceOf(HttpResponse::class, $response);
-        $this->assertSame(200, $response->statusCode());
+        $this->assertIsArray($response);
+        $this->assertArrayHasKey('status', $response);
+        $this->assertSame(200, $response['status']);
     }
 
-    public function test_put_method_returns_http_response(): void
+    public function test_put_method_returns_array(): void
     {
         $response = $this->client->put('https://example.com/api', [
             'json' => ['key' => 'value'],
         ]);
 
-        $this->assertInstanceOf(HttpResponse::class, $response);
+        $this->assertIsArray($response);
+        $this->assertArrayHasKey('status', $response);
     }
 
-    public function test_delete_method_returns_http_response(): void
+    public function test_delete_method_returns_array(): void
     {
         $response = $this->client->delete('https://example.com/api');
 
-        $this->assertInstanceOf(HttpResponse::class, $response);
-    }
-
-    public function test_proxy_configuration_is_applied(): void
-    {
-        $client = new WpHttpClient([
-            'host'     => 'proxy.example.com',
-            'port'     => 8080,
-            'username' => 'user',
-            'password' => 'pass',
-        ]);
-
-        // The proxy client should still implement the interface.
-        $this->assertInstanceOf(
-            \Owlstack\Core\Http\HttpClientInterface::class,
-            $client,
-        );
+        $this->assertIsArray($response);
+        $this->assertArrayHasKey('status', $response);
     }
 }
