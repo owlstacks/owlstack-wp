@@ -12,6 +12,8 @@ if (! defined('ABSPATH')) {
 /** @var WP_Post $post */
 
 wp_nonce_field('owlstack_meta_box', 'owlstack_meta_box_nonce');
+
+$platformLabels = \Owlstack\WordPress\Admin\SettingsPage::platforms();
 ?>
 
 <div class="owlstack-meta-box">
@@ -29,17 +31,40 @@ wp_nonce_field('owlstack_meta_box', 'owlstack_meta_box_nonce');
     <?php else : ?>
         <p class="owlstack-meta-label"><strong><?php esc_html_e('Publish to:', 'owlstack-wp'); ?></strong></p>
 
-        <?php foreach ($configuredPlatforms as $platform) : ?>
-            <label class="owlstack-platform-checkbox">
-                <input
-                    type="checkbox"
-                    name="owlstack_platforms[]"
-                    value="<?php echo esc_attr($platform); ?>"
-                    <?php checked(in_array($platform, $selectedPlatforms, true)); ?>
-                />
-                <?php echo esc_html(ucfirst($platform === 'twitter' ? 'X (Twitter)' : $platform)); ?>
-            </label><br />
-        <?php endforeach; ?>
+        <table class="owlstack-platform-list">
+            <tbody>
+            <?php foreach ($configuredPlatforms as $platform) :
+                $label = $platformLabels[$platform]['label'] ?? ucfirst($platform);
+            ?>
+                <tr class="owlstack-platform-row" data-platform="<?php echo esc_attr($platform); ?>">
+                    <td class="owlstack-platform-checkbox-col">
+                        <input
+                            type="checkbox"
+                            name="owlstack_platforms[]"
+                            value="<?php echo esc_attr($platform); ?>"
+                            <?php checked(in_array($platform, $selectedPlatforms, true)); ?>
+                        />
+                    </td>
+                    <td class="owlstack-platform-name-col">
+                        <span class="owlstack-badge owlstack-badge--<?php echo esc_attr($platform); ?>"><?php echo esc_html($label); ?></span>
+                    </td>
+                    <td class="owlstack-platform-action-col">
+                        <button type="button"
+                                class="button button-small owlstack-publish-single-btn"
+                                data-post-id="<?php echo esc_attr((string) $post->ID); ?>"
+                                data-platform="<?php echo esc_attr($platform); ?>"
+                                title="<?php echo esc_attr(sprintf(__('Publish to %s', 'owlstack-wp'), $label)); ?>">
+                            <?php esc_html_e('Publish', 'owlstack-wp'); ?>
+                        </button>
+                        <span class="spinner"></span>
+                    </td>
+                    <td class="owlstack-platform-status-col">
+                        <span class="owlstack-platform-result"></span>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
 
         <hr />
 
@@ -55,9 +80,10 @@ wp_nonce_field('owlstack_meta_box', 'owlstack_meta_box_nonce');
 
         <hr />
 
-        <button type="button" class="button owlstack-publish-now-btn" data-post-id="<?php echo esc_attr((string) $post->ID); ?>">
-            <?php esc_html_e('Publish Now', 'owlstack-wp'); ?>
+        <button type="button" class="button button-primary owlstack-publish-all-btn" data-post-id="<?php echo esc_attr((string) $post->ID); ?>">
+            <?php esc_html_e('Publish All Selected', 'owlstack-wp'); ?>
         </button>
-        <span class="owlstack-publish-status"></span>
+        <span class="spinner owlstack-publish-all-spinner"></span>
+        <div class="owlstack-publish-status"></div>
     <?php endif; ?>
 </div>
