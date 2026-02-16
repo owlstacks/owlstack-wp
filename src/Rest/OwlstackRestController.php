@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress\Rest;
 
+use Owlstack\Core\Content\Post;
 use Owlstack\WordPress\Admin\MetaBox;
 use Owlstack\WordPress\Database\DeliveryLog;
 use Owlstack\WordPress\Plugin;
@@ -13,6 +14,7 @@ use Owlstack\WordPress\Plugin;
  *
  * Registers routes under the `owlstack/v1` namespace:
  *   POST   /owlstack/v1/test-connection
+ *   POST   /owlstack/v1/test-message
  *   POST   /owlstack/v1/publish
  *   GET    /owlstack/v1/delivery-logs
  *   DELETE /owlstack/v1/delivery-logs/(?P<id>\d+)
@@ -39,6 +41,30 @@ class OwlstackRestController
                         'linkedin', 'discord', 'pinterest', 'reddit',
                         'slack', 'tumblr', 'whatsapp',
                     ],
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+            ],
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/test-message', [
+            'methods'             => \WP_REST_Server::CREATABLE,
+            'callback'            => [self::class, 'testMessage'],
+            'permission_callback' => [self::class, 'canManage'],
+            'args'                => [
+                'platform' => [
+                    'required'          => true,
+                    'type'              => 'string',
+                    'enum'              => [
+                        'telegram', 'twitter', 'facebook', 'instagram',
+                        'linkedin', 'discord', 'pinterest', 'reddit',
+                        'slack', 'tumblr', 'whatsapp',
+                    ],
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+                'type' => [
+                    'required'          => true,
+                    'type'              => 'string',
+                    'enum'              => ['text'],
                     'sanitize_callback' => 'sanitize_text_field',
                 ],
             ],
@@ -129,6 +155,88 @@ class OwlstackRestController
             return new \WP_REST_Response([
                 'success' => false,
                 'message' => __('An internal error occurred while testing the connection.', 'owlstack-wp'),
+            ], 500);
+        }
+    }
+
+    /**
+     * Send a test message to a platform.
+     */
+    public static function testMessage(\WP_REST_Request $request): \WP_REST_Response
+    {
+        $platform = $request->get_param('platform');
+        $label    = self::PLATFORM_LABELS[$platform] ?? ucfirst($platform);
+
+        try {
+            $plugin   = Plugin::instance();
+            $registry = $plugin->registry();
+
+            if (! $registry->has($platform)) {
+                return new \WP_REST_Response([
+                    'success' => false,
+                    'message' => sprintf(
+                        /* translators: %s: platform name */
+                        __('Platform "%s" is not configured. Save your credentials first.', 'owlstack-wp'),
+                        $label,
+                    ),
+                ], 400);
+            }
+
+            $siteTitle = get_bloginfo('name') ?: 'WordPress';
+            $siteUrl   = home_url();
+            $timestamp = wp_date('Y-m-d H:i:s');
+
+            $post = new Post(
+                title: sprintf('Owlstack Test — %s', $siteTitle),
+                body: sprintf(
+                    "This is a test message from Owlstack on %s.\n\nSite: %s\nPlatform: %s\nTime: %s\n\nIf you see this message, your %s integration is working correctly! 🎉",
+                    $siteTitle,
+                    $siteUrl,
+                    $label,
+                    $timestamp,
+                    $label,
+                ),
+                url: $siteUrl,
+                tags: ['owlstack', 'test'],
+            );
+
+            $publisher = $plugin->publisher();
+            $result    = $publisher->publish($post, $platform);
+
+            if ($result->success) {
+                return new \WP_REST_Response([
+                    'success'      => true,
+                    'message'      => sprintf(
+                        /* translators: %s: platform name */
+                        __('Test message sent to %s successfully!', 'owlstack-wp'),
+                        $label,
+                    ),
+                    'external_id'  => $result->externalId,
+                    'external_url' => $result->externalUrl,
+                ]);
+            }
+
+            return new \WP_REST_Response([
+                'success' => false,
+                'message' => sprintf(
+                    /* translators: 1: platform name, 2: error message */
+                    __('Failed to send test message to %1$s: %2$s', 'owlstack-wp'),
+                    $label,
+                    $result->error ?? __('Unknown error.', 'owlstack-wp'),
+                ),
+            ], 422);
+        } catch (\Throwable $e) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log("[Owlstack] Test message error ({$platform}): " . $e->getMessage());
+            }
+
+            return new \WP_REST_Response([
+                'success' => false,
+                'message' => sprintf(
+                    /* translators: %s: platform name */
+                    __('An error occurred while sending the test message to %s.', 'owlstack-wp'),
+                    $label,
+                ),
             ], 500);
         }
     }
