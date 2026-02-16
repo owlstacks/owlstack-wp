@@ -8,16 +8,13 @@ Integrates `owlstack/owlstack-core` into WordPress sites — admin settings, pos
 
 - PHP 8.1+
 - WordPress 6.4+
-- Composer
 
 ## Installation
 
-```bash
-cd wp-content/plugins/owlstack-wordpress
-composer install
-```
-
-Activate the plugin from WP Admin → Plugins.
+1. Download the plugin zip or clone this repository into `wp-content/plugins/owlstack-wp`.
+2. For development, run `composer install` in the plugin directory.
+3. Activate the plugin from WP Admin → Plugins.
+4. Go to **Owlstack > Settings** to configure your platform credentials.
 
 ## Features
 
@@ -77,4 +74,4 @@ Enable via the Owlstack meta box in the post editor. Select platforms and the po
 
 ## License
 
-MIT
+GPL-2.0-or-later

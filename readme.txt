@@ -47,10 +47,9 @@ Owlstack provides a simple PHP API for publishing from themes or other plugins:
 
 == Installation ==
 
-1. Upload the `owlstack-wp` folder to the `/wp-content/plugins/` directory.
-2. Navigate to the plugin directory and run `composer install` to install dependencies.
-3. Activate the plugin through the 'Plugins' menu in WordPress.
-4. Go to **Owlstack > Settings** to configure your platform credentials.
+1. Upload the `owlstack-wp` folder to the `/wp-content/plugins/` directory, or install directly through the WordPress plugins screen.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
+3. Go to **Owlstack > Settings** to configure your platform credentials.
 
 == Frequently Asked Questions ==
 
@@ -60,7 +59,7 @@ Currently Telegram, X (Twitter), and Facebook are supported. More platforms will
 
 = Does this plugin require Composer? =
 
-Yes. The plugin uses Composer to manage its dependencies, including the `owlstack/owlstack-core` package. Run `composer install` in the plugin directory after installation.
+No. All dependencies are bundled with the plugin. Simply install and activate it from your WordPress admin panel.
 
 = How do I get API credentials for each platform? =
 
