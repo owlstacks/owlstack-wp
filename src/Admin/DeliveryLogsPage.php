@@ -36,23 +36,29 @@ class DeliveryLogsPage
         }
 
         // Handle bulk delete.
-        if (isset($_POST['owlstack_bulk_action']) && $_POST['owlstack_bulk_action'] === 'delete') {
+        if (
+            isset($_POST['owlstack_bulk_action'])
+            && sanitize_text_field(wp_unslash($_POST['owlstack_bulk_action'])) === 'delete'
+        ) {
             $this->handleBulkDelete();
         }
 
         // Handle single delete.
-        if (isset($_GET['action'], $_GET['log_id']) && $_GET['action'] === 'delete') {
+        if (
+            isset($_GET['action'], $_GET['log_id'])
+            && sanitize_text_field(wp_unslash($_GET['action'])) === 'delete'
+        ) {
             $this->handleSingleDelete();
         }
 
         // Build query args from filters.
         $args = [
             'per_page' => 20,
-            'page'     => max(1, (int) ($_GET['paged'] ?? 1)),
-            'platform' => sanitize_key($_GET['platform'] ?? ''),
-            'status'   => sanitize_key($_GET['status'] ?? ''),
-            'orderby'  => sanitize_key($_GET['orderby'] ?? 'created_at'),
-            'order'    => sanitize_key($_GET['order'] ?? 'DESC'),
+            'page'     => max(1, absint($_GET['paged'] ?? 1)),
+            'platform' => sanitize_key(wp_unslash($_GET['platform'] ?? '')),
+            'status'   => sanitize_key(wp_unslash($_GET['status'] ?? '')),
+            'orderby'  => sanitize_key(wp_unslash($_GET['orderby'] ?? 'created_at')),
+            'order'    => sanitize_key(wp_unslash($_GET['order'] ?? 'DESC')),
         ];
 
         $result = DeliveryLog::query($args);
@@ -67,13 +73,13 @@ class DeliveryLogsPage
     {
         if (
             ! isset($_POST['owlstack_logs_nonce'])
-            || ! wp_verify_nonce($_POST['owlstack_logs_nonce'], 'owlstack_logs_bulk')
+            || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['owlstack_logs_nonce'])), 'owlstack_logs_bulk')
         ) {
             return;
         }
 
         $ids = isset($_POST['log_ids']) && is_array($_POST['log_ids'])
-            ? array_map('intval', $_POST['log_ids'])
+            ? array_map('intval', wp_unslash($_POST['log_ids']))
             : [];
 
         foreach ($ids as $id) {
@@ -94,12 +100,12 @@ class DeliveryLogsPage
 
     private function handleSingleDelete(): void
     {
-        $logId = (int) ($_GET['log_id'] ?? 0);
+        $logId = absint($_GET['log_id'] ?? 0);
 
         if (
             $logId <= 0
             || ! isset($_GET['_wpnonce'])
-            || ! wp_verify_nonce($_GET['_wpnonce'], 'owlstack_delete_log_' . $logId)
+            || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'owlstack_delete_log_' . $logId)
         ) {
             return;
         }

@@ -57,7 +57,7 @@ class MetaBox
         // Verify nonce.
         if (
             ! isset($_POST[self::NONCE_FIELD])
-            || ! wp_verify_nonce($_POST[self::NONCE_FIELD], self::NONCE_ACTION)
+            || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST[self::NONCE_FIELD])), self::NONCE_ACTION)
         ) {
             return;
         }
@@ -78,7 +78,7 @@ class MetaBox
 
         // Save selected platforms.
         $platforms = isset($_POST['owlstack_platforms']) && is_array($_POST['owlstack_platforms'])
-            ? array_map('sanitize_key', $_POST['owlstack_platforms'])
+            ? array_map('sanitize_key', wp_unslash($_POST['owlstack_platforms']))
             : [];
 
         update_post_meta($postId, self::META_PLATFORMS, $platforms);
