@@ -127,14 +127,80 @@
     }
 
     /**
-     * Publish Now handler for the Meta Box.
+     * Per-platform Publish handler for the Meta Box.
      */
-    function initPublishNow() {
-        $('.owlstack-publish-now-btn').on('click', function (e) {
+    function initPublishSingle() {
+        $('.owlstack-publish-single-btn').on('click', function (e) {
             e.preventDefault();
 
             var $btn = $(this);
-            var $spinner = $btn.siblings('.spinner');
+            var $row = $btn.closest('.owlstack-platform-row');
+            var $spinner = $row.find('.spinner');
+            var $result = $row.find('.owlstack-platform-result');
+            var postId = $btn.data('post-id');
+            var platform = $btn.data('platform');
+
+            $btn.prop('disabled', true);
+            $spinner.addClass('is-active');
+            $result.empty().removeClass('success error');
+
+            $.ajax({
+                url: owlstackAdmin.restUrl + 'publish',
+                method: 'POST',
+                headers: {
+                    'X-WP-Nonce': owlstackAdmin.nonce,
+                },
+                data: JSON.stringify({
+                    post_id: postId,
+                    platforms: [platform],
+                }),
+                contentType: 'application/json',
+                dataType: 'json',
+            })
+                .done(function (response) {
+                    var r = response.results && response.results[platform];
+                    if (r && r.success) {
+                        var html = '✓';
+                        if (r.external_url) {
+                            html =
+                                '✓ <a href="' +
+                                escapeHtml(r.external_url) +
+                                '" target="_blank" rel="noopener">' +
+                                escapeHtml(owlstackAdmin.i18n.viewPost) +
+                                '</a>';
+                        }
+                        $result.html(html).addClass('success');
+                    } else {
+                        var err = r ? r.error : owlstackAdmin.i18n.unknownError;
+                        $result
+                            .html('✗ ' + escapeHtml(err || owlstackAdmin.i18n.unknownError))
+                            .addClass('error');
+                    }
+                })
+                .fail(function (xhr) {
+                    var msg =
+                        xhr.responseJSON && xhr.responseJSON.message
+                            ? xhr.responseJSON.message
+                            : owlstackAdmin.i18n.publishFailed;
+
+                    $result.html('✗ ' + escapeHtml(msg)).addClass('error');
+                })
+                .always(function () {
+                    $btn.prop('disabled', false);
+                    $spinner.removeClass('is-active');
+                });
+        });
+    }
+
+    /**
+     * Publish All Selected handler for the Meta Box.
+     */
+    function initPublishNow() {
+        $('.owlstack-publish-all-btn').on('click', function (e) {
+            e.preventDefault();
+
+            var $btn = $(this);
+            var $spinner = $btn.siblings('.owlstack-publish-all-spinner');
             var $resultContainer = $('.owlstack-publish-status');
             var postId = $btn.data('post-id');
 
@@ -174,6 +240,10 @@
                     var hasFailure = false;
 
                     $.each(response.results, function (platform, result) {
+                        // Update per-platform row indicators.
+                        var $row = $('.owlstack-platform-row[data-platform="' + platform + '"]');
+                        var $rowResult = $row.find('.owlstack-platform-result');
+
                         if (result.success) {
                             var link = result.external_url
                                 ? ' (<a href="' +
@@ -188,6 +258,7 @@
                                     '</strong>: ✓' +
                                     link
                             );
+                            $rowResult.html('✓').removeClass('error').addClass('success');
                         } else {
                             hasFailure = true;
                             messages.push(
@@ -196,6 +267,7 @@
                                     '</strong>: ✗ ' +
                                     escapeHtml(result.error || owlstackAdmin.i18n.unknownError)
                             );
+                            $rowResult.html('✗').removeClass('success').addClass('error');
                         }
                     });
 
@@ -260,6 +332,7 @@
 
         initTestConnection();
         initTestMessage();
+        initPublishSingle();
         initPublishNow();
         initSelectAll();
     });
