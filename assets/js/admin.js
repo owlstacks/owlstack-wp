@@ -16,7 +16,7 @@
 
             var $btn = $(this);
             var platform = $btn.data('platform');
-            var $spinner = $btn.siblings('.spinner');
+            var $spinner = $btn.closest('td, .owlstack-test-buttons').find('.spinner');
             var $result = $('#owlstack-test-result');
 
             $btn.prop('disabled', true);
@@ -48,6 +48,70 @@
                         xhr.responseJSON && xhr.responseJSON.message
                             ? xhr.responseJSON.message
                             : owlstackAdmin.i18n.connectionFailed;
+
+                    $result.html(
+                        '<span class="owlstack-test-result error">' +
+                            escapeHtml(msg) +
+                            '</span>'
+                    );
+                })
+                .always(function () {
+                    $btn.prop('disabled', false);
+                    $spinner.removeClass('is-active');
+                });
+        });
+    }
+
+    /**
+     * Test Message handler — sends a sample text message to a platform.
+     */
+    function initTestMessage() {
+        $('.owlstack-test-message-btn').on('click', function (e) {
+            e.preventDefault();
+
+            var $btn = $(this);
+            var platform = $btn.data('platform');
+            var type = $btn.data('type');
+            var $spinner = $btn.closest('td').find('.spinner');
+            var $result = $('#owlstack-test-result');
+
+            $btn.prop('disabled', true);
+            $spinner.addClass('is-active');
+            $result.empty();
+
+            $.ajax({
+                url: owlstackAdmin.restUrl + 'test-message',
+                method: 'POST',
+                headers: {
+                    'X-WP-Nonce': owlstackAdmin.nonce,
+                },
+                data: JSON.stringify({ platform: platform, type: type }),
+                contentType: 'application/json',
+                dataType: 'json',
+            })
+                .done(function (response) {
+                    var cls = response.success ? 'success' : 'error';
+                    var html = escapeHtml(response.message);
+
+                    if (response.success && response.external_url) {
+                        html +=
+                            ' <a href="' +
+                            escapeHtml(response.external_url) +
+                            '" target="_blank" rel="noopener">' +
+                            escapeHtml(owlstackAdmin.i18n.viewPost || 'View Post') +
+                            '</a>';
+                    }
+
+                    $result.html(
+                        '<span class="owlstack-test-result ' + cls + '">' + html + '</span>'
+                    );
+                })
+                .fail(function (xhr) {
+                    var msg =
+                        xhr.responseJSON && xhr.responseJSON.message
+                            ? xhr.responseJSON.message
+                            : owlstackAdmin.i18n.testMessageFailed ||
+                              'Failed to send test message.';
 
                     $result.html(
                         '<span class="owlstack-test-result error">' +
@@ -195,6 +259,7 @@
         }
 
         initTestConnection();
+        initTestMessage();
         initPublishNow();
         initSelectAll();
     });

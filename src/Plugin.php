@@ -410,6 +410,7 @@ class Plugin
             'nonce'   => wp_create_nonce('wp_rest'),
             'i18n'    => [
                 'connectionFailed'    => __('Connection test failed. Please check your credentials.', 'owlstack-wp'),
+                'testMessageFailed'   => __('Failed to send test message. Please check your credentials.', 'owlstack-wp'),
                 'noPlatformsSelected' => __('Please select at least one platform.', 'owlstack-wp'),
                 'viewPost'            => __('View Post', 'owlstack-wp'),
                 'publishFailed'       => __('Publishing failed. Please try again.', 'owlstack-wp'),
