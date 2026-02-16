@@ -124,9 +124,13 @@ class OwlstackRestController
 
             return new \WP_REST_Response($result, $statusCode);
         } catch (\Throwable $e) {
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('[Owlstack] Test connection error: ' . $e->getMessage());
+            }
+
             return new \WP_REST_Response([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => __('An internal error occurred while testing the connection.', 'owlstack-wp'),
             ], 500);
         }
     }
@@ -265,7 +269,11 @@ class OwlstackRestController
 
             return ['success' => false, 'message' => __('Failed to validate Telegram credentials.', 'owlstack-wp')];
         } catch (\Throwable $e) {
-            return ['success' => false, 'message' => $e->getMessage()];
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('[Owlstack] Telegram test error: ' . $e->getMessage());
+            }
+
+            return ['success' => false, 'message' => __('Failed to connect to Telegram. Check your credentials and try again.', 'owlstack-wp')];
         }
     }
 
@@ -281,7 +289,11 @@ class OwlstackRestController
 
             return ['success' => false, 'message' => __('Failed to validate Twitter credentials.', 'owlstack-wp')];
         } catch (\Throwable $e) {
-            return ['success' => false, 'message' => $e->getMessage()];
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('[Owlstack] Twitter test error: ' . $e->getMessage());
+            }
+
+            return ['success' => false, 'message' => __('Failed to connect to Twitter / X. Check your credentials and try again.', 'owlstack-wp')];
         }
     }
 
@@ -297,7 +309,11 @@ class OwlstackRestController
 
             return ['success' => false, 'message' => __('Failed to validate Facebook credentials.', 'owlstack-wp')];
         } catch (\Throwable $e) {
-            return ['success' => false, 'message' => $e->getMessage()];
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('[Owlstack] Facebook test error: ' . $e->getMessage());
+            }
+
+            return ['success' => false, 'message' => __('Failed to connect to Facebook. Check your credentials and try again.', 'owlstack-wp')];
         }
     }
 }
