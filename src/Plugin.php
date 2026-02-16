@@ -9,13 +9,24 @@ use Owlstack\Core\Events\Contracts\EventDispatcherInterface;
 use Owlstack\Core\Formatting\CharacterTruncator;
 use Owlstack\Core\Formatting\HashtagExtractor;
 use Owlstack\Core\Http\Contracts\HttpClientInterface;
+use Owlstack\Core\Platforms\Discord\DiscordFormatter;
+use Owlstack\Core\Platforms\Discord\DiscordPlatform;
 use Owlstack\Core\Platforms\Facebook\FacebookFormatter;
 use Owlstack\Core\Platforms\Facebook\FacebookPlatform;
+use Owlstack\Core\Platforms\Instagram\InstagramPlatform;
+use Owlstack\Core\Platforms\LinkedIn\LinkedInFormatter;
+use Owlstack\Core\Platforms\LinkedIn\LinkedInPlatform;
+use Owlstack\Core\Platforms\Pinterest\PinterestPlatform;
 use Owlstack\Core\Platforms\PlatformRegistry;
+use Owlstack\Core\Platforms\Reddit\RedditFormatter;
+use Owlstack\Core\Platforms\Reddit\RedditPlatform;
+use Owlstack\Core\Platforms\Slack\SlackPlatform;
 use Owlstack\Core\Platforms\Telegram\TelegramFormatter;
 use Owlstack\Core\Platforms\Telegram\TelegramPlatform;
+use Owlstack\Core\Platforms\Tumblr\TumblrPlatform;
 use Owlstack\Core\Platforms\Twitter\TwitterFormatter;
 use Owlstack\Core\Platforms\Twitter\TwitterPlatform;
+use Owlstack\Core\Platforms\WhatsApp\WhatsAppPlatform;
 use Owlstack\Core\Publishing\Publisher;
 use Owlstack\WordPress\Admin\DeliveryLogsPage;
 use Owlstack\WordPress\Admin\MetaBox;
@@ -224,6 +235,80 @@ class Plugin
             );
             $this->registry->register($platform);
         }
+
+        if ($config->hasPlatform('instagram')) {
+            $graphVersion = $config->credentials('instagram')?->get('default_graph_version', 'v19.0') ?? 'v19.0';
+            $platform = new InstagramPlatform(
+                credentials: $config->credentials('instagram'),
+                httpClient: $httpClient,
+                graphVersion: $graphVersion,
+            );
+            $this->registry->register($platform);
+        }
+
+        if ($config->hasPlatform('linkedin')) {
+            $formatter = new LinkedInFormatter($hashtagExtractor, $truncator);
+            $platform = new LinkedInPlatform(
+                credentials: $config->credentials('linkedin'),
+                httpClient: $httpClient,
+                formatter: $formatter,
+            );
+            $this->registry->register($platform);
+        }
+
+        if ($config->hasPlatform('discord')) {
+            $formatter = new DiscordFormatter($hashtagExtractor, $truncator);
+            $platform = new DiscordPlatform(
+                credentials: $config->credentials('discord'),
+                httpClient: $httpClient,
+                formatter: $formatter,
+            );
+            $this->registry->register($platform);
+        }
+
+        if ($config->hasPlatform('pinterest')) {
+            $platform = new PinterestPlatform(
+                credentials: $config->credentials('pinterest'),
+                httpClient: $httpClient,
+            );
+            $this->registry->register($platform);
+        }
+
+        if ($config->hasPlatform('reddit')) {
+            $formatter = new RedditFormatter($hashtagExtractor, $truncator);
+            $platform = new RedditPlatform(
+                credentials: $config->credentials('reddit'),
+                httpClient: $httpClient,
+                formatter: $formatter,
+            );
+            $this->registry->register($platform);
+        }
+
+        if ($config->hasPlatform('slack')) {
+            $platform = new SlackPlatform(
+                credentials: $config->credentials('slack'),
+                httpClient: $httpClient,
+            );
+            $this->registry->register($platform);
+        }
+
+        if ($config->hasPlatform('tumblr')) {
+            $platform = new TumblrPlatform(
+                credentials: $config->credentials('tumblr'),
+                httpClient: $httpClient,
+            );
+            $this->registry->register($platform);
+        }
+
+        if ($config->hasPlatform('whatsapp')) {
+            $graphVersion = $config->credentials('whatsapp')?->get('default_graph_version', 'v19.0') ?? 'v19.0';
+            $platform = new WhatsAppPlatform(
+                credentials: $config->credentials('whatsapp'),
+                httpClient: $httpClient,
+                graphVersion: $graphVersion,
+            );
+            $this->registry->register($platform);
+        }
     }
 
     private function registerAdminHooks(): void
@@ -285,6 +370,17 @@ class Plugin
         $owlstackPages = [
             'toplevel_page_owlstack',
             'owlstack_page_owlstack-logs',
+            'owlstack_page_owlstack-telegram',
+            'owlstack_page_owlstack-twitter',
+            'owlstack_page_owlstack-facebook',
+            'owlstack_page_owlstack-instagram',
+            'owlstack_page_owlstack-linkedin',
+            'owlstack_page_owlstack-discord',
+            'owlstack_page_owlstack-pinterest',
+            'owlstack_page_owlstack-reddit',
+            'owlstack_page_owlstack-slack',
+            'owlstack_page_owlstack-tumblr',
+            'owlstack_page_owlstack-whatsapp',
         ];
 
         // Also load on post edit screens for the meta box.
