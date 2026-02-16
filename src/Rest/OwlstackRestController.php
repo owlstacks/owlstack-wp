@@ -34,7 +34,11 @@ class OwlstackRestController
                 'platform' => [
                     'required'          => true,
                     'type'              => 'string',
-                    'enum'              => ['telegram', 'twitter', 'facebook'],
+                    'enum'              => [
+                        'telegram', 'twitter', 'facebook', 'instagram',
+                        'linkedin', 'discord', 'pinterest', 'reddit',
+                        'slack', 'tumblr', 'whatsapp',
+                    ],
                     'sanitize_callback' => 'sanitize_text_field',
                 ],
             ],
@@ -112,13 +116,7 @@ class OwlstackRestController
 
             $platformInstance = $registry->get($platform);
 
-            // Attempt a lightweight API call based on platform type.
-            $result = match ($platform) {
-                'telegram' => self::testTelegram($platformInstance),
-                'twitter'  => self::testTwitter($platformInstance),
-                'facebook' => self::testFacebook($platformInstance),
-                default    => ['success' => false, 'message' => __('Test not implemented for this platform.', 'owlstack-wp')],
-            };
+            $result = self::testPlatformConnection($platform, $platformInstance);
 
             $statusCode = $result['success'] ? 200 : 422;
 
@@ -257,63 +255,63 @@ class OwlstackRestController
 
     // ── Platform test helpers ────────────────────────────────────────────
 
-    private static function testTelegram(object $platform): array
+    /**
+     * Platform display names for user-facing messages.
+     */
+    private const PLATFORM_LABELS = [
+        'telegram'  => 'Telegram',
+        'twitter'   => 'Twitter / X',
+        'facebook'  => 'Facebook',
+        'instagram' => 'Instagram',
+        'linkedin'  => 'LinkedIn',
+        'discord'   => 'Discord',
+        'pinterest' => 'Pinterest',
+        'reddit'    => 'Reddit',
+        'slack'     => 'Slack',
+        'tumblr'    => 'Tumblr',
+        'whatsapp'  => 'WhatsApp',
+    ];
+
+    /**
+     * Test connection to any platform using validateCredentials().
+     */
+    private static function testPlatformConnection(string $platform, object $platformInstance): array
     {
+        $label = self::PLATFORM_LABELS[$platform] ?? ucfirst($platform);
+
         try {
-            if ($platform->validateCredentials()) {
+            if ($platformInstance->validateCredentials()) {
                 return [
                     'success' => true,
-                    'message' => __('Telegram connection successful.', 'owlstack-wp'),
+                    'message' => sprintf(
+                        /* translators: %s: platform name */
+                        __('%s connection successful.', 'owlstack-wp'),
+                        $label,
+                    ),
                 ];
             }
 
-            return ['success' => false, 'message' => __('Failed to validate Telegram credentials.', 'owlstack-wp')];
+            return [
+                'success' => false,
+                'message' => sprintf(
+                    /* translators: %s: platform name */
+                    __('Failed to validate %s credentials.', 'owlstack-wp'),
+                    $label,
+                ),
+            ];
         } catch (\Throwable $e) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('[Owlstack] Telegram test error: ' . $e->getMessage());
+                error_log("[Owlstack] {$label} test error: " . $e->getMessage());
             }
 
-            return ['success' => false, 'message' => __('Failed to connect to Telegram. Check your credentials and try again.', 'owlstack-wp')];
-        }
-    }
-
-    private static function testTwitter(object $platform): array
-    {
-        try {
-            if ($platform->validateCredentials()) {
-                return [
-                    'success' => true,
-                    'message' => __('Twitter / X connection successful.', 'owlstack-wp'),
-                ];
-            }
-
-            return ['success' => false, 'message' => __('Failed to validate Twitter credentials.', 'owlstack-wp')];
-        } catch (\Throwable $e) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('[Owlstack] Twitter test error: ' . $e->getMessage());
-            }
-
-            return ['success' => false, 'message' => __('Failed to connect to Twitter / X. Check your credentials and try again.', 'owlstack-wp')];
-        }
-    }
-
-    private static function testFacebook(object $platform): array
-    {
-        try {
-            if ($platform->validateCredentials()) {
-                return [
-                    'success' => true,
-                    'message' => __('Facebook connection successful.', 'owlstack-wp'),
-                ];
-            }
-
-            return ['success' => false, 'message' => __('Failed to validate Facebook credentials.', 'owlstack-wp')];
-        } catch (\Throwable $e) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('[Owlstack] Facebook test error: ' . $e->getMessage());
-            }
-
-            return ['success' => false, 'message' => __('Failed to connect to Facebook. Check your credentials and try again.', 'owlstack-wp')];
+            return [
+                'success' => false,
+                'message' => sprintf(
+                    /* translators: %s: platform name */
+                    __('Failed to connect to %s. Check your credentials and try again.', 'owlstack-wp'),
+                    $label,
+                ),
+            ];
         }
     }
 }
