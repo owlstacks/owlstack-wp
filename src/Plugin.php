@@ -85,6 +85,9 @@ class Plugin
         // Load translations.
         add_action('init', [$this, 'loadTextDomain']);
 
+        // Show activation notices.
+        add_action('admin_notices', [$this, 'showActivationNotice']);
+
         // REST API.
         add_action('rest_api_init', [OwlstackRestController::class, 'register']);
 
@@ -252,6 +255,29 @@ class Plugin
     }
 
     /**
+     * Show one-time activation notices.
+     */
+    public function showActivationNotice(): void
+    {
+        $notice = get_transient('owlstack_activation_notice');
+
+        if ($notice === false || ! is_array($notice)) {
+            return;
+        }
+
+        $type = $notice['type'] ?? 'info';
+        $message = $notice['message'] ?? '';
+
+        printf(
+            '<div class="notice notice-%s is-dismissible"><p>%s</p></div>',
+            esc_attr($type),
+            esc_html($message),
+        );
+
+        delete_transient('owlstack_activation_notice');
+    }
+
+    /**
      * Enqueue admin CSS and JS on Owlstack admin pages.
      */
     public function enqueueAdminAssets(string $hook): void
@@ -278,7 +304,7 @@ class Plugin
         wp_enqueue_script(
             'owlstack-admin',
             OWLSTACK_URL . 'assets/js/admin.js',
-            [],
+            ['jquery'],
             OWLSTACK_VERSION,
             true,
         );
@@ -286,6 +312,13 @@ class Plugin
         wp_localize_script('owlstack-admin', 'owlstackAdmin', [
             'restUrl' => rest_url('owlstack/v1/'),
             'nonce'   => wp_create_nonce('wp_rest'),
+            'i18n'    => [
+                'connectionFailed'    => __('Connection test failed. Please check your credentials.', 'owlstack-wp'),
+                'noPlatformsSelected' => __('Please select at least one platform.', 'owlstack-wp'),
+                'viewPost'            => __('View Post', 'owlstack-wp'),
+                'publishFailed'       => __('Publishing failed. Please try again.', 'owlstack-wp'),
+                'unknownError'        => __('An unknown error occurred.', 'owlstack-wp'),
+            ],
         ]);
     }
 

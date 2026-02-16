@@ -11,23 +11,23 @@
      * Test Connection handler for the Settings page.
      */
     function initTestConnection() {
-        $('.owlstack-test-connection-btn').on('click', function (e) {
+        $('.owlstack-test-btn').on('click', function (e) {
             e.preventDefault();
 
             var $btn = $(this);
             var platform = $btn.data('platform');
             var $spinner = $btn.siblings('.spinner');
-            var $result = $btn.siblings('.owlstack-test-result');
+            var $result = $('#owlstack-test-result');
 
             $btn.prop('disabled', true);
             $spinner.addClass('is-active');
-            $result.remove();
+            $result.empty();
 
             $.ajax({
-                url: owlstackAdmin.restUrl + 'owlstack/v1/test-connection',
+                url: owlstackAdmin.restUrl + 'test-connection',
                 method: 'POST',
                 headers: {
-                    'X-WP-Nonce': owlstackAdmin.restNonce,
+                    'X-WP-Nonce': owlstackAdmin.nonce,
                 },
                 data: JSON.stringify({ platform: platform }),
                 contentType: 'application/json',
@@ -35,7 +35,7 @@
             })
                 .done(function (response) {
                     var cls = response.success ? 'success' : 'error';
-                    $btn.after(
+                    $result.html(
                         '<span class="owlstack-test-result ' +
                             cls +
                             '">' +
@@ -49,7 +49,7 @@
                             ? xhr.responseJSON.message
                             : owlstackAdmin.i18n.connectionFailed;
 
-                    $btn.after(
+                    $result.html(
                         '<span class="owlstack-test-result error">' +
                             escapeHtml(msg) +
                             '</span>'
@@ -66,12 +66,12 @@
      * Publish Now handler for the Meta Box.
      */
     function initPublishNow() {
-        $('#owlstack-publish-now').on('click', function (e) {
+        $('.owlstack-publish-now-btn').on('click', function (e) {
             e.preventDefault();
 
             var $btn = $(this);
             var $spinner = $btn.siblings('.spinner');
-            var $resultContainer = $('#owlstack-publish-result');
+            var $resultContainer = $('.owlstack-publish-status');
             var postId = $btn.data('post-id');
 
             // Gather selected platforms.
@@ -93,10 +93,10 @@
             $resultContainer.hide();
 
             $.ajax({
-                url: owlstackAdmin.restUrl + 'owlstack/v1/publish',
+                url: owlstackAdmin.restUrl + 'publish',
                 method: 'POST',
                 headers: {
-                    'X-WP-Nonce': owlstackAdmin.restNonce,
+                    'X-WP-Nonce': owlstackAdmin.nonce,
                 },
                 data: JSON.stringify({
                     post_id: postId,
