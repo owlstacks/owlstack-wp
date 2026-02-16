@@ -27,31 +27,93 @@ if (! defined('ABSPATH')) {
         <?php
         settings_fields('owlstack_settings_group');
         do_settings_sections("owlstack-{$platformSlug}");
+        submit_button(__('Save Settings', 'owlstack-wp'));
         ?>
-
-        <div class="owlstack-test-connection">
-            <h2><?php esc_html_e('Test Connection', 'owlstack-wp'); ?></h2>
-            <p><?php esc_html_e('Save your settings first, then test the connection.', 'owlstack-wp'); ?></p>
-
-            <div class="owlstack-test-buttons">
-                <button type="button" class="button owlstack-test-btn" data-platform="<?php echo esc_attr($platformSlug); ?>">
-                    <?php
-                    printf(
-                        /* translators: %s: platform name */
-                        esc_html__('Test %s', 'owlstack-wp'),
-                        esc_html($platform['label']),
-                    );
-                    ?>
-                </button>
-                <span class="spinner"></span>
-            </div>
-            <div id="owlstack-test-result" class="owlstack-test-result"></div>
-        </div>
-
-        <?php submit_button(__('Save Settings', 'owlstack-wp')); ?>
     </form>
 
-    <p>
+    <hr />
+
+    <!-- ── Testing Section ────────────────────────────────────────────── -->
+    <h2><?php esc_html_e('Testing', 'owlstack-wp'); ?></h2>
+    <p><?php esc_html_e('Save your settings first, then use the actions below to verify your integration.', 'owlstack-wp'); ?></p>
+
+    <table class="wp-list-table widefat fixed striped owlstack-test-actions-table">
+        <thead>
+            <tr>
+                <th class="owlstack-test-col-type"><?php esc_html_e('Test', 'owlstack-wp'); ?></th>
+                <th class="owlstack-test-col-desc"><?php esc_html_e('Description', 'owlstack-wp'); ?></th>
+                <th class="owlstack-test-col-action"><?php esc_html_e('Action', 'owlstack-wp'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Connection Test -->
+            <tr>
+                <td><strong><?php esc_html_e('Connection', 'owlstack-wp'); ?></strong></td>
+                <td><?php esc_html_e('Validates that your API credentials are correct and the platform is reachable.', 'owlstack-wp'); ?></td>
+                <td>
+                    <button type="button" class="button owlstack-test-btn" data-platform="<?php echo esc_attr($platformSlug); ?>">
+                        <?php esc_html_e('Test Connection', 'owlstack-wp'); ?>
+                    </button>
+                    <span class="spinner"></span>
+                </td>
+            </tr>
+
+            <!-- Text Message Test -->
+            <tr>
+                <td><strong><?php esc_html_e('Text Message', 'owlstack-wp'); ?></strong></td>
+                <td><?php esc_html_e('Sends a sample text post to verify publishing works end-to-end. The message will include your site name and a timestamp.', 'owlstack-wp'); ?></td>
+                <td>
+                    <button type="button" class="button owlstack-test-message-btn" data-platform="<?php echo esc_attr($platformSlug); ?>" data-type="text">
+                        <?php esc_html_e('Send Test Message', 'owlstack-wp'); ?>
+                    </button>
+                    <span class="spinner"></span>
+                </td>
+            </tr>
+
+            <!-- Image / Media (Guidance) -->
+            <tr>
+                <td><strong><?php esc_html_e('Image / Media', 'owlstack-wp'); ?></strong></td>
+                <td>
+                    <?php esc_html_e('To test image or media publishing:', 'owlstack-wp'); ?>
+                    <ol class="owlstack-test-steps">
+                        <li><?php esc_html_e('Create a new post in WordPress and add an image via the Featured Image or content editor.', 'owlstack-wp'); ?></li>
+                        <li>
+                            <?php
+                            printf(
+                                /* translators: %s: platform name */
+                                esc_html__('In the Owlstack meta box on the post editor, select "%s" as a target platform.', 'owlstack-wp'),
+                                esc_html($platform['label']),
+                            );
+                            ?>
+                        </li>
+                        <li><?php esc_html_e('Click "Publish Now" in the meta box to send the post with its media attachments.', 'owlstack-wp'); ?></li>
+                    </ol>
+                </td>
+                <td>
+                    <a href="<?php echo esc_url(admin_url('post-new.php')); ?>" class="button">
+                        <?php esc_html_e('Create Test Post', 'owlstack-wp'); ?>
+                    </a>
+                </td>
+            </tr>
+
+            <!-- Video (Guidance) -->
+            <tr>
+                <td><strong><?php esc_html_e('Video', 'owlstack-wp'); ?></strong></td>
+                <td>
+                    <?php esc_html_e('To test video publishing, follow the same steps as image testing above, but upload a video file instead. Supported formats depend on the platform (typically MP4).', 'owlstack-wp'); ?>
+                </td>
+                <td>
+                    <a href="<?php echo esc_url(admin_url('post-new.php')); ?>" class="button">
+                        <?php esc_html_e('Create Test Post', 'owlstack-wp'); ?>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="owlstack-test-result" class="owlstack-test-result" style="margin-top: 12px;"></div>
+
+    <p style="margin-top: 24px;">
         <a href="<?php echo esc_url(admin_url('admin.php?page=owlstack')); ?>">&larr; <?php esc_html_e('Back to Settings Overview', 'owlstack-wp'); ?></a>
     </p>
 </div>
