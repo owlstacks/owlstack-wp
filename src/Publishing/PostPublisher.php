@@ -29,8 +29,19 @@ class PostPublisher
             return;
         }
 
+        // Check that the current user has permission to auto-publish.
+        if (! current_user_can('owlstack_publish')) {
+            return;
+        }
+
         // Check auto-publish flag.
         if (! MetaBox::isAutoPublishEnabled($post->ID)) {
+            return;
+        }
+
+        // Prevent duplicate publishing (e.g. from rapid saves or race conditions).
+        $publishedFlag = get_post_meta($post->ID, '_owlstack_published', true);
+        if ($publishedFlag === '1') {
             return;
         }
 
@@ -38,6 +49,9 @@ class PostPublisher
         if (empty($platforms)) {
             return;
         }
+
+        // Mark as published to prevent duplicates.
+        update_post_meta($post->ID, '_owlstack_published', '1');
 
         $sendTo = Plugin::instance()->sendTo();
         $corePost = $sendTo->buildPostFromWpPost($post);
