@@ -59,4 +59,18 @@ if (! defined('ABSPATH')) {
         submit_button(__('Save Settings', 'owlstack-wp'));
         ?>
     </form>
+
+    <!-- Support section -->
+    <div class="owlstack-support-section">
+        <h2><?php esc_html_e('Need Help?', 'owlstack-wp'); ?></h2>
+        <p>
+            <?php
+            printf(
+                /* translators: %s: link to OwlStack documentation */
+                esc_html__('Need help setting up your social media platforms such as Telegram, Twitter, Facebook, Instagram, LinkedIn, or others? Our documentation covers step-by-step guides for configuring each platform with the WordPress plugin. Visit the %s to get started.', 'owlstack-wp'),
+                '<a href="https://docs.owlstack.dev" target="_blank" rel="noopener noreferrer">' . esc_html__('OwlStack Documentation', 'owlstack-wp') . '</a>'
+            );
+            ?>
+        </p>
+    </div>
 </div>
