@@ -45,7 +45,10 @@ class Uninstaller
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
         $wpdb->query(
-            "DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE '_owlstack_%'"
+            $wpdb->prepare(
+                "DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE %s",
+                '_owlstack_%'
+            )
         );
     }
 
@@ -58,7 +61,10 @@ class Uninstaller
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
         $wpdb->query(
-            "DELETE FROM {$wpdb->options} WHERE option_name LIKE 'owlstack_token_%'"
+            $wpdb->prepare(
+                "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                'owlstack_token_%'
+            )
         );
     }
 
@@ -98,7 +104,11 @@ class Uninstaller
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
         $wpdb->query(
-            "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_owlstack_%' OR option_name LIKE '_transient_timeout_owlstack_%'"
+            $wpdb->prepare(
+                "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+                '_transient_owlstack_%',
+                '_transient_timeout_owlstack_%'
+            )
         );
     }
 }
