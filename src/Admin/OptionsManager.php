@@ -142,18 +142,26 @@ class OptionsManager
     /**
      * Sanitize settings input from the admin form.
      *
+     * Merges incoming data with existing settings so that saving one
+     * platform page does not wipe credentials from other platforms.
+     *
      * @param array<string, mixed> $input
      * @return array<string, mixed>
      */
     public function sanitize(array $input): array
     {
-        $sanitized = [];
+        $existing  = $this->all();
+        $sanitized = [
+            'platforms' => $existing['platforms'] ?? [],
+            'proxy'     => $existing['proxy'] ?? [],
+        ];
 
-        // Sanitize platform credentials.
+        // Sanitize platform credentials (merge per-platform).
         if (isset($input['platforms']) && is_array($input['platforms'])) {
             foreach ($input['platforms'] as $platform => $credentials) {
                 $platform = sanitize_key($platform);
                 if (is_array($credentials)) {
+                    $sanitized['platforms'][$platform] = [];
                     foreach ($credentials as $key => $value) {
                         $sanitized['platforms'][$platform][sanitize_key($key)] = sanitize_text_field((string) $value);
                     }
@@ -163,6 +171,7 @@ class OptionsManager
 
         // Sanitize proxy settings.
         if (isset($input['proxy']) && is_array($input['proxy'])) {
+            $sanitized['proxy'] = [];
             foreach ($input['proxy'] as $key => $value) {
                 $sanitized['proxy'][sanitize_key($key)] = sanitize_text_field((string) $value);
             }
@@ -177,16 +186,40 @@ class OptionsManager
     private function hasRequiredCredentials(string $platform, array $credentials): bool
     {
         $requiredKeys = match ($platform) {
-            'telegram' => ['api_token'],
-            'twitter'  => ['consumer_key', 'consumer_secret', 'access_token', 'access_token_secret'],
-            'facebook' => ['app_id', 'app_secret', 'page_access_token', 'page_id'],
-            default    => [],
+            'telegram'  => ['api_token'],
+            'twitter'   => ['consumer_key', 'consumer_secret', 'access_token', 'access_token_secret'],
+            'facebook'  => ['app_id', 'app_secret', 'page_access_token', 'page_id'],
+            'instagram' => ['access_token', 'instagram_account_id'],
+            'linkedin'  => ['access_token'],
+            'discord'   => [],  // webhook_url OR (bot_token + channel_id)
+            'pinterest' => ['access_token', 'board_id'],
+            'reddit'    => ['access_token', 'subreddit'],
+            'slack'     => [],  // bot_token + channel OR webhook_url
+            'tumblr'    => ['access_token', 'blog_identifier'],
+            'whatsapp'  => ['access_token', 'phone_number_id'],
+            default     => [],
         };
 
         foreach ($requiredKeys as $key) {
             if (empty($credentials[$key])) {
                 return false;
             }
+        }
+
+        // Discord: needs webhook_url OR (bot_token + channel_id).
+        if ($platform === 'discord') {
+            $hasWebhook = ! empty($credentials['webhook_url']);
+            $hasBot     = ! empty($credentials['bot_token']) && ! empty($credentials['channel_id']);
+
+            return $hasWebhook || $hasBot;
+        }
+
+        // Slack: needs (bot_token + channel) OR webhook_url.
+        if ($platform === 'slack') {
+            $hasBot     = ! empty($credentials['bot_token']) && ! empty($credentials['channel']);
+            $hasWebhook = ! empty($credentials['webhook_url']);
+
+            return $hasBot || $hasWebhook;
         }
 
         return true;
