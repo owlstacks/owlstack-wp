@@ -273,6 +273,46 @@
     vertical-align: middle;
 }
 
+/* ── Test Actions Table ───────────────────────────────────────────────── */
+
+.owlstack-test-actions-table {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.owlstack-test-actions-table td {
+    vertical-align: middle;
+}
+
+.owlstack-test-actions-table .spinner {
+    float: none;
+    margin: 0 0 0 4px;
+    vertical-align: middle;
+}
+
+.owlstack-test-col-type {
+    width: 140px;
+}
+
+.owlstack-test-col-action {
+    width: 180px;
+}
+
+.owlstack-test-col-desc {
+    width: auto;
+}
+
+.owlstack-test-steps {
+    margin: 6px 0 0 16px;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.owlstack-test-steps li {
+    margin-bottom: 4px;
+}
+
 /* Log details */
 .owlstack-log-error {
     color: #721c24;
