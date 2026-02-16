@@ -77,55 +77,95 @@
     padding: 6px 0;
 }
 
-.owlstack-platform-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.owlstack-meta-label {
+    margin: 0 0 6px;
 }
 
-.owlstack-platform-list li {
-    padding: 6px 0;
+/* Platform list table */
+.owlstack-platform-list {
+    width: 100%;
+    border-spacing: 0;
+    margin: 0 0 4px;
+}
+
+.owlstack-platform-row td {
+    padding: 5px 2px;
+    vertical-align: middle;
     border-bottom: 1px solid #f0f0f1;
 }
 
-.owlstack-platform-list li:last-child {
+.owlstack-platform-row:last-child td {
     border-bottom: none;
 }
 
-.owlstack-platform-list label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
+.owlstack-platform-checkbox-col {
+    width: 20px;
 }
 
-.owlstack-platform-list input[type="checkbox"] {
+.owlstack-platform-checkbox-col input[type="checkbox"] {
     margin: 0;
 }
 
-.owlstack-auto-publish {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid #c3c4c7;
+.owlstack-platform-name-col {
+    padding-left: 4px !important;
 }
 
-.owlstack-auto-publish label {
+.owlstack-platform-action-col {
+    width: 75px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.owlstack-platform-action-col .spinner {
+    float: none;
+    margin: 0 0 0 2px;
+    vertical-align: middle;
+}
+
+.owlstack-platform-action-col .button-small {
+    min-height: 26px;
+    line-height: 24px;
+    padding: 0 8px;
+    font-size: 11px;
+}
+
+.owlstack-platform-status-col {
+    width: auto;
+    padding-left: 4px !important;
+    font-size: 12px;
+}
+
+.owlstack-platform-result.success {
+    color: #00a32a;
+}
+
+.owlstack-platform-result.success a {
+    color: #00a32a;
+}
+
+.owlstack-platform-result.error {
+    color: #d63638;
+}
+
+/* Auto-publish toggle */
+.owlstack-auto-publish {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-weight: 600;
 }
 
-.owlstack-publish-now-wrap {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid #c3c4c7;
-    text-align: right;
+.owlstack-auto-publish input[type="checkbox"] {
+    margin: 0;
 }
 
-.owlstack-publish-now-wrap .spinner {
+/* Publish All Selected button */
+.owlstack-publish-all-btn {
+    margin-top: 2px;
+}
+
+.owlstack-publish-all-spinner {
     float: none;
-    margin: 0 4px 0 0;
+    margin: 0 0 0 4px;
     vertical-align: middle;
 }
 
