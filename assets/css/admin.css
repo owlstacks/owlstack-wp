@@ -223,6 +223,56 @@
     color: #283593;
 }
 
+.owlstack-badge--instagram {
+    background: #fce4ec;
+    color: #c2185b;
+}
+
+.owlstack-badge--linkedin {
+    background: #e3f2fd;
+    color: #0a66c2;
+}
+
+.owlstack-badge--discord {
+    background: #ede7f6;
+    color: #5865f2;
+}
+
+.owlstack-badge--pinterest {
+    background: #fbe9e7;
+    color: #e60023;
+}
+
+.owlstack-badge--reddit {
+    background: #fff3e0;
+    color: #ff4500;
+}
+
+.owlstack-badge--slack {
+    background: #e8f5e9;
+    color: #4a154b;
+}
+
+.owlstack-badge--tumblr {
+    background: #e3f2fd;
+    color: #001935;
+}
+
+.owlstack-badge--whatsapp {
+    background: #e8f5e9;
+    color: #25d366;
+}
+
+/* Platform overview table */
+.owlstack-platform-overview {
+    margin-top: 12px;
+    margin-bottom: 24px;
+}
+
+.owlstack-platform-overview td {
+    vertical-align: middle;
+}
+
 /* Log details */
 .owlstack-log-error {
     color: #721c24;
