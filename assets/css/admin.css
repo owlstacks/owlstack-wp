@@ -6,35 +6,35 @@
 
 /* ── Settings Page ────────────────────────────────────────────────────── */
 
-.owlstack-settings-wrap {
+.owlstack-settings {
     max-width: 900px;
 }
 
-.owlstack-settings-wrap .form-table th {
+.owlstack-settings .form-table th {
     width: 200px;
     padding: 15px 10px 15px 0;
 }
 
-.owlstack-settings-wrap .form-table td {
+.owlstack-settings .form-table td {
     padding: 10px 10px;
 }
 
-.owlstack-settings-wrap .form-table input[type="text"],
-.owlstack-settings-wrap .form-table input[type="password"],
-.owlstack-settings-wrap .form-table input[type="url"],
-.owlstack-settings-wrap .form-table input[type="number"],
-.owlstack-settings-wrap .form-table select {
+.owlstack-settings .form-table input[type="text"],
+.owlstack-settings .form-table input[type="password"],
+.owlstack-settings .form-table input[type="url"],
+.owlstack-settings .form-table input[type="number"],
+.owlstack-settings .form-table select {
     width: 100%;
     max-width: 400px;
 }
 
-.owlstack-settings-wrap h2 {
+.owlstack-settings h2 {
     margin-top: 2em;
     padding-bottom: 0.5em;
     border-bottom: 1px solid #c3c4c7;
 }
 
-.owlstack-settings-wrap h2:first-of-type {
+.owlstack-settings h2:first-of-type {
     margin-top: 0;
 }
 
@@ -240,11 +240,11 @@
 /* ── Responsive ───────────────────────────────────────────────────────── */
 
 @media screen and (max-width: 782px) {
-    .owlstack-settings-wrap .form-table input[type="text"],
-    .owlstack-settings-wrap .form-table input[type="password"],
-    .owlstack-settings-wrap .form-table input[type="url"],
-    .owlstack-settings-wrap .form-table input[type="number"],
-    .owlstack-settings-wrap .form-table select {
+    .owlstack-settings .form-table input[type="text"],
+    .owlstack-settings .form-table input[type="password"],
+    .owlstack-settings .form-table input[type="url"],
+    .owlstack-settings .form-table input[type="number"],
+    .owlstack-settings .form-table select {
         max-width: 100%;
     }
 
