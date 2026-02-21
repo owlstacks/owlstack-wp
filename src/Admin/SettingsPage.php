@@ -212,7 +212,7 @@ class SettingsPage
             add_settings_section(
                 $sectionId,
                 $platform['label'],
-                fn () => printf('<p>%s</p>', esc_html__($platform['description'], 'owlstack')),
+                fn () => printf('<p>%s</p>', esc_html($platform['description'])),
                 $pageSlug,
             );
 
@@ -221,10 +221,10 @@ class SettingsPage
                 $hint = $field['hint'] ?? null;
 
                 if ($type === 'select') {
-                    $this->addSelectField($platformKey, $fieldKey, __($field['label'], 'owlstack'), $field['options'], $pageSlug, $sectionId);
+                    $this->addSelectField($platformKey, $fieldKey, $field['label'], $field['options'], $pageSlug, $sectionId);
                 } else {
                     $isSecret = $field['secret'] ?? false;
-                    $this->addField($platformKey, $fieldKey, __($field['label'], 'owlstack'), $isSecret, $pageSlug, $sectionId, $hint);
+                    $this->addField($platformKey, $fieldKey, $field['label'], $isSecret, $pageSlug, $sectionId, $hint);
                 }
             }
         }
