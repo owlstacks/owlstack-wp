@@ -3,7 +3,7 @@ Contributors: alihesari
 Donate link: https://owlstack.com
 Tags: social media, telegram, twitter, facebook, auto publish
 Requires at least: 6.4
-Tested up to: 6.7
+Tested up to: 6.9
 Stable tag: 1.0.0
 Requires PHP: 8.1
 License: GPLv2 or later
