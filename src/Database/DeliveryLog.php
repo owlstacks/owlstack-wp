@@ -92,52 +92,65 @@ class DeliveryLog
 
         $args = array_merge($defaults, $args);
 
-        $where = [];
-        $values = [];
-
-        if ($args['platform'] !== '') {
-            $where[] = 'platform = %s';
-            $values[] = $args['platform'];
-        }
-
-        if ($args['status'] !== '') {
-            $where[] = 'status = %s';
-            $values[] = $args['status'];
-        }
-
-        if ($args['post_id'] > 0) {
-            $where[] = 'post_id = %d';
-            $values[] = $args['post_id'];
-        }
-
         // Validate orderby to prevent SQL injection.
         $allowedOrderby = ['id', 'post_id', 'platform', 'status', 'created_at'];
         $orderby = in_array($args['orderby'], $allowedOrderby, true) ? $args['orderby'] : 'created_at';
-        $order = strtoupper($args['order']) === 'ASC' ? 'ASC' : 'DESC';
 
         $offset = ($args['page'] - 1) * $args['per_page'];
 
-        // Prepare WHERE clause once via $wpdb->prepare() so downstream queries use a safe literal.
-        $preparedWhere = '';
-        if ( ! empty( $where ) ) {
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $where only contains hardcoded placeholder strings.
-            $preparedWhere = 'WHERE ' . $wpdb->prepare( implode( ' AND ', $where ), ...$values );
+        // Use "always-true" conditions pattern so the SQL string is fully literal (no variable interpolation).
+        // When a filter is empty/zero the condition evaluates to TRUE and has no filtering effect.
+        if ( strtoupper( $args['order'] ) === 'ASC' ) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $total = (int) $wpdb->get_var(
+                $wpdb->prepare(
+                    'SELECT COUNT(*) FROM %i WHERE (%s = %s OR platform = %s) AND (%s = %s OR status = %s) AND (%d = 0 OR post_id = %d)',
+                    $table,
+                    $args['platform'], '', $args['platform'],
+                    $args['status'], '', $args['status'],
+                    $args['post_id'], $args['post_id']
+                )
+            );
+
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $items = $wpdb->get_results(
+                $wpdb->prepare(
+                    'SELECT * FROM %i WHERE (%s = %s OR platform = %s) AND (%s = %s OR status = %s) AND (%d = 0 OR post_id = %d) ORDER BY %i ASC LIMIT %d OFFSET %d',
+                    $table,
+                    $args['platform'], '', $args['platform'],
+                    $args['status'], '', $args['status'],
+                    $args['post_id'], $args['post_id'],
+                    $orderby,
+                    $args['per_page'],
+                    $offset
+                )
+            );
+        } else {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $total = (int) $wpdb->get_var(
+                $wpdb->prepare(
+                    'SELECT COUNT(*) FROM %i WHERE (%s = %s OR platform = %s) AND (%s = %s OR status = %s) AND (%d = 0 OR post_id = %d)',
+                    $table,
+                    $args['platform'], '', $args['platform'],
+                    $args['status'], '', $args['status'],
+                    $args['post_id'], $args['post_id']
+                )
+            );
+
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+            $items = $wpdb->get_results(
+                $wpdb->prepare(
+                    'SELECT * FROM %i WHERE (%s = %s OR platform = %s) AND (%s = %s OR status = %s) AND (%d = 0 OR post_id = %d) ORDER BY %i DESC LIMIT %d OFFSET %d',
+                    $table,
+                    $args['platform'], '', $args['platform'],
+                    $args['status'], '', $args['status'],
+                    $args['post_id'], $args['post_id'],
+                    $orderby,
+                    $args['per_page'],
+                    $offset
+                )
+            );
         }
-
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-        $total = (int) $wpdb->get_var(
-            $wpdb->prepare( "SELECT COUNT(*) FROM %i $preparedWhere", $table )
-        );
-
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-        $items = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM %i $preparedWhere ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d",
-                $table,
-                $args['per_page'],
-                $offset
-            )
-        );
 
         return [
             'items' => $items ?: [],
