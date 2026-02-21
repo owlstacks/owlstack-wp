@@ -41,21 +41,22 @@ class DeliveryLogsPage
 
         // Handle bulk delete.
         if (
-            isset($_POST['owlstack_bulk_action'])
-            && sanitize_text_field(wp_unslash($_POST['owlstack_bulk_action'])) === 'delete'
+            isset($_POST['owlstack_bulk_action']) // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in handleBulkDelete().
+            && sanitize_text_field(wp_unslash($_POST['owlstack_bulk_action'])) === 'delete' // phpcs:ignore WordPress.Security.NonceVerification.Missing
         ) {
             $this->handleBulkDelete();
         }
 
         // Handle single delete.
         if (
-            isset($_GET['action'], $_GET['log_id'])
-            && sanitize_text_field(wp_unslash($_GET['action'])) === 'delete'
+            isset($_GET['action'], $_GET['log_id']) // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verified in handleSingleDelete().
+            && sanitize_text_field(wp_unslash($_GET['action'])) === 'delete' // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         ) {
             $this->handleSingleDelete();
         }
 
-        // Build query args from filters.
+        // Build query args from read-only display filters (no state changes).
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Display-only filters, no data modification.
         $args = [
             'per_page' => 20,
             'page'     => max(1, absint($_GET['paged'] ?? 1)),
@@ -64,6 +65,7 @@ class DeliveryLogsPage
             'orderby'  => sanitize_key(wp_unslash($_GET['orderby'] ?? 'created_at')),
             'order'    => sanitize_key(wp_unslash($_GET['order'] ?? 'DESC')),
         ];
+        // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
         $result = DeliveryLog::query($args);
         $items = $result['items'];
