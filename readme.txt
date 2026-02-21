@@ -1,7 +1,7 @@
 === Owlstack ===
 Contributors: alihesari
 Donate link: https://owlstack.dev
-Tags: social media, telegram, twitter, facebook, linkedin, auto publish
+Tags: social media, auto publish, telegram, twitter, facebook
 Requires at least: 6.4
 Tested up to: 6.9
 Stable tag: 1.0.0
