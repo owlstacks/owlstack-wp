@@ -85,7 +85,7 @@ class WpHttpClient implements HttpClientInterface
 
         if (is_wp_error($response)) {
             throw new OwlstackException(
-                'HTTP request failed: ' . $response->get_error_message()
+                'HTTP request failed: ' . esc_html($response->get_error_message())
             );
         }
 

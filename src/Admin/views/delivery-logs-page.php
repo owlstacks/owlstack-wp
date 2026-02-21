@@ -54,14 +54,15 @@ if (! defined('ABSPATH')) {
             </span>
             <?php if ($totalPages > 1) : ?>
                 <?php
-                echo paginate_links([
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- paginate_links returns safe HTML.
+                echo wp_kses_post((string) paginate_links([
                     'base'      => add_query_arg('paged', '%#%'),
                     'format'    => '',
                     'current'   => $args['page'],
                     'total'     => $totalPages,
                     'prev_text' => '&laquo;',
                     'next_text' => '&raquo;',
-                ]);
+                ]));
                 ?>
             <?php endif; ?>
         </div>
