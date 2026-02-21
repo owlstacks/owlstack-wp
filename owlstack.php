@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:       Owlstack
- * Plugin URI:        https://owlstack.com
+ * Plugin URI:        https://owlstack.dev
  * Description:       Publish content to Telegram, X (Twitter), and Facebook directly from WordPress.
  * Version:           1.0.0
  * Requires at least: 6.4
