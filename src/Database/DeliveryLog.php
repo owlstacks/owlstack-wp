@@ -93,7 +93,7 @@ class DeliveryLog
         $args = array_merge($defaults, $args);
 
         $where = [];
-        $values = [ $table ]; // First value is always the table name for %i.
+        $values = [];
 
         if ($args['platform'] !== '') {
             $where[] = 'platform = %s';
@@ -117,16 +117,27 @@ class DeliveryLog
 
         $offset = ($args['page'] - 1) * $args['per_page'];
 
-        // Build WHERE fragment directly in the SQL string to avoid dynamic interpolation.
-        $whereSql = ! empty( $where ) ? 'WHERE ' . implode( ' AND ', $where ) : '';
-        $countSql = 'SELECT COUNT(*) FROM %i ' . $whereSql;
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-        $total = (int) $wpdb->get_var( $wpdb->prepare( $countSql, ...$values ) );
+        // Prepare WHERE clause once via $wpdb->prepare() so downstream queries use a safe literal.
+        $preparedWhere = '';
+        if ( ! empty( $where ) ) {
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $where only contains hardcoded placeholder strings.
+            $preparedWhere = 'WHERE ' . $wpdb->prepare( implode( ' AND ', $where ), ...$values );
+        }
 
-        $querySql = 'SELECT * FROM %i ' . $whereSql . " ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d";
-        $queryValues = array_merge( $values, [ $args['per_page'], $offset ] );
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-        $items = $wpdb->get_results( $wpdb->prepare( $querySql, ...$queryValues ) );
+        $total = (int) $wpdb->get_var(
+            $wpdb->prepare( "SELECT COUNT(*) FROM %i $preparedWhere", $table )
+        );
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+        $items = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM %i $preparedWhere ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d",
+                $table,
+                $args['per_page'],
+                $offset
+            )
+        );
 
         return [
             'items' => $items ?: [],
