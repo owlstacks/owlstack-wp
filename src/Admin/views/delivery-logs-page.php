@@ -23,9 +23,9 @@ if (! defined('ABSPATH')) {
 
             <select name="platform">
                 <option value=""><?php esc_html_e('All Platforms', 'owlstack'); ?></option>
-                <?php foreach (['telegram', 'twitter', 'facebook'] as $p) : ?>
-                    <option value="<?php echo esc_attr($p); ?>" <?php selected($args['platform'], $p); ?>>
-                        <?php echo esc_html(ucfirst($p === 'twitter' ? 'X (Twitter)' : $p)); ?>
+                <?php foreach (['telegram', 'twitter', 'facebook'] as $owlstack_p) : ?>
+                    <option value="<?php echo esc_attr($owlstack_p); ?>" <?php selected($args['platform'], $owlstack_p); ?>>
+                        <?php echo esc_html(ucfirst($owlstack_p === 'twitter' ? 'X (Twitter)' : $owlstack_p)); ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -93,34 +93,34 @@ if (! defined('ABSPATH')) {
                         <td colspan="8"><?php esc_html_e('No delivery logs found.', 'owlstack'); ?></td>
                     </tr>
                 <?php else : ?>
-                    <?php foreach ($items as $item) : ?>
+                    <?php foreach ($items as $owlstack_item) : ?>
                         <tr>
                             <th class="check-column">
-                                <input type="checkbox" name="log_ids[]" value="<?php echo esc_attr((string) $item->id); ?>" />
+                                <input type="checkbox" name="log_ids[]" value="<?php echo esc_attr((string) $owlstack_item->id); ?>" />
                             </th>
-                            <td><?php echo esc_html(wp_date(get_option('date_format') . ' ' . get_option('time_format'), strtotime($item->created_at))); ?></td>
+                            <td><?php echo esc_html(wp_date(get_option('date_format') . ' ' . get_option('time_format'), strtotime($owlstack_item->created_at))); ?></td>
                             <td>
-                                <?php if ($item->post_id) : ?>
-                                    <a href="<?php echo esc_url(get_edit_post_link((int) $item->post_id) ?? '#'); ?>">
-                                        <?php echo esc_html(get_the_title((int) $item->post_id) ?: "#{$item->post_id}"); ?>
+                                <?php if ($owlstack_item->post_id) : ?>
+                                    <a href="<?php echo esc_url(get_edit_post_link((int) $owlstack_item->post_id) ?? '#'); ?>">
+                                        <?php echo esc_html(get_the_title((int) $owlstack_item->post_id) ?: "#{$owlstack_item->post_id}"); ?>
                                     </a>
                                 <?php else : ?>
                                     &mdash;
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <span class="owlstack-platform owlstack-platform-<?php echo esc_attr($item->platform); ?>">
-                                    <?php echo esc_html(ucfirst($item->platform === 'twitter' ? 'X (Twitter)' : $item->platform)); ?>
+                                <span class="owlstack-platform owlstack-platform-<?php echo esc_attr($owlstack_item->platform); ?>">
+                                    <?php echo esc_html(ucfirst($owlstack_item->platform === 'twitter' ? 'X (Twitter)' : $owlstack_item->platform)); ?>
                                 </span>
                             </td>
                             <td>
-                                <span class="owlstack-status owlstack-status-<?php echo esc_attr($item->status); ?>">
-                                    <?php echo esc_html(ucfirst($item->status)); ?>
+                                <span class="owlstack-status owlstack-status-<?php echo esc_attr($owlstack_item->status); ?>">
+                                    <?php echo esc_html(ucfirst($owlstack_item->status)); ?>
                                 </span>
                             </td>
                             <td>
-                                <?php if ($item->external_url) : ?>
-                                    <a href="<?php echo esc_url($item->external_url); ?>" target="_blank" rel="noopener">
+                                <?php if ($owlstack_item->external_url) : ?>
+                                    <a href="<?php echo esc_url($owlstack_item->external_url); ?>" target="_blank" rel="noopener">
                                         <?php esc_html_e('View', 'owlstack'); ?> &#8599;
                                     </a>
                                 <?php else : ?>
@@ -128,9 +128,9 @@ if (! defined('ABSPATH')) {
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <?php if ($item->error) : ?>
-                                    <span class="owlstack-error-text" title="<?php echo esc_attr($item->error); ?>">
-                                        <?php echo esc_html(mb_strimwidth($item->error, 0, 80, '...')); ?>
+                                <?php if ($owlstack_item->error) : ?>
+                                    <span class="owlstack-error-text" title="<?php echo esc_attr($owlstack_item->error); ?>">
+                                        <?php echo esc_html(mb_strimwidth($owlstack_item->error, 0, 80, '...')); ?>
                                     </span>
                                 <?php else : ?>
                                     &mdash;
@@ -138,15 +138,15 @@ if (! defined('ABSPATH')) {
                             </td>
                             <td>
                                 <?php
-                                $deleteUrl = wp_nonce_url(
+                                $owlstack_delete_url = wp_nonce_url(
                                     add_query_arg(
-                                        ['action' => 'delete', 'log_id' => $item->id],
+                                        ['action' => 'delete', 'log_id' => $owlstack_item->id],
                                         admin_url('admin.php?page=owlstack-logs'),
                                     ),
-                                    'owlstack_delete_log_' . $item->id,
+                                    'owlstack_delete_log_' . $owlstack_item->id,
                                 );
                                 ?>
-                                <a href="<?php echo esc_url($deleteUrl); ?>" class="owlstack-delete-link" onclick="return confirm('<?php esc_attr_e('Delete this log entry?', 'owlstack'); ?>');">
+                                <a href="<?php echo esc_url($owlstack_delete_url); ?>" class="owlstack-delete-link" onclick="return confirm('<?php esc_attr_e('Delete this log entry?', 'owlstack'); ?>');">
                                     <?php esc_html_e('Delete', 'owlstack'); ?>
                                 </a>
                             </td>

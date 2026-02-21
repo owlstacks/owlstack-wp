@@ -28,21 +28,21 @@ if (! defined('ABSPATH')) {
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($platforms as $key => $platform): ?>
-                <?php $isConfigured = in_array($key, $configuredNames, true); ?>
+            <?php foreach ($platforms as $owlstack_key => $owlstack_platform): ?>
+                <?php $owlstack_is_configured = in_array($owlstack_key, $configuredNames, true); ?>
                 <tr>
                     <td>
-                        <strong><?php echo esc_html($platform['label']); ?></strong>
+                        <strong><?php echo esc_html($owlstack_platform['label']); ?></strong>
                     </td>
                     <td>
-                        <?php if ($isConfigured): ?>
+                        <?php if ($owlstack_is_configured): ?>
                             <span class="owlstack-badge owlstack-badge--success"><?php esc_html_e('Connected', 'owlstack'); ?></span>
                         <?php else: ?>
                             <span class="owlstack-badge owlstack-badge--pending"><?php esc_html_e('Not configured', 'owlstack'); ?></span>
                         <?php endif; ?>
                     </td>
                     <td>
-                        <a href="<?php echo esc_url(admin_url("admin.php?page=owlstack-{$key}")); ?>" class="button button-small">
+                        <a href="<?php echo esc_url(admin_url("admin.php?page=owlstack-{$owlstack_key}")); ?>" class="button button-small">
                             <?php esc_html_e('Configure', 'owlstack'); ?>
                         </a>
                     </td>

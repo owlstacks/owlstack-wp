@@ -13,7 +13,7 @@ if (! defined('ABSPATH')) {
 
 wp_nonce_field('owlstack_meta_box', 'owlstack_meta_box_nonce');
 
-$platformLabels = \Owlstack\WordPress\Admin\SettingsPage::platforms();
+$owlstack_platform_labels = \Owlstack\WordPress\Admin\SettingsPage::platforms();
 ?>
 
 <div class="owlstack-meta-box">
@@ -33,27 +33,31 @@ $platformLabels = \Owlstack\WordPress\Admin\SettingsPage::platforms();
 
         <table class="owlstack-platform-list">
             <tbody>
-            <?php foreach ($configuredPlatforms as $platform) :
-                $label = $platformLabels[$platform]['label'] ?? ucfirst($platform);
+            <?php foreach ($configuredPlatforms as $owlstack_platform) :
+                $owlstack_label = $owlstack_platform_labels[$owlstack_platform]['label'] ?? ucfirst($owlstack_platform);
             ?>
-                <tr class="owlstack-platform-row" data-platform="<?php echo esc_attr($platform); ?>">
+                <tr class="owlstack-platform-row" data-platform="<?php echo esc_attr($owlstack_platform); ?>">
                     <td class="owlstack-platform-checkbox-col">
                         <input
                             type="checkbox"
                             name="owlstack_platforms[]"
-                            value="<?php echo esc_attr($platform); ?>"
-                            <?php checked(in_array($platform, $selectedPlatforms, true)); ?>
+                            value="<?php echo esc_attr($owlstack_platform); ?>"
+                            <?php checked(in_array($owlstack_platform, $selectedPlatforms, true)); ?>
                         />
                     </td>
                     <td class="owlstack-platform-name-col">
-                        <span class="owlstack-badge owlstack-badge--<?php echo esc_attr($platform); ?>"><?php echo esc_html($label); ?></span>
+                        <span class="owlstack-badge owlstack-badge--<?php echo esc_attr($owlstack_platform); ?>"><?php echo esc_html($owlstack_label); ?></span>
                     </td>
                     <td class="owlstack-platform-action-col">
                         <button type="button"
                                 class="button button-small owlstack-publish-single-btn"
                                 data-post-id="<?php echo esc_attr((string) $post->ID); ?>"
-                                data-platform="<?php echo esc_attr($platform); ?>"
-                                title="<?php echo esc_attr(sprintf(__('Publish to %s', 'owlstack'), $label)); ?>">
+                                data-platform="<?php echo esc_attr($owlstack_platform); ?>"
+                                title="<?php echo esc_attr(sprintf(
+                                    /* translators: %s: platform name */
+                                    __('Publish to %s', 'owlstack'),
+                                    $owlstack_label
+                                )); ?>">
                             <?php esc_html_e('Publish', 'owlstack'); ?>
                         </button>
                         <span class="spinner"></span>
