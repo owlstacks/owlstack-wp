@@ -56,9 +56,8 @@ class DeliveryLogTable
 
         $tableName = $wpdb->prefix . self::TABLE_NAME;
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $tableName is a safe prefixed table name.
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
-        $wpdb->query("DROP TABLE IF EXISTS {$tableName}");
+        $wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $tableName ) );
     }
 
     /**
