@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress\Rest;
 
+defined( 'ABSPATH' ) || exit;
+
 use Owlstack\Core\Content\Post;
 use Owlstack\WordPress\Admin\MetaBox;
 use Owlstack\WordPress\Database\DeliveryLog;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress;
 
+defined( 'ABSPATH' ) || exit;
+
 use Owlstack\Core\Config\OwlstackConfig;
 use Owlstack\Core\Events\Contracts\EventDispatcherInterface;
 use Owlstack\Core\Formatting\CharacterTruncator;

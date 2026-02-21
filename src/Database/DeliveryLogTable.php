@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress\Database;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Manages the delivery log database table creation and schema.
  */

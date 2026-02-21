@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress\Auth;
 
+defined( 'ABSPATH' ) || exit;
+
 use DateTimeImmutable;
 use Owlstack\Core\Auth\AccessToken;
 use Owlstack\Core\Auth\Contracts\TokenStoreInterface;

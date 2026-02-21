@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress\Events;
 
+defined( 'ABSPATH' ) || exit;
+
 use Owlstack\Core\Events\Contracts\EventDispatcherInterface;
 
 /**

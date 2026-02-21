@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Handles plugin deactivation tasks.
  */

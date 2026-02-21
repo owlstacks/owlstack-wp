@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress\Publishing;
 
+defined( 'ABSPATH' ) || exit;
+
 use Owlstack\Core\Config\OwlstackConfig;
 use Owlstack\Core\Content\Media;
 use Owlstack\Core\Content\MediaCollection;

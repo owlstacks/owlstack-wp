@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress;
 
+defined( 'ABSPATH' ) || exit;
+
 use Owlstack\WordPress\Database\DeliveryLogTable;
 
 /**

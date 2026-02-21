@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress\Admin;
 
+defined( 'ABSPATH' ) || exit;
+
 use Owlstack\WordPress\Database\DeliveryLog;
 
 /**

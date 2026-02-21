@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress\Publishing;
 
+defined( 'ABSPATH' ) || exit;
+
 use Owlstack\WordPress\Admin\MetaBox;
 use Owlstack\WordPress\Plugin;
 use WP_Post;

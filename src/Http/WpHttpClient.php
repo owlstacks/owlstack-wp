@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress\Http;
 
+defined( 'ABSPATH' ) || exit;
+
 use Owlstack\Core\Exceptions\OwlstackException;
 use Owlstack\Core\Http\Contracts\HttpClientInterface;
 

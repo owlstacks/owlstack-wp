@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Owlstack\WordPress\Admin;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Registers the Owlstack admin settings page and per-platform sub-pages.
  */
