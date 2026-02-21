@@ -93,7 +93,7 @@ class DeliveryLog
         $args = array_merge($defaults, $args);
 
         $where = [];
-        $values = [];
+        $values = [ $table ]; // First value is always the table name for %i.
 
         if ($args['platform'] !== '') {
             $where[] = 'platform = %s';
@@ -110,8 +110,6 @@ class DeliveryLog
             $values[] = $args['post_id'];
         }
 
-        $whereClause = ! empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
-
         // Validate orderby to prevent SQL injection.
         $allowedOrderby = ['id', 'post_id', 'platform', 'status', 'created_at'];
         $orderby = in_array($args['orderby'], $allowedOrderby, true) ? $args['orderby'] : 'created_at';
@@ -119,16 +117,14 @@ class DeliveryLog
 
         $offset = ($args['page'] - 1) * $args['per_page'];
 
-        // Build count SQL using %i for the table name.
-        $countSql = "SELECT COUNT(*) FROM %i {$whereClause}";
-        $countValues = array_merge( [ $table ], $values );
+        // Build WHERE fragment directly in the SQL string to avoid dynamic interpolation.
+        $whereSql = ! empty( $where ) ? 'WHERE ' . implode( ' AND ', $where ) : '';
+        $countSql = 'SELECT COUNT(*) FROM %i ' . $whereSql;
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-        $total = (int) $wpdb->get_var( $wpdb->prepare( $countSql, ...$countValues ) );
+        $total = (int) $wpdb->get_var( $wpdb->prepare( $countSql, ...$values ) );
 
-        // Build paginated query using %i for the table name.
-        // $orderby is validated against $allowedOrderby whitelist; $order is strictly ASC or DESC.
-        $querySql = "SELECT * FROM %i {$whereClause} ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d";
-        $queryValues = array_merge( [ $table ], $values, [ $args['per_page'], $offset ] );
+        $querySql = 'SELECT * FROM %i ' . $whereSql . " ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d";
+        $queryValues = array_merge( $values, [ $args['per_page'], $offset ] );
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
         $items = $wpdb->get_results( $wpdb->prepare( $querySql, ...$queryValues ) );
 
