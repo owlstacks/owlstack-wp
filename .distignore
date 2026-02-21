@@ -1,0 +1,18 @@
+# Directories
+.git
+.github
+tests
+node_modules
+
+# Files
+.gitignore
+.distignore
+.editorconfig
+.phpcs.xml
+.phpcs.xml.dist
+phpunit.xml
+phpunit.xml.dist
+composer.json
+composer.lock
+CONTRIBUTING.md
+CHANGELOG.md

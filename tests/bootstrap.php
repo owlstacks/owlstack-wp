@@ -1,5 +1,8 @@
 <?php
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Test stubs intentionally mimic WordPress core functions.
+// phpcs:disable WordPress.WP.AlternativeFunctions.strip_tags_strip_tags -- Test stub mirrors core sanitize_text_field().
+
 /**
  * WordPress function stubs for unit testing.
  *
@@ -10,6 +13,10 @@
  *
  * @package Owlstack\WordPress\Tests
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    define( 'ABSPATH', __DIR__ . '/../' );
+}
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
