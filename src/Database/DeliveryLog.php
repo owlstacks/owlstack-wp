@@ -123,12 +123,13 @@ class DeliveryLog
         // Get total count.
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table is a safe prefixed table name; $whereClause uses placeholders.
         $countSql = "SELECT COUNT(*) FROM {$table} {$whereClause}";
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        $total = ! empty($values)
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-            ? (int) $wpdb->get_var($wpdb->prepare($countSql, ...$values))
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-            : (int) $wpdb->get_var($countSql);
+        if ( ! empty( $values ) ) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+            $total = (int) $wpdb->get_var( $wpdb->prepare( $countSql, ...$values ) );
+        } else {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+            $total = (int) $wpdb->get_var( $countSql );
+        }
 
         // Get paginated results.
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table, $whereClause, $orderby, $order are all validated/safe.
