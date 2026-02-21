@@ -56,8 +56,7 @@ class DeliveryLog
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         return $wpdb->get_row(
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table is a safe prefixed table name.
-            $wpdb->prepare("SELECT * FROM {$table} WHERE id = %d", $id)
+            $wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', $table, $id )
         );
     }
 
