@@ -119,23 +119,18 @@ class DeliveryLog
 
         $offset = ($args['page'] - 1) * $args['per_page'];
 
-        // Get total count.
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table is a safe prefixed table name; $whereClause uses placeholders.
-        $countSql = "SELECT COUNT(*) FROM {$table} {$whereClause}";
-        if ( ! empty( $values ) ) {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-            $total = (int) $wpdb->get_var( $wpdb->prepare( $countSql, ...$values ) );
-        } else {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-            $total = (int) $wpdb->get_var( $countSql );
-        }
-
-        // Get paginated results.
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table, $whereClause, $orderby, $order are all validated/safe.
-        $querySql = "SELECT * FROM {$table} {$whereClause} ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d";
-        $queryValues = array_merge($values, [$args['per_page'], $offset]);
+        // Build count SQL using %i for the table name.
+        $countSql = "SELECT COUNT(*) FROM %i {$whereClause}";
+        $countValues = array_merge( [ $table ], $values );
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
-        $items = $wpdb->get_results($wpdb->prepare($querySql, ...$queryValues));
+        $total = (int) $wpdb->get_var( $wpdb->prepare( $countSql, ...$countValues ) );
+
+        // Build paginated query using %i for the table name.
+        // $orderby is validated against $allowedOrderby whitelist; $order is strictly ASC or DESC.
+        $querySql = "SELECT * FROM %i {$whereClause} ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d";
+        $queryValues = array_merge( [ $table ], $values, [ $args['per_page'], $offset ] );
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+        $items = $wpdb->get_results( $wpdb->prepare( $querySql, ...$queryValues ) );
 
         return [
             'items' => $items ?: [],
