@@ -97,9 +97,6 @@ class Plugin
             $this->registerAdminHooks();
         }
 
-        // Load translations.
-        add_action('init', [$this, 'loadTextDomain']);
-
         // Show activation notices.
         add_action('admin_notices', [$this, 'showActivationNotice']);
 
@@ -329,18 +326,6 @@ class Plugin
         add_action('admin_menu', [$logsPage, 'register']);
 
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminAssets']);
-    }
-
-    /**
-     * Load the plugin text domain for translations.
-     */
-    public function loadTextDomain(): void
-    {
-        load_plugin_textdomain(
-            'owlstack-wp',
-            false,
-            dirname(OWLSTACK_BASENAME) . '/languages',
-        );
     }
 
     /**
