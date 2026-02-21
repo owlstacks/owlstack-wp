@@ -25,6 +25,7 @@ class DeliveryLog
 
         $status = $result->success ? DeliveryStatus::Published->value : DeliveryStatus::Failed->value;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
         $wpdb->insert(
             DeliveryLogTable::tableName(),
             [
@@ -53,8 +54,11 @@ class DeliveryLog
 
         $table = DeliveryLogTable::tableName();
 
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        return $wpdb->get_row($wpdb->prepare("SELECT * FROM {$table} WHERE id = %d", $id));
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        return $wpdb->get_row(
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table is a safe prefixed table name.
+            $wpdb->prepare("SELECT * FROM {$table} WHERE id = %d", $id)
+        );
     }
 
     /**
@@ -117,17 +121,21 @@ class DeliveryLog
         $offset = ($args['page'] - 1) * $args['per_page'];
 
         // Get total count.
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $countQuery = "SELECT COUNT(*) FROM {$table} {$whereClause}";
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table is a safe prefixed table name; $whereClause uses placeholders.
+        $countSql = "SELECT COUNT(*) FROM {$table} {$whereClause}";
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $total = ! empty($values)
-            ? (int) $wpdb->get_var($wpdb->prepare($countQuery, ...$values))
-            : (int) $wpdb->get_var($countQuery);
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            ? (int) $wpdb->get_var($wpdb->prepare($countSql, ...$values))
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            : (int) $wpdb->get_var($countSql);
 
         // Get paginated results.
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $query = "SELECT * FROM {$table} {$whereClause} ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d";
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $table, $whereClause, $orderby, $order are all validated/safe.
+        $querySql = "SELECT * FROM {$table} {$whereClause} ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d";
         $queryValues = array_merge($values, [$args['per_page'], $offset]);
-        $items = $wpdb->get_results($wpdb->prepare($query, ...$queryValues));
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared
+        $items = $wpdb->get_results($wpdb->prepare($querySql, ...$queryValues));
 
         return [
             'items' => $items ?: [],
@@ -142,6 +150,7 @@ class DeliveryLog
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $deleted = $wpdb->delete(
             DeliveryLogTable::tableName(),
             ['id' => $id],
@@ -158,6 +167,7 @@ class DeliveryLog
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         return (int) $wpdb->delete(
             DeliveryLogTable::tableName(),
             ['post_id' => $postId],
