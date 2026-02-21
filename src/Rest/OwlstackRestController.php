@@ -152,9 +152,11 @@ class OwlstackRestController
 
             return new \WP_REST_Response($result, $statusCode);
         } catch (\Throwable $e) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('[Owlstack] Test connection error: ' . $e->getMessage());
-            }
+            wp_trigger_error(
+                __METHOD__,
+                '[Owlstack] Test connection error: ' . $e->getMessage(),
+                E_USER_NOTICE,
+            );
 
             return new \WP_REST_Response([
                 'success' => false,
@@ -230,9 +232,11 @@ class OwlstackRestController
                 ),
             ], 422);
         } catch (\Throwable $e) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log("[Owlstack] Test message error ({$platform}): " . $e->getMessage());
-            }
+            wp_trigger_error(
+                __METHOD__,
+                "[Owlstack] Test message error ({$platform}): " . $e->getMessage(),
+                E_USER_NOTICE,
+            );
 
             return new \WP_REST_Response([
                 'success' => false,
@@ -412,9 +416,11 @@ class OwlstackRestController
                 ),
             ];
         } catch (\Throwable $e) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log("[Owlstack] {$label} test error: " . $e->getMessage());
-            }
+            wp_trigger_error(
+                __METHOD__,
+                "[Owlstack] {$label} test error: " . $e->getMessage(),
+                E_USER_NOTICE,
+            );
 
             return [
                 'success' => false,

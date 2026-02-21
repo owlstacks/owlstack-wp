@@ -91,9 +91,11 @@ class WpTokenStore implements TokenStoreInterface
         $encrypted = openssl_encrypt($value, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
 
         if ($encrypted === false) {
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('[Owlstack] OpenSSL encryption failed. Storing token with base64 encoding only. Install the OpenSSL PHP extension for proper encryption.');
-            }
+            wp_trigger_error(
+                __METHOD__,
+                '[Owlstack] OpenSSL encryption failed. Storing token with base64 encoding only. Install the OpenSSL PHP extension for proper encryption.',
+                E_USER_NOTICE,
+            );
 
             return base64_encode($value); // Fallback: base64 if OpenSSL unavailable.
         }
