@@ -1,8 +1,24 @@
 # Owlstack for WordPress
 
-WordPress plugin for [Owlstack](https://owlstack.com).
+WordPress plugin for [Owlstack](https://owlstack.dev) — publish content to multiple social media platforms directly from WordPress.
 
 Integrates `owlstack/owlstack-core` into WordPress sites — admin settings, post meta boxes, delivery logs, REST API endpoints, and more.
+
+## Supported Platforms
+
+| Platform | Status |
+|----------|--------|
+| Telegram | ✅ Supported |
+| X (Twitter) | ✅ Supported |
+| Facebook | ✅ Supported |
+| Instagram | ✅ Supported |
+| LinkedIn | ✅ Supported |
+| Discord | ✅ Supported |
+| Pinterest | ✅ Supported |
+| Reddit | ✅ Supported |
+| Slack | ✅ Supported |
+| Tumblr | ✅ Supported |
+| WhatsApp | ✅ Supported |
 
 ## Requirements
 
@@ -11,19 +27,20 @@ Integrates `owlstack/owlstack-core` into WordPress sites — admin settings, pos
 
 ## Installation
 
-1. Download the plugin zip or clone this repository into `wp-content/plugins/owlstack-wp`.
+1. Download the plugin zip or clone this repository into `wp-content/plugins/owlstack`.
 2. For development, run `composer install` in the plugin directory.
 3. Activate the plugin from WP Admin → Plugins.
 4. Go to **Owlstack > Settings** to configure your platform credentials.
 
 ## Features
 
-- **Admin Settings Page** — Configure platform credentials (Telegram, X/Twitter, Facebook) and proxy settings
+- **Admin Settings Page** — Configure platform credentials and proxy settings from a clean admin UI
 - **Publish Meta Box** — Select platforms and publish directly from the post editor
+- **Auto-Publish** — Automatically share posts when they're published
 - **Delivery Logs** — Track all publishing activity with status, errors, and external links
 - **REST API** — AJAX endpoints for connection testing, manual publishing, and log management
 - **WP HTTP API** — Uses native WordPress HTTP functions instead of cURL
-- **WordPress Events** — Hooks into `do_action` for `owlstack_post_published` and `owlstack_post_failed`
+- **WordPress Events** — Full hook support with `owlstack_post_published` and `owlstack_post_failed` actions
 - **Token Storage** — Encrypted OAuth token storage via `wp_options`
 
 ## Usage
@@ -36,9 +53,14 @@ owlstack()->telegram('Hello from WordPress!');
 
 // Publish to Twitter/X
 owlstack()->twitter('Hello from WordPress!');
+// or
+owlstack()->x('Hello from WordPress!');
 
 // Publish to Facebook
 owlstack()->facebook('Hello from WordPress!', 'link', ['link' => 'https://example.com']);
+
+// Publish to a specific platform by name
+owlstack()->publish($post, 'linkedin');
 
 // Publish to all configured platforms
 $post = new \Owlstack\Core\Content\Post(
@@ -70,7 +92,7 @@ Enable via the Owlstack meta box in the post editor. Select platforms and the po
 
 ## Dependencies
 
-- `owlstack/owlstack-core` (bundled via Composer)
+- [`owlstack/owlstack-core`](https://github.com/AliKarimi79/owlstack-core) (bundled via Composer)
 
 ## License
 
