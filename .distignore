@@ -3,10 +3,12 @@
 .github
 tests
 node_modules
+.phpunit.cache
 
 # Files
 .gitignore
 .distignore
+.DS_Store
 .editorconfig
 .phpcs.xml
 .phpcs.xml.dist
