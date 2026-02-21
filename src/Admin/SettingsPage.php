@@ -142,8 +142,8 @@ class SettingsPage
     public function register(): void
     {
         add_menu_page(
-            page_title: __('Owlstack', 'owlstack-wp'),
-            menu_title: __('Owlstack', 'owlstack-wp'),
+            page_title: __('Owlstack', 'owlstack'),
+            menu_title: __('Owlstack', 'owlstack'),
             capability: 'manage_options',
             menu_slug: 'owlstack',
             callback: [$this, 'renderSettings'],
@@ -153,8 +153,8 @@ class SettingsPage
 
         add_submenu_page(
             parent_slug: 'owlstack',
-            page_title: __('Settings', 'owlstack-wp'),
-            menu_title: __('Settings', 'owlstack-wp'),
+            page_title: __('Settings', 'owlstack'),
+            menu_title: __('Settings', 'owlstack'),
             capability: 'manage_options',
             menu_slug: 'owlstack',
             callback: [$this, 'renderSettings'],
@@ -165,7 +165,7 @@ class SettingsPage
                 parent_slug: 'owlstack',
                 page_title: sprintf(
                     /* translators: %s: platform name */
-                    __('%s Settings', 'owlstack-wp'),
+                    __('%s Settings', 'owlstack'),
                     $platform['label'],
                 ),
                 menu_title: $platform['label'],
@@ -193,16 +193,16 @@ class SettingsPage
         // ── Proxy section on main settings page ──────────────────────────
         add_settings_section(
             'owlstack_proxy',
-            __('Proxy', 'owlstack-wp'),
-            fn () => printf('<p>%s</p>', esc_html__('Configure a proxy for servers that cannot access social networks directly.', 'owlstack-wp')),
+            __('Proxy', 'owlstack'),
+            fn () => printf('<p>%s</p>', esc_html__('Configure a proxy for servers that cannot access social networks directly.', 'owlstack')),
             'owlstack',
         );
 
-        $this->addProxyField('type', __('Proxy Type', 'owlstack-wp'));
-        $this->addProxyField('hostname', __('Hostname', 'owlstack-wp'));
-        $this->addProxyField('port', __('Port', 'owlstack-wp'));
-        $this->addProxyField('username', __('Username', 'owlstack-wp'));
-        $this->addProxyField('password', __('Password', 'owlstack-wp'), true);
+        $this->addProxyField('type', __('Proxy Type', 'owlstack'));
+        $this->addProxyField('hostname', __('Hostname', 'owlstack'));
+        $this->addProxyField('port', __('Port', 'owlstack'));
+        $this->addProxyField('username', __('Username', 'owlstack'));
+        $this->addProxyField('password', __('Password', 'owlstack'), true);
 
         // ── Per-platform sections ────────────────────────────────────────
         foreach (self::PLATFORMS as $platformKey => $platform) {
@@ -212,7 +212,7 @@ class SettingsPage
             add_settings_section(
                 $sectionId,
                 $platform['label'],
-                fn () => printf('<p>%s</p>', esc_html__($platform['description'], 'owlstack-wp')),
+                fn () => printf('<p>%s</p>', esc_html__($platform['description'], 'owlstack')),
                 $pageSlug,
             );
 
@@ -221,10 +221,10 @@ class SettingsPage
                 $hint = $field['hint'] ?? null;
 
                 if ($type === 'select') {
-                    $this->addSelectField($platformKey, $fieldKey, __($field['label'], 'owlstack-wp'), $field['options'], $pageSlug, $sectionId);
+                    $this->addSelectField($platformKey, $fieldKey, __($field['label'], 'owlstack'), $field['options'], $pageSlug, $sectionId);
                 } else {
                     $isSecret = $field['secret'] ?? false;
-                    $this->addField($platformKey, $fieldKey, __($field['label'], 'owlstack-wp'), $isSecret, $pageSlug, $sectionId, $hint);
+                    $this->addField($platformKey, $fieldKey, __($field['label'], 'owlstack'), $isSecret, $pageSlug, $sectionId, $hint);
                 }
             }
         }

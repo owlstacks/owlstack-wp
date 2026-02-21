@@ -16,15 +16,15 @@ if (! defined('ABSPATH')) {
     <?php settings_errors('owlstack_settings'); ?>
 
     <!-- Platform overview -->
-    <h2><?php esc_html_e('Platforms', 'owlstack-wp'); ?></h2>
-    <p><?php esc_html_e('Configure each platform from its own settings page. Platforms with valid credentials are marked as connected.', 'owlstack-wp'); ?></p>
+    <h2><?php esc_html_e('Platforms', 'owlstack'); ?></h2>
+    <p><?php esc_html_e('Configure each platform from its own settings page. Platforms with valid credentials are marked as connected.', 'owlstack'); ?></p>
 
     <table class="wp-list-table widefat fixed striped owlstack-platform-overview">
         <thead>
             <tr>
-                <th><?php esc_html_e('Platform', 'owlstack-wp'); ?></th>
-                <th><?php esc_html_e('Status', 'owlstack-wp'); ?></th>
-                <th><?php esc_html_e('Actions', 'owlstack-wp'); ?></th>
+                <th><?php esc_html_e('Platform', 'owlstack'); ?></th>
+                <th><?php esc_html_e('Status', 'owlstack'); ?></th>
+                <th><?php esc_html_e('Actions', 'owlstack'); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -36,14 +36,14 @@ if (! defined('ABSPATH')) {
                     </td>
                     <td>
                         <?php if ($isConfigured): ?>
-                            <span class="owlstack-badge owlstack-badge--success"><?php esc_html_e('Connected', 'owlstack-wp'); ?></span>
+                            <span class="owlstack-badge owlstack-badge--success"><?php esc_html_e('Connected', 'owlstack'); ?></span>
                         <?php else: ?>
-                            <span class="owlstack-badge owlstack-badge--pending"><?php esc_html_e('Not configured', 'owlstack-wp'); ?></span>
+                            <span class="owlstack-badge owlstack-badge--pending"><?php esc_html_e('Not configured', 'owlstack'); ?></span>
                         <?php endif; ?>
                     </td>
                     <td>
                         <a href="<?php echo esc_url(admin_url("admin.php?page=owlstack-{$key}")); ?>" class="button button-small">
-                            <?php esc_html_e('Configure', 'owlstack-wp'); ?>
+                            <?php esc_html_e('Configure', 'owlstack'); ?>
                         </a>
                     </td>
                 </tr>
@@ -56,19 +56,19 @@ if (! defined('ABSPATH')) {
         <?php
         settings_fields('owlstack_settings_group');
         do_settings_sections('owlstack');
-        submit_button(__('Save Settings', 'owlstack-wp'));
+        submit_button(__('Save Settings', 'owlstack'));
         ?>
     </form>
 
     <!-- Support section -->
     <div class="owlstack-support-section">
-        <h2><?php esc_html_e('Need Help?', 'owlstack-wp'); ?></h2>
+        <h2><?php esc_html_e('Need Help?', 'owlstack'); ?></h2>
         <p>
             <?php
             printf(
                 /* translators: %s: link to OwlStack documentation */
-                esc_html__('Need help setting up your social media platforms such as Telegram, Twitter, Facebook, Instagram, LinkedIn, or others? Our documentation covers step-by-step guides for configuring each platform with the WordPress plugin. Visit the %s to get started.', 'owlstack-wp'),
-                '<a href="https://docs.owlstack.dev" target="_blank" rel="noopener noreferrer">' . esc_html__('OwlStack Documentation', 'owlstack-wp') . '</a>'
+                esc_html__('Need help setting up your social media platforms such as Telegram, Twitter, Facebook, Instagram, LinkedIn, or others? Our documentation covers step-by-step guides for configuring each platform with the WordPress plugin. Visit the %s to get started.', 'owlstack'),
+                '<a href="https://docs.owlstack.dev" target="_blank" rel="noopener noreferrer">' . esc_html__('OwlStack Documentation', 'owlstack') . '</a>'
             );
             ?>
         </p>

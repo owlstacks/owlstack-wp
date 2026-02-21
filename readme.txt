@@ -47,7 +47,7 @@ Owlstack provides a simple PHP API for publishing from themes or other plugins:
 
 == Installation ==
 
-1. Upload the `owlstack-wp` folder to the `/wp-content/plugins/` directory, or install directly through the WordPress plugins screen.
+1. Upload the `owlstack` folder to the `/wp-content/plugins/` directory, or install directly through the WordPress plugins screen.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. Go to **Owlstack > Settings** to configure your platform credentials.
 
