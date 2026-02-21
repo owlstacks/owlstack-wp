@@ -27,6 +27,7 @@ class WpEventDispatcher implements EventDispatcherInterface
         $hookName = 'owlstack_' . $this->toSnakeCase($className);
 
         /** @phpstan-ignore-next-line */
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Hook is always prefixed with 'owlstack_'.
         do_action($hookName, $event);
     }
 
