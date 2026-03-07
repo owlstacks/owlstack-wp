@@ -136,7 +136,7 @@ class OwlstackRestController
                     'success' => false,
                     'message' => sprintf(
                         /* translators: %s: platform name */
-                        __('Platform "%s" is not configured.', 'owlstack'),
+                        __('Platform "%s" is not configured.', 'owlstack-wp'),
                         $platform,
                     ),
                 ], 400);
@@ -158,7 +158,7 @@ class OwlstackRestController
 
             return new \WP_REST_Response([
                 'success' => false,
-                'message' => __('An internal error occurred while testing the connection.', 'owlstack'),
+                'message' => __('An internal error occurred while testing the connection.', 'owlstack-wp'),
             ], 500);
         }
     }
@@ -180,7 +180,7 @@ class OwlstackRestController
                     'success' => false,
                     'message' => sprintf(
                         /* translators: %s: platform name */
-                        __('Platform "%s" is not configured. Save your credentials first.', 'owlstack'),
+                        __('Platform "%s" is not configured. Save your credentials first.', 'owlstack-wp'),
                         $label,
                     ),
                 ], 400);
@@ -212,7 +212,7 @@ class OwlstackRestController
                     'success'      => true,
                     'message'      => sprintf(
                         /* translators: %s: platform name */
-                        __('Test message sent to %s successfully!', 'owlstack'),
+                        __('Test message sent to %s successfully!', 'owlstack-wp'),
                         $label,
                     ),
                     'external_id'  => $result->externalId,
@@ -224,9 +224,9 @@ class OwlstackRestController
                 'success' => false,
                 'message' => sprintf(
                     /* translators: 1: platform name, 2: error message */
-                    __('Failed to send test message to %1$s: %2$s', 'owlstack'),
+                    __('Failed to send test message to %1$s: %2$s', 'owlstack-wp'),
                     $label,
-                    $result->error ?? __('Unknown error.', 'owlstack'),
+                    $result->error ?? __('Unknown error.', 'owlstack-wp'),
                 ),
             ], 422);
         } catch (\Throwable $e) {
@@ -240,7 +240,7 @@ class OwlstackRestController
                 'success' => false,
                 'message' => sprintf(
                     /* translators: %s: platform name */
-                    __('An error occurred while sending the test message to %s.', 'owlstack'),
+                    __('An error occurred while sending the test message to %s.', 'owlstack-wp'),
                     $label,
                 ),
             ], 500);
@@ -258,7 +258,7 @@ class OwlstackRestController
         if (! $wpPost instanceof \WP_Post) {
             return new \WP_REST_Response([
                 'success' => false,
-                'message' => __('Post not found.', 'owlstack'),
+                'message' => __('Post not found.', 'owlstack-wp'),
             ], 404);
         }
 
@@ -270,7 +270,7 @@ class OwlstackRestController
         if (empty($platforms)) {
             return new \WP_REST_Response([
                 'success' => false,
-                'message' => __('No platforms selected.', 'owlstack'),
+                'message' => __('No platforms selected.', 'owlstack-wp'),
             ], 400);
         }
 
@@ -338,7 +338,7 @@ class OwlstackRestController
         if ($log === null) {
             return new \WP_REST_Response([
                 'success' => false,
-                'message' => __('Log entry not found.', 'owlstack'),
+                'message' => __('Log entry not found.', 'owlstack-wp'),
             ], 404);
         }
 
@@ -346,7 +346,7 @@ class OwlstackRestController
 
         return new \WP_REST_Response([
             'success' => true,
-            'message' => __('Log entry deleted.', 'owlstack'),
+            'message' => __('Log entry deleted.', 'owlstack-wp'),
         ]);
     }
 
@@ -399,7 +399,7 @@ class OwlstackRestController
                     'success' => true,
                     'message' => sprintf(
                         /* translators: %s: platform name */
-                        __('%s connection successful.', 'owlstack'),
+                        __('%s connection successful.', 'owlstack-wp'),
                         $label,
                     ),
                 ];
@@ -409,7 +409,7 @@ class OwlstackRestController
                 'success' => false,
                 'message' => sprintf(
                     /* translators: %s: platform name */
-                    __('Failed to validate %s credentials.', 'owlstack'),
+                    __('Failed to validate %s credentials.', 'owlstack-wp'),
                     $label,
                 ),
             ];
@@ -424,7 +424,7 @@ class OwlstackRestController
                 'success' => false,
                 'message' => sprintf(
                     /* translators: %s: platform name */
-                    __('Failed to connect to %s. Check your credentials and try again.', 'owlstack'),
+                    __('Failed to connect to %s. Check your credentials and try again.', 'owlstack-wp'),
                     $label,
                 ),
             ];

@@ -11,7 +11,7 @@
  * Author URI:        https://owlstack.dev
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       owlstack
+ * Text Domain:       owlstack-wp
  * Domain Path:       /languages
  */
 
@@ -33,7 +33,7 @@ define('OWLSTACK_BASENAME', plugin_basename(__FILE__));
 if (! file_exists(OWLSTACK_DIR . 'vendor/autoload.php')) {
     add_action('admin_notices', static function (): void {
         echo '<div class="notice notice-error"><p>';
-        echo esc_html__('Owlstack requires Composer dependencies. Please run "composer install" in the plugin directory.', 'owlstack');
+        echo esc_html__('Owlstack requires Composer dependencies. Please run "composer install" in the plugin directory.', 'owlstack-wp');
         echo '</p></div>';
     });
 

@@ -34,7 +34,7 @@ class Activator
         if (! extension_loaded('openssl')) {
             set_transient('owlstack_activation_notice', [
                 'type'    => 'warning',
-                'message' => __('Owlstack: The OpenSSL PHP extension is not installed. OAuth tokens will be stored with base64 encoding only (not encrypted). Install the OpenSSL extension for production use.', 'owlstack'),
+                'message' => __('Owlstack: The OpenSSL PHP extension is not installed. OAuth tokens will be stored with base64 encoding only (not encrypted). Install the OpenSSL extension for production use.', 'owlstack-wp'),
             ], 60);
         }
     }
