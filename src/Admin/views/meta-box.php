@@ -22,14 +22,14 @@ $owlstack_platform_labels = \Owlstack\WordPress\Admin\SettingsPage::platforms();
             <?php
             printf(
                 /* translators: %s: link open tag, %s: link close tag */
-                esc_html__('No platforms configured. %1$sConfigure platforms%2$s in Owlstack settings.', 'owlstack'),
+                esc_html__('No platforms configured. %1$sConfigure platforms%2$s in Owlstack settings.', 'owlstack-wp'),
                 '<a href="' . esc_url(admin_url('admin.php?page=owlstack')) . '">',
                 '</a>',
             );
             ?>
         </p>
     <?php else : ?>
-        <p class="owlstack-meta-label"><strong><?php esc_html_e('Publish to:', 'owlstack'); ?></strong></p>
+        <p class="owlstack-meta-label"><strong><?php esc_html_e('Publish to:', 'owlstack-wp'); ?></strong></p>
 
         <table class="owlstack-platform-list">
             <tbody>
@@ -55,10 +55,10 @@ $owlstack_platform_labels = \Owlstack\WordPress\Admin\SettingsPage::platforms();
                                 data-platform="<?php echo esc_attr($owlstack_platform); ?>"
                                 title="<?php echo esc_attr(sprintf(
                                     /* translators: %s: platform name */
-                                    __('Publish to %s', 'owlstack'),
+                                    __('Publish to %s', 'owlstack-wp'),
                                     $owlstack_label
                                 )); ?>">
-                            <?php esc_html_e('Publish', 'owlstack'); ?>
+                            <?php esc_html_e('Publish', 'owlstack-wp'); ?>
                         </button>
                         <span class="spinner"></span>
                     </td>
@@ -79,13 +79,13 @@ $owlstack_platform_labels = \Owlstack\WordPress\Admin\SettingsPage::platforms();
                 value="1"
                 <?php checked($autoPublish); ?>
             />
-            <?php esc_html_e('Auto-publish when post is published', 'owlstack'); ?>
+            <?php esc_html_e('Auto-publish when post is published', 'owlstack-wp'); ?>
         </label>
 
         <hr />
 
         <button type="button" class="button button-primary owlstack-publish-all-btn" data-post-id="<?php echo esc_attr((string) $post->ID); ?>">
-            <?php esc_html_e('Publish All Selected', 'owlstack'); ?>
+            <?php esc_html_e('Publish All Selected', 'owlstack-wp'); ?>
         </button>
         <span class="spinner owlstack-publish-all-spinner"></span>
         <div class="owlstack-publish-status"></div>
