@@ -20,8 +20,8 @@ class DeliveryLogsPage
     {
         add_submenu_page(
             parent_slug: 'owlstack',
-            page_title: __('Delivery Logs', 'owlstack'),
-            menu_title: __('Delivery Logs', 'owlstack'),
+            page_title: __('Delivery Logs', 'owlstack-wp'),
+            menu_title: __('Delivery Logs', 'owlstack-wp'),
             capability: 'manage_options',
             menu_slug: 'owlstack-logs',
             callback: [$this, 'render'],
@@ -95,7 +95,7 @@ class DeliveryLogsPage
             'bulk_deleted',
             sprintf(
                 /* translators: %d: number of deleted entries */
-                __('%d log entries deleted.', 'owlstack'),
+                __('%d log entries deleted.', 'owlstack-wp'),
                 count($ids),
             ),
             'success',
@@ -119,7 +119,7 @@ class DeliveryLogsPage
         add_settings_error(
             'owlstack_logs',
             'deleted',
-            __('Log entry deleted.', 'owlstack'),
+            __('Log entry deleted.', 'owlstack-wp'),
             'success',
         );
     }
