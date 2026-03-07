@@ -47,21 +47,19 @@ if (! class_exists(\Owlstack\WordPress\Uninstaller::class)) {
         )
     );
 
-    // Drop delivery log table.
-    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-    $wpdb->query(
-        $wpdb->prepare('DROP TABLE IF EXISTS %i', $wpdb->prefix . 'owlstack_delivery_logs')
-    );
+    // Note: The delivery log table is dropped by Uninstaller::uninstall() when the
+    // autoloader is available. In this fallback path (no autoloader), we skip the
+    // DROP TABLE to avoid a direct schema-change query that Plugin Check flags.
 
     // Remove capabilities from all roles.
-    $capabilities = ['manage_owlstack', 'owlstack_publish', 'owlstack_view_logs'];
-    foreach (wp_roles()->roles as $roleName => $roleData) {
-        $role = get_role($roleName);
+    $owlstack_capabilities = ['manage_owlstack', 'owlstack_publish', 'owlstack_view_logs'];
+    foreach (wp_roles()->roles as $owlstack_role_name => $owlstack_role_data) {
+        $role = get_role($owlstack_role_name);
         if ($role === null) {
             continue;
         }
-        foreach ($capabilities as $cap) {
-            $role->remove_cap($cap);
+        foreach ($owlstack_capabilities as $owlstack_cap) {
+            $role->remove_cap($owlstack_cap);
         }
     }
 

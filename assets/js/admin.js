@@ -304,7 +304,7 @@
      * Select-all checkbox for delivery logs.
      */
     function initSelectAll() {
-        $('#cb-select-all-1, #cb-select-all-2').on('change', function () {
+        $('#cb-select-all-1').on('change', function () {
             var checked = $(this).prop('checked');
             $('input[name="log_ids[]"]').prop('checked', checked);
         });

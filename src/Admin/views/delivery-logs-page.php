@@ -54,7 +54,6 @@ if (! defined('ABSPATH')) {
             </span>
             <?php if ($totalPages > 1) : ?>
                 <?php
-                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- paginate_links returns safe HTML.
                 echo wp_kses_post((string) paginate_links([
                     'base'      => add_query_arg('paged', '%#%'),
                     'format'    => '',
@@ -77,7 +76,7 @@ if (! defined('ABSPATH')) {
             <thead>
                 <tr>
                     <td class="manage-column column-cb check-column">
-                        <input type="checkbox" id="cb-select-all" />
+                        <input type="checkbox" id="cb-select-all-1" />
                     </td>
                     <th><?php esc_html_e('Date', 'owlstack-wp'); ?></th>
                     <th><?php esc_html_e('Post', 'owlstack-wp'); ?></th>
@@ -103,7 +102,7 @@ if (! defined('ABSPATH')) {
                             <td>
                                 <?php if ($owlstack_item->post_id) : ?>
                                     <a href="<?php echo esc_url(get_edit_post_link((int) $owlstack_item->post_id) ?? '#'); ?>">
-                                        <?php echo esc_html(get_the_title((int) $owlstack_item->post_id) ?: "#{$owlstack_item->post_id}"); ?>
+                                        <?php echo esc_html(get_the_title((int) $owlstack_item->post_id) ? get_the_title((int) $owlstack_item->post_id) : "#{$owlstack_item->post_id}"); ?>
                                     </a>
                                 <?php else : ?>
                                     &mdash;

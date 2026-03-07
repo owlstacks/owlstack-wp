@@ -151,7 +151,7 @@ class DeliveryLog
         }
 
         return [
-            'items' => $items ?: [],
+            'items' => $items ? $items : [],
             'total' => $total,
         ];
     }

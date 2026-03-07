@@ -186,7 +186,7 @@ class OwlstackRestController
                 ], 400);
             }
 
-            $siteTitle = get_bloginfo('name') ?: 'WordPress';
+            $siteTitle = get_bloginfo('name') ? get_bloginfo('name') : 'WordPress';
             $siteUrl   = home_url();
             $timestamp = wp_date('Y-m-d H:i:s');
 

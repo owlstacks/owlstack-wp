@@ -276,7 +276,7 @@ class SettingsPage
         ?string $hint = null,
     ): void {
         $fieldId   = "owlstack_{$platform}_{$key}";
-        $sectionId = $section ?: "owlstack_{$platform}";
+        $sectionId = $section !== '' ? $section : "owlstack_{$platform}";
 
         add_settings_field(
             $fieldId,
@@ -310,7 +310,7 @@ class SettingsPage
         string $section = '',
     ): void {
         $fieldId   = "owlstack_{$platform}_{$key}";
-        $sectionId = $section ?: "owlstack_{$platform}";
+        $sectionId = $section !== '' ? $section : "owlstack_{$platform}";
 
         add_settings_field(
             $fieldId,

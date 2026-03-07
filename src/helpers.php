@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-defined( 'ABSPATH' ) || exit;
+// Note: No ABSPATH guard here — this file is loaded via Composer autoload_files
+// and must not call exit() outside of a WordPress context.
 
 use Owlstack\WordPress\Plugin;
 use Owlstack\WordPress\Publishing\SendTo;
