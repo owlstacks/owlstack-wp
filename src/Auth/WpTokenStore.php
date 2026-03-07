@@ -95,9 +95,11 @@ class WpTokenStore implements TokenStoreInterface
                 E_USER_NOTICE,
             );
 
-            return base64_encode($value); // Fallback: base64 if OpenSSL unavailable.
+            // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Intentional fallback encoding for token storage when OpenSSL is unavailable.
+            return base64_encode($value);
         }
 
+        // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Required for encoding encrypted token data.
         return base64_encode($iv . $encrypted);
     }
 
@@ -107,6 +109,7 @@ class WpTokenStore implements TokenStoreInterface
             return '';
         }
 
+        // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode -- Required for decoding encrypted token data.
         $decoded = base64_decode($value, true);
         if ($decoded === false || strlen($decoded) < 17) {
             return $value; // Not encrypted or too short — return as-is.

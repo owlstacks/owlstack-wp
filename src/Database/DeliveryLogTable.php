@@ -23,6 +23,7 @@ class DeliveryLogTable
         $tableName = $wpdb->prefix . self::TABLE_NAME;
         $charsetCollate = $wpdb->get_charset_collate();
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $tableName uses $wpdb->prefix + hardcoded constant; $charsetCollate is from $wpdb->get_charset_collate(). Required by dbDelta().
         $sql = "CREATE TABLE {$tableName} (
             id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
             post_id bigint(20) unsigned DEFAULT NULL,

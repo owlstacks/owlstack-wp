@@ -30,7 +30,7 @@ class MetaBox
         foreach ($postTypes as $postType) {
             add_meta_box(
                 id: 'owlstack-publish',
-                title: __('Owlstack — Publish to Social Media', 'owlstack-wp'),
+                title: __('Owlstack — Publish to Social Media', 'owlstack'),
                 callback: [$this, 'render'],
                 screen: $postType,
                 context: 'side',

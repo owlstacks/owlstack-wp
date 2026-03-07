@@ -242,7 +242,7 @@ class SendTo
                     new Media(
                         path: $imagePath,
                         mimeType: $mimeType,
-                        altText: get_post_meta($thumbnailId, '_wp_attachment_image_alt', true) ?: null,
+                        altText: get_post_meta($thumbnailId, '_wp_attachment_image_alt', true) ? get_post_meta($thumbnailId, '_wp_attachment_image_alt', true) : null,
                     ),
                 ]);
             }
@@ -252,9 +252,9 @@ class SendTo
 
         $post = new Post(
             title: $wpPost->post_title,
-            body: $wpPost->post_excerpt ?: wp_trim_words($wpPost->post_content, 55),
-            url: get_permalink($wpPost->ID) ?: null,
-            excerpt: $wpPost->post_excerpt ?: null,
+            body: $wpPost->post_excerpt !== '' && $wpPost->post_excerpt ? $wpPost->post_excerpt : wp_trim_words($wpPost->post_content, 55),
+            url: get_permalink($wpPost->ID) ? get_permalink($wpPost->ID) : null,
+            excerpt: $wpPost->post_excerpt !== '' && $wpPost->post_excerpt ? $wpPost->post_excerpt : null,
             media: $media,
             tags: is_array($tags) ? $tags : [],
             metadata: [
