@@ -6,7 +6,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-/** @var array{label: string, description: string, fields: array} $platform */
+/** @var array{label: string, description: string, docs_url: string, fields: array} $platform */
 /** @var string $platformSlug */
 /** @var \Owlstack\WordPress\Admin\OptionsManager $optionsManager */
 ?>
@@ -22,6 +22,20 @@ if (! defined('ABSPATH')) {
     </h1>
 
     <?php settings_errors('owlstack_settings'); ?>
+
+    <div class="owlstack-platform-docs-notice" style="background: #f0f6fc; border-left: 4px solid #2271b1; padding: 12px 16px; margin: 16px 0;">
+        <p style="margin: 0;">
+            <?php
+            printf(
+                /* translators: %1$s: platform name, %2$s: opening link tag, %3$s: closing link tag */
+                esc_html__('Need help setting up %1$s? See the %2$sconfiguration guide%3$s for step-by-step instructions on obtaining API credentials and configuring this platform for your WordPress site.', 'owlstack'),
+                esc_html($platform['label']),
+                '<a href="' . esc_url($platform['docs_url']) . '" target="_blank" rel="noopener noreferrer">',
+                '</a>',
+            );
+            ?>
+        </p>
+    </div>
 
     <form method="post" action="options.php">
         <?php
