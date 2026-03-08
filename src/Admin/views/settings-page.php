@@ -68,7 +68,7 @@ if (! defined('ABSPATH')) {
             printf(
                 /* translators: %s: link to OwlStack documentation */
                 esc_html__('Need help setting up your social media platforms such as Telegram, Twitter, Facebook, Instagram, LinkedIn, or others? Our documentation covers step-by-step guides for configuring each platform with the WordPress plugin. Visit the %s to get started.', 'owlstack'),
-                '<a href="https://docs.owlstack.dev" target="_blank" rel="noopener noreferrer">' . esc_html__('OwlStack Documentation', 'owlstack') . '</a>'
+                '<a href="https://owlstack.dev/docs/sdks/wordpress/installation" target="_blank" rel="noopener noreferrer">' . esc_html__('OwlStack Documentation', 'owlstack') . '</a>'
             );
             ?>
         </p>
