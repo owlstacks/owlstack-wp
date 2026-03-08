@@ -165,7 +165,14 @@ class OptionsManager
                 if (is_array($credentials)) {
                     $sanitized['platforms'][$platform] = [];
                     foreach ($credentials as $key => $value) {
-                        $sanitized['platforms'][$platform][sanitize_key($key)] = sanitize_text_field((string) $value);
+                        $value = sanitize_text_field((string) $value);
+
+                        // Auto-prepend @ for username fields that require it.
+                        if ($this->isUsernameField($platform, $key) && $value !== '' && strpos($value, '@') !== 0) {
+                            $value = '@' . $value;
+                        }
+
+                        $sanitized['platforms'][$platform][sanitize_key($key)] = $value;
                     }
                 }
             }
@@ -225,5 +232,17 @@ class OptionsManager
         }
 
         return true;
+    }
+
+    /**
+     * Check if a platform field is a username that requires an @ prefix.
+     */
+    private function isUsernameField(string $platform, string $key): bool
+    {
+        $usernameFields = [
+            'telegram' => ['bot_username', 'channel_username'],
+        ];
+
+        return isset($usernameFields[$platform]) && in_array($key, $usernameFields[$platform], true);
     }
 }

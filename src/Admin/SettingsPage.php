@@ -22,8 +22,8 @@ class SettingsPage
             'description' => 'Configure your Telegram Bot API credentials.',
             'fields'      => [
                 'api_token'         => ['label' => 'Bot API Token', 'secret' => true],
-                'bot_username'      => ['label' => 'Bot Username'],
-                'channel_username'  => ['label' => 'Channel Username'],
+                'bot_username'      => ['label' => 'Bot Username', 'placeholder' => '@YourBot', 'hint' => 'Must start with @'],
+                'channel_username'  => ['label' => 'Channel Username', 'placeholder' => '@your_channel', 'hint' => 'Must start with @'],
                 'channel_signature' => ['label' => 'Channel Signature'],
                 'parse_mode'        => ['label' => 'Parse Mode', 'type' => 'select', 'options' => ['HTML', 'Markdown', 'MarkdownV2']],
             ],
@@ -215,14 +215,15 @@ class SettingsPage
             );
 
             foreach ($platform['fields'] as $fieldKey => $field) {
-                $type = $field['type'] ?? 'text';
-                $hint = $field['hint'] ?? null;
+                $type        = $field['type'] ?? 'text';
+                $hint        = $field['hint'] ?? null;
+                $placeholder = $field['placeholder'] ?? null;
 
                 if ($type === 'select') {
                     $this->addSelectField($platformKey, $fieldKey, $field['label'], $field['options'], $pageSlug, $sectionId);
                 } else {
                     $isSecret = $field['secret'] ?? false;
-                    $this->addField($platformKey, $fieldKey, $field['label'], $isSecret, $pageSlug, $sectionId, $hint);
+                    $this->addField($platformKey, $fieldKey, $field['label'], $isSecret, $pageSlug, $sectionId, $hint, $placeholder);
                 }
             }
         }
@@ -274,6 +275,7 @@ class SettingsPage
         string $page = 'owlstack',
         string $section = '',
         ?string $hint = null,
+        ?string $placeholder = null,
     ): void {
         $fieldId   = "owlstack_{$platform}_{$key}";
         $sectionId = $section !== '' ? $section : "owlstack_{$platform}";
@@ -281,16 +283,17 @@ class SettingsPage
         add_settings_field(
             $fieldId,
             $label,
-            function () use ($platform, $key, $fieldId, $isSecret, $hint): void {
+            function () use ($platform, $key, $fieldId, $isSecret, $hint, $placeholder): void {
                 $value = $this->optionsManager->get("platforms.{$platform}.{$key}", '');
                 $type  = $isSecret ? 'password' : 'text';
                 printf(
-                    '<input type="%s" id="%s" name="owlstack_settings[platforms][%s][%s]" value="%s" class="regular-text" autocomplete="off" />',
+                    '<input type="%s" id="%s" name="owlstack_settings[platforms][%s][%s]" value="%s" class="regular-text" autocomplete="off" placeholder="%s" />',
                     esc_attr($type),
                     esc_attr($fieldId),
                     esc_attr($platform),
                     esc_attr($key),
                     esc_attr((string) $value),
+                    esc_attr((string) ($placeholder ?? '')),
                 );
                 if ($hint !== null) {
                     printf('<p class="description">%s</p>', esc_html($hint));
