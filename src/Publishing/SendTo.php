@@ -183,6 +183,9 @@ class SendTo
      */
     public function publish(Post $post, string $platform, array $options = [], ?int $wpPostId = null): PublishResult
     {
+        // Apply platform-specific transformations (e.g. Telegram signature).
+        $post = $this->applyPlatformTransformations($post, $platform);
+
         try {
             $result = $this->publisher->publish($post, $platform, $options);
         } catch (\Throwable $e) {
@@ -270,6 +273,36 @@ class SendTo
     }
 
     // ── Private helpers ──────────────────────────────────────────────────
+
+    /**
+     * Apply platform-specific transformations to a Post before publishing.
+     *
+     * Currently handles Telegram channel signature appending.
+     */
+    private function applyPlatformTransformations(Post $post, string $platform): Post
+    {
+        if ($platform === 'telegram') {
+            $credentials = $this->config->credentials('telegram');
+            $signature   = $credentials?->get('channel_signature', '') ?? '';
+
+            if ($signature !== '') {
+                $type = $post->hasMedia() ? 'caption' : 'text';
+                $body = $this->assignSignature($post->body, $type, $signature);
+
+                return new Post(
+                    title: $post->title,
+                    body: $body,
+                    url: $post->url,
+                    excerpt: $post->excerpt,
+                    media: $post->media,
+                    tags: $post->tags,
+                    metadata: $post->metadata,
+                );
+            }
+        }
+
+        return $post;
+    }
 
     private function logResult(PublishResult $result, ?int $postId = null): void
     {
