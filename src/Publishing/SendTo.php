@@ -253,9 +253,16 @@ class SendTo
 
         $tags = wp_get_post_tags($wpPost->ID, ['fields' => 'names']);
 
+        // Use excerpt if available, otherwise trim content to 55 words with a proper ellipsis.
+        if ($wpPost->post_excerpt !== '' && $wpPost->post_excerpt) {
+            $body = $wpPost->post_excerpt;
+        } else {
+            $body = wp_trim_words($wpPost->post_content, 55, '…');
+        }
+
         $post = new Post(
             title: $wpPost->post_title,
-            body: $wpPost->post_excerpt !== '' && $wpPost->post_excerpt ? $wpPost->post_excerpt : wp_trim_words($wpPost->post_content, 55),
+            body: $body,
             url: get_permalink($wpPost->ID) ? get_permalink($wpPost->ID) : null,
             excerpt: $wpPost->post_excerpt !== '' && $wpPost->post_excerpt ? $wpPost->post_excerpt : null,
             media: $media,
