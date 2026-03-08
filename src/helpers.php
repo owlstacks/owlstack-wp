@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 // Prevent direct access.
 if (! defined('ABSPATH')) {
     exit;
 }
-
-declare(strict_types=1);
 
 use Owlstack\WordPress\Plugin;
 use Owlstack\WordPress\Publishing\SendTo;
