@@ -13,7 +13,7 @@ Publish content to Telegram, X (Twitter), Facebook, Instagram, LinkedIn, Discord
 
 == Description ==
 
-Owlstack lets you automatically share your WordPress posts to social media platforms with a single click or on publish. Powered by the [owlstack-core](https://github.com/AliKarimi79/owlstack-core) engine, it provides a seamless publishing experience.
+Owlstack lets you automatically share your WordPress posts to social media platforms with a single click or on publish. Powered by the [Owlstack Core](https://owlstack.dev) engine, it provides a seamless publishing experience.
 
 **Supported Platforms:**
 
@@ -101,6 +101,76 @@ Yes. Configure proxy settings in **Owlstack > Settings** for servers that cannot
 = Where are delivery logs stored? =
 
 Delivery logs are stored in a custom database table (`wp_owlstack_delivery_logs`). You can view them under **Owlstack > Delivery Logs**.
+
+== Third-Party Services ==
+
+This plugin connects to external third-party services to publish your content. Data such as post title, excerpt, URL, and featured image may be sent to the platforms you configure. **No data is sent unless you explicitly configure and enable a platform.**
+
+**Telegram**
+
+* Service: [Telegram Bot API](https://core.telegram.org/bots/api)
+* Terms of Service: [https://telegram.org/tos](https://telegram.org/tos)
+* Privacy Policy: [https://telegram.org/privacy](https://telegram.org/privacy)
+
+**X (Twitter)**
+
+* Service: [X API](https://developer.x.com/en/docs)
+* Terms of Service: [https://x.com/en/tos](https://x.com/en/tos)
+* Privacy Policy: [https://x.com/en/privacy](https://x.com/en/privacy)
+
+**Facebook**
+
+* Service: [Facebook Graph API](https://developers.facebook.com/docs/graph-api/)
+* Terms of Service: [https://www.facebook.com/terms.php](https://www.facebook.com/terms.php)
+* Privacy Policy: [https://www.facebook.com/privacy/policy/](https://www.facebook.com/privacy/policy/)
+
+**Instagram**
+
+* Service: [Instagram Graph API](https://developers.facebook.com/docs/instagram-api/)
+* Terms of Service: [https://help.instagram.com/581066165581870](https://help.instagram.com/581066165581870)
+* Privacy Policy: [https://privacycenter.instagram.com/policy](https://privacycenter.instagram.com/policy)
+
+**LinkedIn**
+
+* Service: [LinkedIn API](https://learn.microsoft.com/en-us/linkedin/)
+* Terms of Service: [https://www.linkedin.com/legal/user-agreement](https://www.linkedin.com/legal/user-agreement)
+* Privacy Policy: [https://www.linkedin.com/legal/privacy-policy](https://www.linkedin.com/legal/privacy-policy)
+
+**Discord**
+
+* Service: [Discord Webhooks](https://discord.com/developers/docs/resources/webhook)
+* Terms of Service: [https://discord.com/terms](https://discord.com/terms)
+* Privacy Policy: [https://discord.com/privacy](https://discord.com/privacy)
+
+**Pinterest**
+
+* Service: [Pinterest API](https://developers.pinterest.com/docs/api/v5/)
+* Terms of Service: [https://policy.pinterest.com/en/terms-of-service](https://policy.pinterest.com/en/terms-of-service)
+* Privacy Policy: [https://policy.pinterest.com/en/privacy-policy](https://policy.pinterest.com/en/privacy-policy)
+
+**Reddit**
+
+* Service: [Reddit API](https://www.reddit.com/dev/api/)
+* Terms of Service: [https://www.redditinc.com/policies/user-agreement](https://www.redditinc.com/policies/user-agreement)
+* Privacy Policy: [https://www.reddit.com/policies/privacy-policy](https://www.reddit.com/policies/privacy-policy)
+
+**Slack**
+
+* Service: [Slack Incoming Webhooks](https://api.slack.com/messaging/webhooks)
+* Terms of Service: [https://slack.com/terms-of-service](https://slack.com/terms-of-service)
+* Privacy Policy: [https://slack.com/privacy-policy](https://slack.com/privacy-policy)
+
+**Tumblr**
+
+* Service: [Tumblr API](https://www.tumblr.com/docs/en/api/v2)
+* Terms of Service: [https://www.tumblr.com/policy/en/terms-of-service](https://www.tumblr.com/policy/en/terms-of-service)
+* Privacy Policy: [https://www.tumblr.com/privacy/en](https://www.tumblr.com/privacy/en)
+
+**WhatsApp**
+
+* Service: [WhatsApp Business API](https://developers.facebook.com/docs/whatsapp/)
+* Terms of Service: [https://www.whatsapp.com/legal/terms-of-service](https://www.whatsapp.com/legal/terms-of-service)
+* Privacy Policy: [https://www.whatsapp.com/legal/privacy-policy](https://www.whatsapp.com/legal/privacy-policy)
 
 == Screenshots ==
 
