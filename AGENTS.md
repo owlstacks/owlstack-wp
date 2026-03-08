@@ -26,27 +26,28 @@
 
 ## CRITICAL: Text Domain Rules
 
-The WordPress text domain **MUST** be `owlstack-wp` — matching the plugin folder name. This is a WordPress requirement for Plugin Check compatibility.
+The WordPress text domain **MUST** be `owlstack` — matching the plugin folder name inside `wp-content/plugins/`. This is a WordPress requirement for Plugin Check compatibility.
 
-### What is `'owlstack-wp'`
+> **Note:** The development repo folder is `owlstack-wp`, but the WordPress plugin folder is `owlstack`. The text domain must match the **WordPress** folder name.
 
-The text domain used in ALL translation functions:
+### Text domain usage
+
+The text domain `'owlstack'` is used in ALL translation functions:
 
 ```php
-// CORRECT — always use 'owlstack-wp' as text domain
-__('Settings', 'owlstack-wp')
-_e('Save', 'owlstack-wp')
-esc_html__('Platform', 'owlstack-wp')
-esc_html_e('Status', 'owlstack-wp')
-_n('%s item', '%s items', $count, 'owlstack-wp')
+// CORRECT — always use 'owlstack' as text domain
+__('Settings', 'owlstack')
+_e('Save', 'owlstack')
+esc_html__('Platform', 'owlstack')
+esc_html_e('Status', 'owlstack')
+_n('%s item', '%s items', $count, 'owlstack')
 ```
 
-### What is `'owlstack'` (without `-wp`)
+### `'owlstack'` is also the admin slug
 
-The admin **menu slug** and **settings page slug** — NOT a text domain:
+The same string `'owlstack'` is used for admin menu/page slugs:
 
 ```php
-// CORRECT — 'owlstack' is the menu/page slug
 menu_slug: 'owlstack',
 parent_slug: 'owlstack',
 do_settings_sections('owlstack');
@@ -56,17 +57,17 @@ add_settings_field('field_id', $title, $callback, 'owlstack', 'section_id');
 
 ### Common mistake
 
-**NEVER** use `'owlstack'` (without `-wp`) as a text domain:
+**NEVER** use `'owlstack-wp'` as a text domain:
 
 ```php
-// WRONG — 'owlstack' is NOT the text domain
-__('Settings', 'owlstack')    // ← WRONG
-esc_html_e('Save', 'owlstack') // ← WRONG
+// WRONG — 'owlstack-wp' is NOT the text domain
+__('Settings', 'owlstack-wp')    // ← WRONG
+esc_html_e('Save', 'owlstack-wp') // ← WRONG
 ```
 
 The plugin header in `owlstack.php` MUST say:
 ```
-Text Domain: owlstack-wp
+Text Domain: owlstack
 ```
 
 ---

@@ -10,16 +10,16 @@
 When starting a new session, read files in this order:
 
 1. `AGENTS.md` — mandatory rules (text domain, architecture, code style, git workflow)
-2. `owlstack.php` — plugin header (verify Text Domain is `owlstack-wp`)
+2. `owlstack.php` — plugin header (verify Text Domain is `owlstack`)
 3. The specific files related to the current task
 
 ---
 
 ## Critical Reminder
 
-**Text domain = `'owlstack-wp'`** (with `-wp`). The slug `'owlstack'` is ONLY for admin menus and settings pages.
+**Text domain = `'owlstack'`** — matching the plugin folder name inside `wp-content/plugins/`. The slug `'owlstack'` is used for both admin menus/settings pages AND the text domain.
 
-If you see `'owlstack'` as a second argument in `__()`, `_e()`, `esc_html__()`, `esc_html_e()`, `_n()`, or similar translation functions — **that is a bug**. Fix it to `'owlstack-wp'`.
+If you see `'owlstack-wp'` as a second argument in `__()`, `_e()`, `esc_html__()`, `esc_html_e()`, `_n()`, or similar translation functions — **that is a bug**. Fix it to `'owlstack'`.
 
 ---
 

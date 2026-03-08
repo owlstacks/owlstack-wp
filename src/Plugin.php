@@ -396,12 +396,12 @@ class Plugin
             'restUrl' => rest_url('owlstack/v1/'),
             'nonce'   => wp_create_nonce('wp_rest'),
             'i18n'    => [
-                'connectionFailed'    => __('Connection test failed. Please check your credentials.', 'owlstack-wp'),
-                'testMessageFailed'   => __('Failed to send test message. Please check your credentials.', 'owlstack-wp'),
-                'noPlatformsSelected' => __('Please select at least one platform.', 'owlstack-wp'),
-                'viewPost'            => __('View Post', 'owlstack-wp'),
-                'publishFailed'       => __('Publishing failed. Please try again.', 'owlstack-wp'),
-                'unknownError'        => __('An unknown error occurred.', 'owlstack-wp'),
+                'connectionFailed'    => __('Connection test failed. Please check your credentials.', 'owlstack'),
+                'testMessageFailed'   => __('Failed to send test message. Please check your credentials.', 'owlstack'),
+                'noPlatformsSelected' => __('Please select at least one platform.', 'owlstack'),
+                'viewPost'            => __('View Post', 'owlstack'),
+                'publishFailed'       => __('Publishing failed. Please try again.', 'owlstack'),
+                'unknownError'        => __('An unknown error occurred.', 'owlstack'),
             ],
         ]);
     }
