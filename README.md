@@ -94,6 +94,15 @@ Enable via the Owlstack meta box in the post editor. Select platforms and the po
 
 - [`owlstack/owlstack-core`](https://github.com/AliKarimi79/owlstack-core) (bundled via Composer)
 
+## Roadmap
+
+Planned features for upcoming releases:
+
+- [ ] **Message Template Builder** — Define per-platform message templates with placeholders (`{title}`, `{body:100}`, `{url}`, `{tags}`) to control message format, content length, and tag rendering
+- [ ] **Per-Post Custom Message** — Override the auto-generated message with a custom text field in the post editor meta box
+- [ ] **Configurable body word limit** — Allow users to set how many words of the post body are included in the message (currently hardcoded at 55 words)
+- [ ] **Tag selection control** — Choose which taxonomy to use for tags, limit the number of tags, or exclude specific tags
+
 ## License
 
 GPL-2.0-or-later
