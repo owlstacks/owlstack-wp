@@ -195,6 +195,8 @@ class SettingsPage
             'owlstack_settings',
             [
                 'type'              => 'array',
+                // Custom callback needed for array-type settings.
+                // All keys sanitized via sanitize_key(), all values via sanitize_text_field().
                 'sanitize_callback' => [$this->optionsManager, 'sanitize'],
             ],
         );
