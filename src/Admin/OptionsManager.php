@@ -150,8 +150,13 @@ class OptionsManager
      * @param array<string, mixed> $input
      * @return array<string, mixed>
      */
-    public function sanitize(array $input): array
+    public function sanitize(mixed $input): array
     {
+        // WordPress passes $_POST data directly; guard against non-array input.
+        if (! is_array($input)) {
+            return $this->all();
+        }
+
         $existing  = $this->all();
         $sanitized = [
             'platforms' => $existing['platforms'] ?? [],
