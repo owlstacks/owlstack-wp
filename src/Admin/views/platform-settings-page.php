@@ -21,7 +21,12 @@ if (! defined('ABSPATH')) {
         ?>
     </h1>
 
-    <?php settings_errors('owlstack_settings'); ?>
+    <?php
+    if (isset($_GET['settings-updated']) && $_GET['settings-updated']) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        add_settings_error('owlstack_settings', 'owlstack_updated', __('Settings saved.', 'owlstack'), 'updated');
+    }
+    settings_errors('owlstack_settings');
+    ?>
 
     <div class="owlstack-platform-docs-notice" style="background: #f0f6fc; border-left: 4px solid #2271b1; padding: 12px 16px; margin: 16px 0;">
         <p style="margin: 0;">

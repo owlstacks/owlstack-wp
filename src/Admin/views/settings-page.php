@@ -13,7 +13,12 @@ if (! defined('ABSPATH')) {
 <div class="wrap owlstack-settings">
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
-    <?php settings_errors('owlstack_settings'); ?>
+    <?php
+    if (isset($_GET['settings-updated']) && $_GET['settings-updated']) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        add_settings_error('owlstack_settings', 'owlstack_updated', __('Settings saved.', 'owlstack'), 'updated');
+    }
+    settings_errors('owlstack_settings');
+    ?>
 
     <!-- Platform overview -->
     <h2><?php esc_html_e('Platforms', 'owlstack'); ?></h2>
