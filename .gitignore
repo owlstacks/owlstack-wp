@@ -20,3 +20,6 @@ Thumbs.db
 *.zip
 /dist/
 /node_modules/
+
+# SVN working copy (WordPress.org)
+/.svn-wp/
