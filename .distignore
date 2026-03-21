@@ -4,6 +4,7 @@
 tests
 node_modules
 .phpunit.cache
+wp-assets
 
 # Development & CI files
 .gitignore
