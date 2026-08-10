@@ -54,12 +54,12 @@ if (! class_exists(\Owlstack\WordPress\Uninstaller::class)) {
     // Remove capabilities from all roles.
     $owlstack_capabilities = ['manage_owlstack', 'owlstack_publish', 'owlstack_view_logs'];
     foreach (wp_roles()->roles as $owlstack_role_name => $owlstack_role_data) {
-        $role = get_role($owlstack_role_name);
-        if ($role === null) {
+        $owlstack_role = get_role($owlstack_role_name);
+        if ($owlstack_role === null) {
             continue;
         }
         foreach ($owlstack_capabilities as $owlstack_cap) {
-            $role->remove_cap($owlstack_cap);
+            $owlstack_role->remove_cap($owlstack_cap);
         }
     }
 

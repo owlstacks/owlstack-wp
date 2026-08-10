@@ -23,7 +23,7 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: Run PHPCS
-        run: php -d xdebug.mode=off vendor/bin/phpcs --standard=WordPress src/ owlstack.php
+        run: php -d xdebug.mode=off vendor/bin/phpcs
 
   tests:
     name: PHPUnit (PHP ${{ matrix.php }})
