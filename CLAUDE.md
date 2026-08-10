@@ -26,6 +26,6 @@ If you see `'owlstack-wp'` as a second argument in `__()`, `_e()`, `esc_html__()
 ## Tool Usage
 
 - **Prefer grep and find** to locate code — never guess file locations or class names
-- **Run PHPCS after every change**: `php -d xdebug.mode=off vendor/bin/phpcs --standard=WordPress src/ owlstack.php`
-- **Run I18n check specifically**: `php -d xdebug.mode=off vendor/bin/phpcs --standard=WordPress --sniffs=WordPress.WP.I18n src/ owlstack.php`
+- **Run PHPCS after every change**: `php -d xdebug.mode=off vendor/bin/phpcs` (uses `phpcs.xml.dist` — WordPress security/I18n/DB/PHP sniffs on the repo's PSR-style code; do NOT run the raw `--standard=WordPress` ruleset, the codebase intentionally doesn't follow its formatting rules)
+- **Run I18n check specifically**: `php -d xdebug.mode=off vendor/bin/phpcs --sniffs=WordPress.WP.I18n`
 - **Use `git diff`** to verify changes before committing

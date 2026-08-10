@@ -32,9 +32,9 @@ if (! defined('ABSPATH')) {
 
             <select name="status">
                 <option value=""><?php esc_html_e('All Statuses', 'owlstack'); ?></option>
-                <?php foreach (['pending', 'publishing', 'published', 'failed'] as $s) : ?>
-                    <option value="<?php echo esc_attr($s); ?>" <?php selected($args['status'], $s); ?>>
-                        <?php echo esc_html(ucfirst($s)); ?>
+                <?php foreach (['pending', 'publishing', 'published', 'failed'] as $owlstack_status) : ?>
+                    <option value="<?php echo esc_attr($owlstack_status); ?>" <?php selected($args['status'], $owlstack_status); ?>>
+                        <?php echo esc_html(ucfirst($owlstack_status)); ?>
                     </option>
                 <?php endforeach; ?>
             </select>
