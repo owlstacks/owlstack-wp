@@ -77,16 +77,21 @@ if (! function_exists('apply_filters')) {
     }
 }
 
+// Stateful option store so services that persist options can be unit-tested.
+$GLOBALS['owlstack_test_options'] = [];
+
 if (! function_exists('get_option')) {
     function get_option(string $option, mixed $default = false): mixed
     {
-        return $default;
+        return $GLOBALS['owlstack_test_options'][$option] ?? $default;
     }
 }
 
 if (! function_exists('update_option')) {
     function update_option(string $option, mixed $value, string|bool $autoload = 'yes'): bool
     {
+        $GLOBALS['owlstack_test_options'][$option] = $value;
+
         return true;
     }
 }
@@ -94,6 +99,8 @@ if (! function_exists('update_option')) {
 if (! function_exists('delete_option')) {
     function delete_option(string $option): bool
     {
+        unset($GLOBALS['owlstack_test_options'][$option]);
+
         return true;
     }
 }
@@ -160,3 +167,5 @@ if (! function_exists('wp_json_encode')) {
         return json_encode($data, $options, $depth);
     }
 }
+
+require_once __DIR__ . '/stubs-rest.php';
