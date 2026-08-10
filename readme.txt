@@ -4,7 +4,7 @@ Donate link: https://owlstack.dev
 Tags: social media, auto publish, telegram, twitter, facebook
 Requires at least: 6.4
 Tested up to: 6.9
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -102,6 +102,10 @@ Yes. Configure proxy settings in **Owlstack > Settings** for servers that cannot
 
 Delivery logs are stored in a custom database table (`wp_owlstack_delivery_logs`). You can view them under **Owlstack > Delivery Logs**.
 
+= What is the OwlStack Cloud connection? =
+
+If you use the OwlStack Cloud dashboard, you can connect it to your site without sharing a WordPress username or Application Password. Go to **Owlstack > Cloud**, generate a site token, and paste it into the OwlStack dashboard together with your site URL. The token is scoped to a minimal set of plugin endpoints: OwlStack Cloud can create posts (as the author you choose, as a draft or published based on your setting), upload images for featured media, and remove posts it created — nothing else. Only a hash of the token is stored, you can revoke it at any time, and the plugin never makes outbound calls to OwlStack Cloud. The feature is entirely optional and inactive until you generate a token.
+
 == Third-Party Services ==
 
 This plugin connects to external third-party services to publish your content. Data such as post title, excerpt, URL, and featured image may be sent to the platforms you configure. **No data is sent unless you explicitly configure and enable a platform.**
@@ -179,6 +183,12 @@ This plugin connects to external third-party services to publish your content. D
 3. Delivery logs page showing publishing activity.
 
 == Changelog ==
+
+= 1.1.0 =
+* New: OwlStack Cloud connection (**Owlstack > Cloud**). Generate a revocable site token so the OwlStack Cloud dashboard can publish posts to this site without a WordPress username or Application Password.
+* New: Incoming content controls — always draft, always publish, or honor the requested status; configurable post author and post type.
+* New: REST endpoints under `owlstack/v1/cloud` for site info, post creation, image upload, and removal of Cloud-created posts. Token-authenticated; only a SHA-256 hash of the token is stored.
+* The plugin makes no outbound calls to OwlStack Cloud; the feature is inactive until a token is generated.
 
 = 1.0.0 =
 * Initial public release.
