@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-// Prevent direct access.
+// Prevent direct access. `return` (not `exit`) so the Composer `files`
+// autoload doesn't kill CLI tools like PHPUnit that load outside WordPress.
 if (! defined('ABSPATH')) {
-    exit;
+    return;
 }
 
 use Owlstack\WordPress\Plugin;
