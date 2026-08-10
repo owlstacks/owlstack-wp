@@ -30,15 +30,19 @@ use Owlstack\Core\Platforms\Twitter\TwitterFormatter;
 use Owlstack\Core\Platforms\Twitter\TwitterPlatform;
 use Owlstack\Core\Platforms\WhatsApp\WhatsAppPlatform;
 use Owlstack\Core\Publishing\Publisher;
+use Owlstack\WordPress\Admin\CloudSettingsPage;
 use Owlstack\WordPress\Admin\DeliveryLogsPage;
 use Owlstack\WordPress\Admin\MetaBox;
 use Owlstack\WordPress\Admin\OptionsManager;
 use Owlstack\WordPress\Admin\SettingsPage;
 use Owlstack\WordPress\Auth\WpTokenStore;
+use Owlstack\WordPress\Cloud\CloudSettings;
+use Owlstack\WordPress\Cloud\CloudTokenService;
 use Owlstack\WordPress\Events\WpEventDispatcher;
 use Owlstack\WordPress\Http\WpHttpClient;
 use Owlstack\WordPress\Publishing\PostPublisher;
 use Owlstack\WordPress\Publishing\SendTo;
+use Owlstack\WordPress\Rest\CloudRestController;
 use Owlstack\WordPress\Rest\OwlstackRestController;
 
 /**
@@ -100,6 +104,7 @@ class Plugin
 
         // REST API.
         add_action('rest_api_init', [OwlstackRestController::class, 'register']);
+        add_action('rest_api_init', [CloudRestController::class, 'register']);
 
         // Post publishing hook.
         add_action('transition_post_status', [PostPublisher::class, 'handle'], 10, 3);
@@ -323,6 +328,11 @@ class Plugin
         $logsPage = new DeliveryLogsPage();
         add_action('admin_menu', [$logsPage, 'register']);
 
+        $cloudTokens = new CloudTokenService();
+        $cloudPage = new CloudSettingsPage($cloudTokens, new CloudSettings($cloudTokens));
+        add_action('admin_menu', [$cloudPage, 'register']);
+        $cloudPage->registerActions();
+
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminAssets']);
     }
 
@@ -357,6 +367,7 @@ class Plugin
         $owlstackPages = [
             'toplevel_page_owlstack',
             'owlstack_page_owlstack-logs',
+            'owlstack_page_owlstack-cloud',
             'owlstack_page_owlstack-telegram',
             'owlstack_page_owlstack-twitter',
             'owlstack_page_owlstack-facebook',
