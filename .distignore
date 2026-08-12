@@ -1,10 +1,13 @@
 # Directories
 .git
 .github
+.claude
 tests
 node_modules
 .phpunit.cache
 wp-assets
+dist
+.svn-wp
 
 # Development & CI files
 .gitignore
@@ -13,6 +16,7 @@ wp-assets
 .editorconfig
 .phpcs.xml
 .phpcs.xml.dist
+phpcs.xml.dist
 phpunit.xml
 phpunit.xml.dist
 composer.lock
