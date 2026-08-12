@@ -22,12 +22,12 @@ install: ## Install all Composer dependencies (dev + prod)
 	composer install --prefer-dist
 
 .PHONY: lint
-lint: ## Run PHPCS (WordPress coding standards)
-	php -d xdebug.mode=off vendor/bin/phpcs --standard=WordPress src/ owlstack.php
+lint: ## Run PHPCS (project standard from phpcs.xml.dist)
+	php -d xdebug.mode=off vendor/bin/phpcs
 
 .PHONY: lint-fix
 lint-fix: ## Auto-fix PHPCS violations where possible
-	php -d xdebug.mode=off vendor/bin/phpcbf --standard=WordPress src/ owlstack.php
+	php -d xdebug.mode=off vendor/bin/phpcbf
 
 .PHONY: test
 test: ## Run PHPUnit tests
