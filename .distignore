@@ -8,6 +8,7 @@ node_modules
 wp-assets
 dist
 .svn-wp
+.githooks
 
 # Development & CI files
 .gitignore

@@ -189,6 +189,8 @@ This plugin connects to external third-party services to publish your content. D
 * New: Incoming content controls — always draft, always publish, or honor the requested status; configurable post author and post type.
 * New: REST endpoints under `owlstack/v1/cloud` for site info, post creation, image upload, and removal of Cloud-created posts. Token-authenticated; only a SHA-256 hash of the token is stored.
 * The plugin makes no outbound calls to OwlStack Cloud; the feature is inactive until a token is generated.
+* The Cloud page now sits directly after Settings in the Owlstack menu, instead of below every platform.
+* Settings gains a short, dismissible explanation of what OwlStack Cloud is and how it differs from publishing directly from this site.
 
 = 1.0.1 =
 * Improved settings update feedback on the platform settings pages.

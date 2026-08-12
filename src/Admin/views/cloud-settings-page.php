@@ -30,6 +30,31 @@ $owlstack_notice = isset($_GET['owlstack-notice']) ? sanitize_key(wp_unslash($_G
         <?php esc_html_e('Connect this site to OwlStack Cloud to receive posts you compose there. Generate a site token below, then paste it together with your site URL into the OwlStack dashboard when connecting WordPress. The token only allows OwlStack Cloud to create posts, upload images, and remove posts it created — nothing else.', 'owlstack'); ?>
     </p>
 
+    <?php if (! $isPaired): ?>
+        <div class="owlstack-cloud-promo notice notice-info">
+            <h2 class="owlstack-cloud-promo__title">
+                <?php esc_html_e('Do not have an OwlStack account yet?', 'owlstack'); ?>
+            </h2>
+            <p>
+                <?php
+                printf(
+                    /* translators: %d: number of platforms OwlStack Cloud supports */
+                    esc_html__('OwlStack Cloud is the hosted dashboard this token pairs with. It publishes to %d platforms, schedules ahead on a shared calendar, reports on what performed, and drafts posts for you with AI. WordPress becomes one destination among them, so a single post can go to this site and your social accounts at once.', 'owlstack'),
+                    (int) \Owlstack\WordPress\Admin\CloudPromo::CLOUD_PLATFORM_COUNT,
+                );
+                ?>
+            </p>
+            <p>
+                <a class="button button-primary" href="<?php echo esc_url(\Owlstack\WordPress\Admin\CloudPromo::url('/register', 'cloud-page')); ?>" target="_blank" rel="noopener noreferrer">
+                    <?php esc_html_e('Start a free trial', 'owlstack'); ?>
+                </a>
+                <a class="button" href="<?php echo esc_url(\Owlstack\WordPress\Admin\CloudPromo::url('/platforms', 'cloud-page-platforms')); ?>" target="_blank" rel="noopener noreferrer">
+                    <?php esc_html_e('See all platforms', 'owlstack'); ?>
+                </a>
+            </p>
+        </div>
+    <?php endif; ?>
+
     <!-- Site token -->
     <h2><?php esc_html_e('Site Token', 'owlstack'); ?></h2>
 

@@ -423,3 +423,30 @@
         max-width: 100%;
     }
 }
+
+/* Cloud promo card */
+.owlstack-cloud-promo {
+    padding: 12px 16px;
+    margin: 20px 0;
+    border-left-width: 4px;
+}
+
+.owlstack-cloud-promo__title {
+    margin: 0 0 8px;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.owlstack-cloud-promo p {
+    max-width: 46em;
+}
+
+.owlstack-cloud-promo__dismiss {
+    margin-left: 12px;
+    color: #646970;
+    text-decoration: none;
+}
+
+.owlstack-cloud-promo__dismiss:hover {
+    color: #135e96;
+}

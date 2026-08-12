@@ -30,6 +30,7 @@ use Owlstack\Core\Platforms\Twitter\TwitterFormatter;
 use Owlstack\Core\Platforms\Twitter\TwitterPlatform;
 use Owlstack\Core\Platforms\WhatsApp\WhatsAppPlatform;
 use Owlstack\Core\Publishing\Publisher;
+use Owlstack\WordPress\Admin\CloudPromo;
 use Owlstack\WordPress\Admin\CloudSettingsPage;
 use Owlstack\WordPress\Admin\DeliveryLogsPage;
 use Owlstack\WordPress\Admin\MetaBox;
@@ -332,6 +333,8 @@ class Plugin
         $cloudPage = new CloudSettingsPage($cloudTokens, new CloudSettings($cloudTokens));
         add_action('admin_menu', [$cloudPage, 'register']);
         $cloudPage->registerActions();
+
+        CloudPromo::registerActions();
 
         add_action('admin_enqueue_scripts', [$this, 'enqueueAdminAssets']);
     }
