@@ -190,6 +190,15 @@ This plugin connects to external third-party services to publish your content. D
 * New: REST endpoints under `owlstack/v1/cloud` for site info, post creation, image upload, and removal of Cloud-created posts. Token-authenticated; only a SHA-256 hash of the token is stored.
 * The plugin makes no outbound calls to OwlStack Cloud; the feature is inactive until a token is generated.
 
+= 1.0.1 =
+* Improved settings update feedback on the platform settings pages.
+* Hardened input sanitization in options handling and settings registration.
+* Added a third-party services section listing the terms and privacy policies of every supported platform.
+* Added platform documentation links and clearer setup guidance in settings.
+* Post body handling now falls back to the excerpt or trimmed content.
+* Telegram: platform-specific post transformations, plus placeholders and hints on the username fields.
+* Corrected author information in the plugin header.
+
 = 1.0.0 =
 * Initial public release.
 * Support for 11 platforms: Telegram, X (Twitter), Facebook, Instagram, LinkedIn, Discord, Pinterest, Reddit, Slack, Tumblr, and WhatsApp.
@@ -203,6 +212,12 @@ This plugin connects to external third-party services to publish your content. D
 * Full developer API via `owlstack()` helper function.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Adds an optional OwlStack Cloud connection. Generate a revocable site token under Owlstack > Cloud to let the Cloud dashboard publish to this site without a WordPress username or Application Password. Existing setups are unaffected and the feature stays inactive until you generate a token.
+
+= 1.0.1 =
+Maintenance release. Stronger input sanitization, clearer setup guidance, and Telegram formatting improvements.
 
 = 1.0.0 =
 Initial release. Configure your platform credentials under Owlstack > Settings after activation.
