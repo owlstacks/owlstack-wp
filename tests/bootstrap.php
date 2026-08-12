@@ -169,3 +169,35 @@ if (! function_exists('wp_json_encode')) {
 }
 
 require_once __DIR__ . '/stubs-rest.php';
+
+if (! function_exists('add_query_arg')) {
+    function add_query_arg(array $args, string $url): string
+    {
+        $separator = str_contains($url, '?') ? '&' : '?';
+
+        return $url . $separator . http_build_query($args);
+    }
+}
+
+if (! function_exists('get_current_user_id')) {
+    function get_current_user_id(): int
+    {
+        return $GLOBALS['owlstack_test_current_user'] ?? 0;
+    }
+}
+
+if (! function_exists('get_user_meta')) {
+    function get_user_meta(int $userId, string $key, bool $single = false)
+    {
+        return $GLOBALS['owlstack_test_user_meta'][$userId][$key] ?? '';
+    }
+}
+
+if (! function_exists('update_user_meta')) {
+    function update_user_meta(int $userId, string $key, $value): bool
+    {
+        $GLOBALS['owlstack_test_user_meta'][$userId][$key] = $value;
+
+        return true;
+    }
+}

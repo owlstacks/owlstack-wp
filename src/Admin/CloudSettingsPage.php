@@ -39,6 +39,8 @@ class CloudSettingsPage
             capability: 'manage_options',
             menu_slug: self::PAGE_SLUG,
             callback: [$this, 'render'],
+            // Directly after Settings, ahead of the per-platform pages.
+            position: 1,
         );
     }
 
