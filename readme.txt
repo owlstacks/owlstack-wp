@@ -3,7 +3,7 @@ Contributors: alihesari
 Donate link: https://owlstack.dev
 Tags: social media, auto publish, telegram, twitter, facebook
 Requires at least: 6.4
-Tested up to: 6.9
+Tested up to: 7.1
 Stable tag: 1.1.0
 Requires PHP: 8.1
 License: GPLv2 or later
@@ -184,6 +184,10 @@ This plugin connects to external third-party services to publish your content. D
 
 == Changelog ==
 
+= 1.1.1 =
+* Tested against WordPress 7.1.
+* No functional changes. The post editor meta box, publishing, and the Cloud connection are unaffected by the 7.1 iframed editor and client-side media processing changes.
+
 = 1.1.0 =
 * New: OwlStack Cloud connection (**Owlstack > Cloud**). Generate a revocable site token so the OwlStack Cloud dashboard can publish posts to this site without a WordPress username or Application Password.
 * New: Incoming content controls — always draft, always publish, or honor the requested status; configurable post author and post type.
@@ -214,6 +218,9 @@ This plugin connects to external third-party services to publish your content. D
 * Full developer API via `owlstack()` helper function.
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+Compatibility release for WordPress 7.1. No functional changes, safe to update.
 
 = 1.1.0 =
 Adds an optional OwlStack Cloud connection. Generate a revocable site token under Owlstack > Cloud to let the Cloud dashboard publish to this site without a WordPress username or Application Password. Existing setups are unaffected and the feature stays inactive until you generate a token.
