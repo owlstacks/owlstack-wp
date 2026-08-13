@@ -22,12 +22,12 @@ install: ## Install all Composer dependencies (dev + prod)
 	composer install --prefer-dist
 
 .PHONY: lint
-lint: ## Run PHPCS (WordPress coding standards)
-	php -d xdebug.mode=off vendor/bin/phpcs --standard=WordPress src/ owlstack.php
+lint: ## Run PHPCS (project standard from phpcs.xml.dist)
+	php -d xdebug.mode=off vendor/bin/phpcs
 
 .PHONY: lint-fix
 lint-fix: ## Auto-fix PHPCS violations where possible
-	php -d xdebug.mode=off vendor/bin/phpcbf --standard=WordPress src/ owlstack.php
+	php -d xdebug.mode=off vendor/bin/phpcbf
 
 .PHONY: test
 test: ## Run PHPUnit tests
@@ -149,23 +149,35 @@ svn-diff: ## Preview SVN changes before committing
 	@echo "==> SVN diff (summary):"
 	cd $(SVN_DIR) && svn diff --summarize
 
-.PHONY: svn-push
-svn-push: ## Commit SVN trunk to WordPress.org
+# Tag and trunk must land in ONE revision: WordPress.org reads trunk's Stable tag
+# on commit and keeps the previous version if that tag does not exist yet.
+.PHONY: svn-tag
+svn-tag: ## Stage tags/VERSION as a local copy of trunk (svn-push commits it)
 	@if [ ! -d "$(SVN_DIR)/trunk" ]; then \
 		echo "Error: No SVN working copy. Run 'make svn-checkout' first."; \
 		exit 1; \
 	fi
-	@echo "==> Committing trunk v$(VERSION) to WordPress.org…"
-	cd $(SVN_DIR) && svn commit --username $(SVN_USER) -m "Release $(VERSION)"
-	@echo "==> Trunk committed."
+	@if [ -d "$(SVN_DIR)/tags/$(VERSION)" ]; then \
+		echo "Error: tags/$(VERSION) already exists. Bump the version first."; \
+		exit 1; \
+	fi
+	@echo "==> Staging tag $(VERSION) from trunk…"
+	cd $(SVN_DIR) && svn copy trunk tags/$(VERSION)
+	@echo "==> Tag staged. Run 'make svn-push' to commit it together with trunk."
 
-.PHONY: svn-tag
-svn-tag: ## Create SVN tag from trunk (copies remote, fast)
-	@echo "==> Tagging v$(VERSION) on WordPress.org…"
-	svn copy $(SVN_URL)/trunk $(SVN_URL)/tags/$(VERSION) \
-		--username $(SVN_USER) \
-		-m "Tagging version $(VERSION)"
-	@echo "==> Tag $(VERSION) created. Plugin update will be live shortly."
+.PHONY: svn-push
+svn-push: ## Commit trunk and the staged tag to WordPress.org in one revision
+	@if [ ! -d "$(SVN_DIR)/trunk" ]; then \
+		echo "Error: No SVN working copy. Run 'make svn-checkout' first."; \
+		exit 1; \
+	fi
+	@if [ ! -d "$(SVN_DIR)/tags/$(VERSION)" ]; then \
+		echo "Error: tags/$(VERSION) is not staged. Run 'make svn-tag' first."; \
+		exit 1; \
+	fi
+	@echo "==> Committing v$(VERSION) to WordPress.org…"
+	cd $(SVN_DIR) && svn commit --username $(SVN_USER) -m "Release $(VERSION)"
+	@echo "==> trunk and tags/$(VERSION) committed in a single revision."
 
 .PHONY: svn-assets
 svn-assets: ## Sync assets/ to SVN assets branch (banners, icons, screenshots)
@@ -189,7 +201,7 @@ svn-assets: ## Sync assets/ to SVN assets branch (banners, icons, screenshots)
 	@echo "==> Assets updated on WordPress.org."
 
 .PHONY: release
-release: lint test svn-sync svn-push svn-tag ## Full release: lint → test → sync → push → tag
+release: lint test svn-sync svn-tag svn-push ## Full release: lint → test → sync → tag → push
 	@echo ""
 	@echo "==> 🎉 $(PLUGIN_SLUG) v$(VERSION) released to WordPress.org!"
 	@echo "    https://wordpress.org/plugins/$(PLUGIN_SLUG)/"
