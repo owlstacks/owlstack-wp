@@ -1,6 +1,6 @@
 === Owlstack ===
 Contributors: alihesari
-Donate link: https://owlstack.dev
+Donate link: https://owlstack.app
 Tags: social media, auto publish, telegram, twitter, facebook
 Requires at least: 6.4
 Tested up to: 7.1
@@ -13,7 +13,7 @@ Publish content to Telegram, X (Twitter), Facebook, Instagram, LinkedIn, Discord
 
 == Description ==
 
-Owlstack lets you automatically share your WordPress posts to social media platforms with a single click or on publish. Powered by the [Owlstack Core](https://owlstack.dev) engine, it provides a seamless publishing experience.
+Owlstack lets you automatically share your WordPress posts to social media platforms with a single click or on publish. Powered by the [Owlstack Core](https://owlstack.app) engine, it provides a seamless publishing experience.
 
 **Supported Platforms:**
 

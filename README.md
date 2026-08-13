@@ -1,6 +1,6 @@
 # Owlstack for WordPress
 
-WordPress plugin for [Owlstack](https://owlstack.dev) — publish content to multiple social media platforms directly from WordPress.
+WordPress plugin for [Owlstack](https://owlstack.app) — publish content to multiple social media platforms directly from WordPress.
 
 Integrates `owlstack/owlstack-core` into WordPress sites — admin settings, post meta boxes, delivery logs, REST API endpoints, and more.
 
