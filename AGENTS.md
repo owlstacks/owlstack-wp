@@ -10,7 +10,7 @@
 
 **OwlStack WP** is a WordPress plugin that integrates [OwlStack Core](https://github.com/AliYmworworking/owlstack-core) with WordPress, enabling publishing of WordPress posts to social media platforms.
 
-> **Brand name:** "OwlStack" (capital S). The domain is `owlstack.dev`.
+> **Brand name:** "OwlStack" (capital S). The domain is `owlstack.app`.
 
 | Property | Value |
 |----------|-------|

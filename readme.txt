@@ -1,10 +1,10 @@
 === Owlstack ===
 Contributors: alihesari
-Donate link: https://owlstack.dev
+Donate link: https://owlstack.app
 Tags: social media, auto publish, telegram, twitter, facebook
 Requires at least: 6.4
 Tested up to: 7.1
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,7 +13,7 @@ Publish content to Telegram, X (Twitter), Facebook, Instagram, LinkedIn, Discord
 
 == Description ==
 
-Owlstack lets you automatically share your WordPress posts to social media platforms with a single click or on publish. Powered by the [Owlstack Core](https://owlstack.dev) engine, it provides a seamless publishing experience.
+Owlstack lets you automatically share your WordPress posts to social media platforms with a single click or on publish. Powered by the [Owlstack Core](https://owlstack.app) engine, it provides a seamless publishing experience.
 
 **Supported Platforms:**
 
@@ -184,6 +184,9 @@ This plugin connects to external third-party services to publish your content. D
 
 == Changelog ==
 
+= 1.1.2 =
+* Every link in the plugin now points to owlstack.app, the current OwlStack domain. The previous owlstack.dev links no longer reach the public site.
+
 = 1.1.1 =
 * Tested against WordPress 7.1.
 * No functional changes. The post editor meta box, publishing, and the Cloud connection are unaffected by the 7.1 iframed editor and client-side media processing changes.
@@ -218,6 +221,9 @@ This plugin connects to external third-party services to publish your content. D
 * Full developer API via `owlstack()` helper function.
 
 == Upgrade Notice ==
+
+= 1.1.2 =
+Link fix. Documentation and site links now point to owlstack.app; the old links no longer resolve for visitors.
 
 = 1.1.1 =
 Compatibility release for WordPress 7.1. No functional changes, safe to update.

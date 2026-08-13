@@ -20,7 +20,7 @@ class SettingsPage
         'telegram' => [
             'label'       => 'Telegram',
             'description' => 'Configure your Telegram Bot API credentials.',
-            'docs_url'    => 'https://owlstack.dev/docs/developers/platforms/telegram',
+            'docs_url'    => 'https://owlstack.app/docs/developers/platforms/telegram',
             'fields'      => [
                 'api_token'         => ['label' => 'Bot API Token', 'secret' => true],
                 'bot_username'      => ['label' => 'Bot Username', 'placeholder' => '@YourBot', 'hint' => 'Must start with @'],
@@ -32,7 +32,7 @@ class SettingsPage
         'twitter' => [
             'label'       => 'Twitter / X',
             'description' => 'Configure your Twitter (X) API credentials.',
-            'docs_url'    => 'https://owlstack.dev/docs/developers/platforms/twitter',
+            'docs_url'    => 'https://owlstack.app/docs/developers/platforms/twitter',
             'fields'      => [
                 'consumer_key'        => ['label' => 'Consumer Key (API Key)', 'secret' => true],
                 'consumer_secret'     => ['label' => 'Consumer Secret', 'secret' => true],
@@ -43,7 +43,7 @@ class SettingsPage
         'facebook' => [
             'label'       => 'Facebook',
             'description' => 'Configure your Facebook Page API credentials.',
-            'docs_url'    => 'https://owlstack.dev/docs/developers/platforms/facebook',
+            'docs_url'    => 'https://owlstack.app/docs/developers/platforms/facebook',
             'fields'      => [
                 'app_id'                => ['label' => 'App ID', 'secret' => true],
                 'app_secret'            => ['label' => 'App Secret', 'secret' => true],
@@ -55,7 +55,7 @@ class SettingsPage
         'instagram' => [
             'label'       => 'Instagram',
             'description' => 'Configure your Instagram API credentials.',
-            'docs_url'    => 'https://owlstack.dev/docs/developers/platforms/instagram',
+            'docs_url'    => 'https://owlstack.app/docs/developers/platforms/instagram',
             'fields'      => [
                 'access_token'         => ['label' => 'Access Token', 'secret' => true],
                 'instagram_account_id' => ['label' => 'Instagram Account ID'],
@@ -64,7 +64,7 @@ class SettingsPage
         'linkedin' => [
             'label'       => 'LinkedIn',
             'description' => 'Configure your LinkedIn API credentials.',
-            'docs_url'    => 'https://owlstack.dev/docs/developers/platforms/linkedin',
+            'docs_url'    => 'https://owlstack.app/docs/developers/platforms/linkedin',
             'fields'      => [
                 'access_token'    => ['label' => 'Access Token', 'secret' => true],
                 'person_id'       => ['label' => 'Person ID', 'hint' => 'For personal profiles'],
@@ -74,7 +74,7 @@ class SettingsPage
         'discord' => [
             'label'       => 'Discord',
             'description' => 'Configure your Discord credentials. Use either a webhook URL or bot token with channel ID.',
-            'docs_url'    => 'https://owlstack.dev/docs/developers/platforms/discord',
+            'docs_url'    => 'https://owlstack.app/docs/developers/platforms/discord',
             'fields'      => [
                 'webhook_url' => ['label' => 'Webhook URL', 'hint' => 'For webhook mode'],
                 'bot_token'   => ['label' => 'Bot Token', 'secret' => true, 'hint' => 'For bot mode'],
@@ -84,7 +84,7 @@ class SettingsPage
         'pinterest' => [
             'label'       => 'Pinterest',
             'description' => 'Configure your Pinterest API credentials.',
-            'docs_url'    => 'https://owlstack.dev/docs/developers/platforms/pinterest',
+            'docs_url'    => 'https://owlstack.app/docs/developers/platforms/pinterest',
             'fields'      => [
                 'access_token' => ['label' => 'Access Token', 'secret' => true],
                 'board_id'     => ['label' => 'Board ID'],
@@ -93,7 +93,7 @@ class SettingsPage
         'reddit' => [
             'label'       => 'Reddit',
             'description' => 'Configure your Reddit API credentials.',
-            'docs_url'    => 'https://owlstack.dev/docs/developers/platforms/reddit',
+            'docs_url'    => 'https://owlstack.app/docs/developers/platforms/reddit',
             'fields'      => [
                 'access_token' => ['label' => 'Access Token', 'secret' => true],
                 'subreddit'    => ['label' => 'Subreddit'],
@@ -103,7 +103,7 @@ class SettingsPage
         'slack' => [
             'label'       => 'Slack',
             'description' => 'Configure your Slack credentials. Use either a bot token with channel or webhook URL.',
-            'docs_url'    => 'https://owlstack.dev/docs/developers/platforms/slack',
+            'docs_url'    => 'https://owlstack.app/docs/developers/platforms/slack',
             'fields'      => [
                 'bot_token'   => ['label' => 'Bot Token', 'secret' => true, 'hint' => 'For bot mode'],
                 'channel'     => ['label' => 'Channel', 'hint' => 'Required for bot mode (e.g., #general)'],
@@ -113,7 +113,7 @@ class SettingsPage
         'tumblr' => [
             'label'       => 'Tumblr',
             'description' => 'Configure your Tumblr API credentials.',
-            'docs_url'    => 'https://owlstack.dev/docs/developers/platforms/tumblr',
+            'docs_url'    => 'https://owlstack.app/docs/developers/platforms/tumblr',
             'fields'      => [
                 'access_token'    => ['label' => 'Access Token', 'secret' => true],
                 'blog_identifier' => ['label' => 'Blog Identifier'],
@@ -122,7 +122,7 @@ class SettingsPage
         'whatsapp' => [
             'label'       => 'WhatsApp',
             'description' => 'Configure your WhatsApp Business API credentials.',
-            'docs_url'    => 'https://owlstack.dev/docs/developers/platforms/whatsapp',
+            'docs_url'    => 'https://owlstack.app/docs/developers/platforms/whatsapp',
             'fields'      => [
                 'access_token'    => ['label' => 'Access Token', 'secret' => true],
                 'phone_number_id' => ['label' => 'Phone Number ID'],
